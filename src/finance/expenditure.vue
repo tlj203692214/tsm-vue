@@ -75,6 +75,7 @@
 				<el-button @click="dialogVisible = false,this.purchaseData=[]">取消</el-button>
 			</span>
 		</template>
+		<span>你好</span>
 	</el-dialog>
 
 
