@@ -1,0 +1,16 @@
+{
+  "id": "2957926",
+  "name": "element-ui",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "element-ui 扩展库",
+  "glyphs": [
+    {
+      "icon_id": "9843205",
+      "name": "教务管理",
+      "font_class": "jiaowuguanli",
+      "unicode": "e62f",
+      "unicode_decimal": 58927
+    }
+  ]
+}
