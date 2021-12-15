@@ -8,7 +8,7 @@
         </el-col>
         <el-col :span="4" class="rightsection">
           <div class="grid-content bg-purple-light">
-            <span class="el-dropdown-link userinfo-inner">欢迎管理员</span>
+            <span class="el-dropdown-link userinfo-inner">欢迎管理级员</span>
             <span class="userinfo-inner" @click="signout">退出</span>
           </div>
         </el-col>
