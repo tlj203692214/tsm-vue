@@ -1,18 +1,15 @@
 <template>
 	<div class="payheader">
 		<span class="paysize">选择状态：</span>
-		<el-select v-model="value" placeholder="Select">
+		<el-select v-model="value" placeholder="可用/不可用">
 			<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
 			</el-option>
 		</el-select>
 		<span class="paysize">学员名称：</span>
-		<el-select v-model="value" placeholder="Select">
-			<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-			</el-option>
-		</el-select>
+		<el-input v-model="stuname" placeholder="请输入名字" style="margin-right:30px"/>
 		<span class="paysize">支付方式：</span>
-		<el-select v-model="value" placeholder="Select">
-			<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+		<el-select v-model="pay" placeholder="微信/现金/支付宝">
+			<el-option v-for="item in payMode" :key="item.value" :label="item.label" :value="item.value">
 			</el-option>
 		</el-select>
 		<el-button>查询</el-button>
@@ -21,7 +18,7 @@
 	</div>
 	
 	 
-		<el-table :data="tableData" border style="width: 100%;">
+		<el-table :data="payMoney" border style="width: 100%;">
 			
 			<el-table-column type="selection" width="50"></el-table-column>
 			
@@ -60,26 +57,38 @@
 	export default({
 			data(){
 				return{
-					tableData:[],
+					stuname: ref(''),
+					payMoney:[],
 					pageInfo: {
 						currentPage: 1,
 						pagesize: 3,
 						total: 0
 					},
-					options:[
-						{
-						          value: 'Option1',
-						          label: 'Option1',
-						        },
-						        {
-						          value: 'Option2',
-						          label: 'Option2',
-						        },
-						        {
-						          value: 'Option3',
-						          label: 'Option3',
-						        },
-					]
+					options: ref([{
+						value: '可用',
+						label: '可用',
+					},
+					{
+						value: '不可用',
+						label: '不可用',
+					},
+				]),
+				value: ref(''),
+				payMode: ref([{
+						value: '微信支付',
+						label: '微信支付',
+					},
+					{
+						value: '支付宝支付',
+						label: '支付宝支付',
+					},
+					{
+						value: '现金支付',
+						label: '现金支付',
+					}
+				]),
+				pay:ref('')
+					
 				}
 			},
 			methods:{
@@ -88,13 +97,12 @@
 					this.pageInfo.currentPage = page
 					var ps = qs.stringify(this.pageInfo)
 					console.log(ps)
-					this.axios.get("http://localhost:80888/TSM/selectPayMoney", {
+					this.axios.get("http://localhost:8088/TSM/selectPayMoney", {
 							params: this.pageInfo
 						})
 						.then(function(response) {
-							console.log("1-------------------------------------------")
 							console.log(response.data)
-							_this.tableData = response.data.records
+							_this.payMoney = response.data.records
 						}).catch(function(error) {
 							console.log(error)
 						})
@@ -110,9 +118,8 @@
 							params: this.pageInfo
 						})
 						.then(function(response) {
-							console.log("2-------------------------------------------")
 							console.log(response.data)
-							_this.tableData = response.data.records
+							_this.payMoney = response.data.records
 							_this.pageInfo.total = response.data.total
 						}).catch(function(error) {
 							console.log(error)
@@ -126,7 +133,7 @@
 				})
 				.then(function(response) {
 					console.log(response)
-					_this.tableData = response.data.records
+					_this.payMoney = response.data.records
 					_this.pageInfo.total = response.data.total
 				}).catch(function(error) {
 					console.log(error)
@@ -142,13 +149,13 @@
 		font-weight: 500;
 	}
 
-	.el-select .el-input__inner {
+	.payheader .el-select .el-input__inner {
 		height: 30px;
-		border: 1px solid #000000;
+		/* border: 1px solid #000000; */
 		color: #000000;
 	}
 
-	.el-select {
+	.payheader .el-select {
 		margin-right: 30px;
 	}
 	.payheader{

@@ -1,9 +1,598 @@
 <template>
-	工作台
+<div>
+	<header class="el-header" style="height: 3.125rem;"></header>
+	<!-- <main class="el-main main-container"> -->
+		<div class="el-scrollbar" style="height: 100%;">
+			<div class="wrapper main-wrapper el-wrap" style="margin-bottom: -17px; margin-right: -17px;">
+				<div class="el-view">
+					<div class="dashboard-wrapper">
+						<p class="title">
+							<el-icon><i-orange style="color: orangered;" /></el-icon>今日统计
+						</p>
+						<div class="today-data rows">
+							<div class="el-col el-col-6" style="padding-left: 7.5px; padding-right: 7.5px;">
+								<div data-v-d8a87178 class="today-item">
+									<p class="today-title">老师出勤</p>
+									<div class="teacher-attendce">
+										<p>实到<span class="color-success">0</span>人
+											<span class="divider">/</span>
+											应到<span class="color-primary">0</span>人
+										</p>
+										<div role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" class="el-progress">
+											<div class="el-progress-bar" style="height: 8px;">
+												<div class="el-progress-bar__outer"></div>
+												<div class="el-progress__text" style="font-size: 15.2px;">0%</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="el-col el-col-6" style="padding-left: 7.5px; padding-right: 7.5px;">
+								<div data-v-d8a87178 class="today-item">
+									<p class="today-title">学员签到</p>
+									<div class="student-sign">
+										<div>
+											<p>
+												实到<span class="color-success">0</span><span class="divider">/</span>
+												应到<span class="color-primary">0</span>
+											</p>
+											<p>请假<span class="color-danger">0</span></p>
+										</div>
+										<div style="width: 100px;">
+											<div id="container" style="height: 100%"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="el-col el-col-6" style="padding-left: 7.5px; padding-right: 7.5px;">
+								<div data-v-d8a87178 class="today-item">
+									<p class="today-title">课务情况</p>
+									<ul class="class-service">
+										<li>
+											<span style="font-size:14px">已上课数：<span class="color-success">0</span></span>
+										</li>
+										<li>
+											<span style="font-size:14px">应上课数：<span class="color-primary">0</span></span>
+										</li>
+										<li>
+											<span style="font-size:14px">布置作业：<span class="color-danger">0</span>次</span>
+										</li>
+										<li>
+											<span style="font-size:14px">上传附件：<span class="color-warning">0</span>次</span>
+										</li>
+									</ul>
+								</div>
+							</div>
+							<div class="el-col el-col-6" style="padding-left: 7.5px; padding-right: 7.5px;">
+								<div data-v-d8a87178 class="today-item">
+									<p class="today-title">消息通知</p>
+									<div class="notification-record">
+										<ul>
+											<li data-v-d8a87178>微信通知：<span class="color-success">0</span></li>
+											<li data-v-d8a87178>短信通知：<span class="color-primary">0</span></li>
+										</ul>
+										<div id="contain" style="width: 90px; height: 100%; margin: -10px 20px; float: right;"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="shortcut-container" style="margin-bottom: 0px;">
+							<div class="rows" style="margin-left: -7.5px; margin-right: -7.5px;">
+								<div class="el-col el-col-12" style="padding-left: 7.5px; padding-right: 7.5px;">
+									<p class="title">
+										<el-icon><i-orange style="color: orangered;" /></el-icon>快捷入口
+									</p>
+									<div class="shortcut-entrance rows" style="margin-left: -8px; margin-right: -8px;">
+										<div class="el-col el-col-8" style="padding-left: 8px; padding-right: 8px;">
+											<div class="shortcut-item">
+												<img src="../assets/img/works/a.png" />
+												<p>新生报名</p>
+											</div>
+										</div>
+										<div class="el-col el-col-8" style="padding-left: 8px; padding-right: 8px;">
+											<div class="shortcut-item">
+												<img src="../assets/img/works/b.png" />
+												<p>快速排课</p>
+											</div>
+										</div>
+										<div class="el-col el-col-8" style="padding-left: 8px; padding-right: 8px;">
+											<div class="shortcut-item">
+												<img src="../assets/img/works/c.png" />
+												<p>学员登记</p>
+											</div>
+										</div>
+									</div>
+									<div class="shortcut-entrance rows" style="margin-left: -8px; margin-right: -8px;">
+										<div class="el-col el-col-8" style="padding-left: 8px; padding-right: 8px;"></div>
+										<div class="el-col el-col-8" style="padding-left: 8px; padding-right: 8px;"></div>
+										<div class="el-col el-col-8" style="padding-left: 8px; padding-right: 8px;"></div>
+										<div class="el-col el-col-8" style="padding-left: 8px; padding-right: 8px;">
+											<div class="shortcut-item">
+												<img src="../assets/img/works/d.png" />
+												<p>课表查看</p>
+											</div>
+										</div>
+										<div class="el-col el-col-8" style="padding-left: 8px; padding-right: 8px;">
+											<div class="shortcut-item">
+												<img src="../assets/img/works/e.png" />
+												<p>订单管理</p>
+											</div>
+										</div>
+										<div class="el-col el-col-8" style="padding-left: 8px; padding-right: 8px;">
+											<div class="shortcut-item">
+												<img src="../assets/img/works/f.png" />
+												<p>老师备课</p>
+											</div>
+										</div>
+									</div>	
+								</div>
+								<div class="el-col el-col-12" style="padding-left: 7.5px; padding-right: 7.5px;">
+									<p class="title">
+										<el-icon><i-orange style="color: orangered;" /></el-icon>机构统计
+									</p>
+									<div class="stat-wrapper">
+										<div class="grid-wrapper">
+											<div class="grid-item">
+												<div></div>
+											</div>
+											<div class="grid-item">
+												<div></div>
+											</div>
+										</div>
+										<div class="grid-wrapper">
+											<div class="grid-item">
+												<div class="grid-content child1">
+													<div class="total-icon">
+														<el-icon style="font-size: 30px;"><i-user /></el-icon>
+													</div>
+													<p class="total-numbers">6</p>
+													<p class="total-name">在读学员</p>
+												</div>
+											</div>
+											<div class="grid-item">
+												<div class="grid-content child2">
+													<div class="total-icon">
+														<el-icon style="font-size: 30px;"><i-scale-to-original /></el-icon>
+													</div>
+													<p class="total-numbers">2</p>
+													<p class="total-name">开设班级</p>
+												</div>
+											</div>
+										</div>
+										<div class="grid-wrapper">
+											<div class="grid-item">
+												<div class="grid-content child3">
+													<div class="total-icon">
+														<el-icon style="font-size: 30px;"><i-coin /></el-icon>
+													</div>
+													<p class="total-numbers">6</p>
+													<p class="total-name">总订单数</p>
+												</div>
+											</div>
+											<div class="grid-item">
+												<div class="grid-content child4">
+													<div class="total-icon">
+														<el-icon style="font-size: 30px;"><i-money /></el-icon>
+													</div>
+													<p class="total-numbers">67500</p>
+													<p class="total-name">订单总金额</p>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="shortcut-container">
+							<div class="rows" style="margin-left: -7.5px; margin-right: -7.5px;">
+								
+							</div>
+						</div>
+						<div class="chart-block">
+							<div class="line-chart">
+								<div class="title-no-border trend-title">
+									<span style="float: left;">
+										<el-icon><i-orange style="color: orangered;" /></el-icon>
+										<span class="color-primary">订单收入</span>
+									</span>
+									<div class="el-radio-group">
+										<el-radio-group v-model="radio1">
+										    <el-radio-button label="最近一月"></el-radio-button>
+										    <el-radio-button label="上个月"></el-radio-button>
+										</el-radio-group>    
+									</div>
+								</div>
+								<div></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="el-bar is-horizontal"></div>
+			<div class="el-bar is-vertical"></div>
+		</div>
+		</div>
+	
 </template>
 
 <script>
+	import * as echarts from 'echarts';
+	import { defineComponent, ref } from 'vue'
+	export default{
+		setup() {
+		    return {
+		      radio1: ref('最近一月'),
+		    }
+		},
+		mounted(){
+			this.myChart = echarts.init(document.getElementById('container'));
+			var option;
+			option = {
+			  tooltip: {
+				trigger: 'item'
+			  },
+			  series: [
+				{
+				  name: '学员签到',
+				  type: 'pie',
+				  radius: ['40%', '70%'],
+				  label: {
+					show: false,
+					position: 'center'
+				  },
+				  data: [
+					{ value: 10, name: '应到' },
+					{ value: 10, name: '请假' },
+					{ value: 10, name: '实到' }
+				  ]
+				}
+			  ]
+			};
+			if (option && typeof option === 'object') {
+				this.myChart.setOption(option);
+			}
+			this.Chart = echarts.init(document.getElementById('contain'));
+			var op;
+			op = {
+			  tooltip: {
+				trigger: 'item'
+			  },
+			  series: [
+				{
+				  name: '消息通知',
+				  type: 'pie',
+				  radius: ['80%'],
+				  label: {
+					show: false,
+					position: 'center'
+				  },
+				  data: [
+					{ value: 0, name: '微信通知' },
+					{ value: 0, name: '短信通知' }
+				  ]
+				}
+			  ]
+			};
+			if (op && typeof op === 'object') {
+				this.Chart.setOption(op);
+			}
+		}
+	}	
 </script>
 
 <style>
+	body{
+		background: #f5f7fa;
+		color: #303133;
+		font-size: 14px;
+		font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,"\5FAE\8F6F\96C5\9ED1",Arial,sans-serif;
+		margin: 0;  
+	}
+	/* .el-header{
+		background: #fff;
+		border-bottom: 1px solid #e4e7ed;
+		-webkit-box-shadow: 0 3px 10px -3px #dcdfe6;
+		box-shadow: 0 3px 10px -3px #dcdfe6;
+		z-index: 1;
+		padding: 0 20px;;
+	} */
+	.el-scrollbar{
+		position: relative;
+	}
+	/* .el-main{
+		box-sizing: border-box;
+		display: block;
+		-webkit-box-flex: 1;
+		flex: 1;
+		flex-basis: auto;
+		overflow: auto;
+		padding: 20px;    
+	} */
+	.main-container{
+		padding: 0;
+		overflow: hidden;
+	}
+	.el-scrollbar .wrapper{
+		overflow-x: hidden;
+	}
+	.main-container .main-wrapper{
+		padding: 12px;
+		-webkit-box-sizing: border-box;
+		box-sizing: border-box;    
+	}
+	.el-wrap{
+		overflow: scroll;
+		height: 100%;
+	}
+	.dashboard-wrapper{
+		margin-left: 10px!important;
+		margin-right: 10px!important;
+		padding: 0!important;    
+	}
+	.title{
+		position: relative;
+		height: 36px;
+		line-height: 36px;
+		border-bottom: 1px solid #dcdfe6;
+		font-size: 14px;
+		margin-top: 16px;
+		margin-bottom: 12px;
+		font-weight: 700;
+	}
+	.today-data{
+		margin-bottom: 5px;
+	}
+	.rows{
+		box-sizing: border-box;
+	}
+	.rows:after, .rows:before{
+		display: table;
+	}
+	.el-col-6{
+		width: 25%;
+	}
+	.today-item[data-v-d8a87178]{
+		background: #fff;
+		height: 140px;
+		border-radius: 3px;
+		cursor: pointer;
+		position: relative;    
+	}
+	.today-title{
+		height: 36px;
+		line-height: 36px;
+		padding: 0 16px;
+		border-bottom: 1px solid #ebeef5;
+	}
+	.today-item:hover .today-title{
+		color: #FF7E00;
+	}
+	.el-progress{
+		position: relative;
+		line-height: 1;
+	}
+	.el-progress-bar__outer{
+		border-radius: 100px;
+		background-color: #ebeef5;
+		overflow: hidden;
+		position: relative;
+		vertical-align: middle;    
+	}
+	.el-progress__text{
+		color: #606266;
+		display: inline-block;
+		vertical-align: middle;
+		margin-left: 10px;
+		line-height: 1;    
+	}
+	.today-data .today-item>div{
+		padding: 0px 16px;
+	}
+	.student-sign{
+		display: -ms-flexbox;
+		display: flex;
+		-webkit-box-pack: justify;
+		justify-content: space-between;
+		-webkit-box-align: center;
+		align-items: center;    
+	}
+	.student-sign p span{
+		font-size: 18px;
+		margin-left: 3px;
+	}
+	.color-success {
+		color: #67c23a;
+	}
+	.divider{
+		margin: 0 16px;
+	}
+	.color-primary{
+		color: #f60;
+	}
+	.color-danger{
+		color: red;
+	}
+	.color-warning{
+		color: #ff7e00;
+	}
+	ul li{
+		list-style: none;
+	}
+	.class-service{
+		display: flex;
+		flex-wrap: wrap;
+	}
+	.class-service li{
+		width: 44%;
+		margin-top: 12px;
+		color: #303133;
+	}
+	.class-service span{
+	    font-size: 18px;
+	    margin-right: 4px;
+	}
+	.notification-record{
+		display: flex;
+	}
+	.notification-record span{
+	    font-size: 18px;
+	    margin-right: 4px;	
+	}
+	.notification-record li+li[data-v-d8a87178]{
+		margin-top: 12px;
+	}
+	.el-col-12{
+		width: 50%;
+	}
+	.el-col-8{
+		width: 33.33333%;
+	}
+	.shortcut-item{
+		height: 120px;
+		margin-bottom: 10px;
+		padding: 12px 16px;
+		background: #fff;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+		border-bottom: 2px solid #ffbd0c;
+		border-radius: 3px;
+		box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);    
+	}
+	.el-col:nth-child(2) .shortcut-item{
+		border-color: #3dd23f;
+	}
+	.el-col:nth-child(3) .shortcut-item{
+		border-color: #ff7e00;
+	}
+	.el-col:nth-child(4) .shortcut-item{
+		border-color: #1082ff;
+	}
+	.el-col:nth-child(5) .shortcut-item{
+		border-color: #ff7e00;
+	}
+	.shortcut-item img{
+		display: inline-block;
+		width: 50px;
+		height: 50px;
+		margin-right: 6px;    
+	}
+	.shortcut-container{
+		margin-bottom: 10px;
+	}
+	.shortcut-container .wrapper{
+		height: 300px;
+		margin-top: 5px;
+		padding-left: 5px;
+		padding-right: 5px;
+		background-color: #fff;
+		border-radius: 3px;    
+	}
+	.stat-wrapper{
+		height: 300px;
+		margin-top: 5px;
+	}
+	.grid-wrapper{
+		display: flex;
+		-webkit-box-align: center;
+		align-items: center;
+		-webkit-box-pack: justify;
+		justify-content: space-between;    
+	}
+	.grid-item{
+		width: 50%;
+	}
+	.grid-content{
+		padding: 16px;
+		height: 145px;
+		background-color: #fff;
+		border-radius: 3px;
+		box-sizing: border-box;
+		z-index: 3;
+		cursor: pointer;    
+	}
+	.child1{
+		margin-bottom: 10px;
+		margin-right: 7px;
+	}
+	.child2{
+		margin-bottom: 10px;
+		margin-left: 7px; 
+	}
+	.child3{
+		margin-right: 7px;
+	}
+	.child4{
+		margin-left: 7px;   
+	}
+	.child1 .total-icon{
+		background: rgba(103,194,58,.2);
+		color: #67c23a;   
+	}
+	.child2 .total-icon{
+		background: rgba(64,158,255,.2);
+		color: #409eff;
+	}
+	.child3 .total-icon{
+		background: rgba(245,108,108,.2);
+		color: #f56c6c;   
+	}
+	.child4 .total-icon{
+	    background: rgba(255,102,0,.2);
+		color: #f60;
+	}
+	.total-icon{
+		width: 50px;
+		height: 50px;
+		line-height: 50px;
+		text-align: center;
+		margin: 0 auto;
+		font-size: 30px;
+		border-radius: 50%; 
+	}
+	.total-numbers{
+		font-size: 21px;
+		font-weight: 700;
+		color: #606266;
+		text-align: center;
+		margin-top: 12px;    
+	}
+	.total-name{
+		font-size: 14px;
+		color: #909399;
+		text-align: center;
+	}
+	.chart-block{
+		display: flex;
+		-webkit-box-align: start;
+		align-items: flex-start;   
+	}
+	.line-chart{
+		flex-shrink: 1;
+		width: 100%;
+		background: #fff;
+		padding: 0 16px;    
+	}
+	.title-no-border{
+		position: relative;
+		font-size: 14px;
+		font-weight: 700;    
+	}
+	.trend-title{
+		margin: 0;
+		height: 44px;
+		line-height: 44px;    
+	}
+	.inline-select{
+		display: inline-block;
+		padding-right: 26px;
+		cursor: pointer;
+		box-sizing: border-box;
+		position: relative;
+		margin-right: 20px;    
+	}
+	.el-radio-group{
+		float: right;
+	}
 </style>
