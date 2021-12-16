@@ -1,9 +1,7 @@
 <template>
 	 <div class="htmleaf-container">
-		<div class="wrapper">
-			<div class="container">
-				<h1>Welcome</h1>
-				
+		
+				<div class="login">
 				<el-form ref="staff" :model="staff" label-width="100px" :rules="rules">
 					<el-form-item label="用户名" prop="staffName">
 						<el-input v-model="staff.staffName"></el-input>
@@ -19,30 +17,11 @@
 					</el-form-item>
 				</el-form>
 			</div>
-			<ul class="bg-bubbles">
-							<li></li>
-							<li></li>
-							<li></li>
-							<li></li>
-							<li></li>
-							<li></li>
-							<li></li>
-							<li></li>
-							<li></li>
-							<li></li>
-						</ul>
-		</div>
 	</div>
 	
 </template>
 
 <script>
-	// $('#login-button').click(function (event) {
-	// 	    event.preventDefault();
-	// 	    $('form').fadeOut(500);
-	// 	    $('.wrapper').addClass('form-success');
-	// 	});
-	
 	import { ElMessage } from 'element-plus'
 	export default {
 		data(){
@@ -118,16 +97,13 @@
 </script>
 
 <style>
-	.el-form{
+	.login .el-form{
 		margin: auto;
 		width: 380px;
 		text-align: center;
 	}
-	.el-button{
+	.login .el-button{
 		width: 80px;
 	}
-	
-	.container .el-input__inner{
-		transition: opacity 0.3s;
-	}
+
 </style>

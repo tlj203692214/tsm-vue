@@ -12,7 +12,6 @@
 		<el-button>查询</el-button>
 		<el-button>审核通过</el-button>
 		<el-button>删除</el-button>
-
 	</div>
 
 
@@ -135,7 +134,6 @@
 						params: this.pageInfo
 					})
 					.then(function(response) {
-						console.log("1-------------------------------------------")
 						console.log(response.data.data)
 						_this.expenditureDate = response.data.records
 					}).catch(function(error) {
@@ -152,7 +150,6 @@
 						params: this.pageInfo
 					})
 					.then(function(response) {
-						console.log("2-------------------------------------------")
 						console.log(response.data)
 						_this.expenditureDate = response.data.records
 						_this.pageInfo.total = response.data.total
@@ -199,13 +196,13 @@
 		font-weight: 500;
 	}
 
-	.el-select .el-input__inner {
+	.payheader .el-select .el-input__inner {
 		height: 30px;
-		border: 1px solid #000000;
+		/* border: 1px solid #000000; */
 		color: #000000;
 	}
 
-	.el-select {
+	.payheader .el-select {
 		margin-right: 30px;
 	}
 

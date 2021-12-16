@@ -1,44 +1,47 @@
 <template>
 	<div class="payheader">
-		 
-		<span class="paysize">审核状态：</span>
+		<span class="paysize">选择状态：</span>
 		<el-select v-model="value" placeholder="可用/不可用">
 			<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
 			</el-option>
 		</el-select>
 		<span class="paysize">学员名称：</span>
 		<el-input v-model="stuname" placeholder="请输入名字" style="margin-right:30px"/>
-		<span class="kong"></span>
+		<span class="paysize">收款方式：</span>
+		<el-select v-model="pay" placeholder="微信/现金/支付宝">
+			<el-option v-for="item in payMode" :key="item.value" :label="item.label" :value="item.value">
+			</el-option>
+		</el-select>
 		<el-button>查询</el-button>
 		<el-button>审核通过</el-button>
 		<el-button>删除</el-button>
-	
 	</div>
 	
 	 
-		<el-table ref="tableDate" :data="refundDate" border style="width: 100%;">
+		<el-table :data="payMoney" border style="width: 100%;">
+			
 			<el-table-column type="selection" width="50"></el-table-column>
-			<el-table-column prop="refundId" label="编号" width="120">
-				<template #default="scope">{{scope.row.refundId}}</template>
+			
+			<el-table-column prop="incomeId" label="编号" width="120">
+				<template #default="scope">{{scope.row.incomeId}}</template>
 			</el-table-column>
-			<el-table-column prop="refundDate" label="退费时间" width="180" />
-			<el-table-column prop="refundMoney" label="退费金额" width="180" />
-			<el-table-column prop="refundState" label="退费状态" width="100" >
-			<template #default="scope">
-				<span v-if="scope.row.refundState=='1'">未退</span>
-				<span v-else>已退</span>
-			</template>
-			</el-table-column>
-			<el-table-column prop="leaveschoolId" label="学员退学状态" />
-			<el-table-column prop="classrecordId" label="上课记录" />
-			<el-table-column prop="courseId" label="退费课程" />
-			<el-table-column prop="staffId" label="批准人" />
+			<el-table-column prop="incomeState" label="收入状态" width="180" >
+                <template #default="scope">
+                    <span v-if="scope.row.incomeState=='0'">已到账</span>
+                    <span v-else>未到账</span>
+                </template>
+            </el-table-column>    
+			<el-table-column prop="paymoneyMoney" label="收入金额" width="180" />
+			<el-table-column prop="paymoneyDate" label="收入时间" />
+			<el-table-column prop="paymoneyMode" label="收款方式" />
+			<el-table-column prop="staffName" label="收款人" />
+			<el-table-column prop="studentName" label="付款人" />
 			<el-table-column prop="deleted" label="是否可用" >
 				<template #default="scope">
 					<span v-if="scope.row.deleted=='1'">不可用</span>
 					<span v-else>可用</span>
 				</template>
-			</el-table-column>	
+			</el-table-column>
 		</el-table>
 		
 	<div class="block">
@@ -59,8 +62,8 @@
 	export default({
 			data(){
 				return{
-					stuname:ref(''),
-					refundDate:[],
+					stuname: ref(''),
+					payMoney:[],
 					pageInfo: {
 						currentPage: 1,
 						pagesize: 3,
@@ -76,6 +79,21 @@
 					},
 				]),
 				value: ref(''),
+				payMode: ref([{
+						value: '微信支付',
+						label: '微信支付',
+					},
+					{
+						value: '支付宝支付',
+						label: '支付宝支付',
+					},
+					{
+						value: '现金支付',
+						label: '现金支付',
+					}
+				]),
+				pay:ref('')
+					
 				}
 			},
 			methods:{
@@ -84,12 +102,12 @@
 					this.pageInfo.currentPage = page
 					var ps = qs.stringify(this.pageInfo)
 					console.log(ps)
-					this.axios.get("http://localhost:8088/TSM/selectRefund", {
+					this.axios.get("http://localhost:8088/TSM/selectIncomeVo", {
 							params: this.pageInfo
 						})
 						.then(function(response) {
-							console.log(response.data.data)
-							_this.refundDate = response.data.records
+							console.log(response.data)
+							_this.payMoney = response.data.records
 						}).catch(function(error) {
 							console.log(error)
 						})
@@ -101,12 +119,12 @@
 					this.pageInfo.pagesize = size
 					var ps = qs.stringify(this.pageInfo)
 					console.log(ps)
-					this.axios.get("http://localhost:8088/TSM/selectRefund", {
+					this.axios.get("http://localhost:8088/TSM/selectIncomeVo", {
 							params: this.pageInfo
 						})
 						.then(function(response) {
 							console.log(response.data)
-							_this.refundDate = response.data.records
+							_this.payMoney = response.data.records
 							_this.pageInfo.total = response.data.total
 						}).catch(function(error) {
 							console.log(error)
@@ -115,12 +133,12 @@
 			},
 		created(){
 			var _this = this
-			this.axios.get("http://localhost:8088/TSM/selectRefund", {
+			this.axios.get("http://localhost:8088/TSM/selectIncomeVo", {
 					params: this.pageInfo
 				})
 				.then(function(response) {
-					console.log(response.data)
-					_this.refundDate = response.data.records
+					console.log(response)
+					_this.payMoney = response.data.records
 					_this.pageInfo.total = response.data.total
 				}).catch(function(error) {
 					console.log(error)
@@ -148,7 +166,6 @@
 	.payheader{
 		margin-top: 40px;
 		margin-bottom: 40px;
-		float: left;
 	}
 
 	.paybox {
@@ -164,10 +181,5 @@
 	}
 	.payheader .el-button:hover{
 		background: #ff5500;
-	}
-	
-	.kong{
-		width: 235px;
-		display: inline-block;
 	}
 </style>

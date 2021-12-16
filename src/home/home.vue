@@ -19,12 +19,8 @@
 							<img src="../assets/img/招生管理.png">
 							<span><router-link to="recruit">招生管理</router-link></span>
 						</template>
-						<el-menu-item index="2-1">item one</el-menu-item>
-						<el-menu-item index="2-1-1">item two</el-menu-item>
-						<el-sub-menu index="2-1">
-							<template #title>item three</template>
-							<el-menu-item index="2-1-1">item one</el-menu-item>
-						</el-sub-menu>
+						<el-menu-item index="2-1"><router-link to="">渠道管理</router-link></el-menu-item>
+						<el-menu-item index="2-1-1"><router-link to="shitu">招生管理</router-link></el-menu-item>
 					</el-sub-menu>
 		
 					<el-sub-menu index="3">
@@ -41,7 +37,7 @@
 							<img src="../assets/img/jiaowuguanli.png">
 							<span><router-link to="educational">教务管理</router-link></span>
 						</template>
-						<el-menu-item index="4-1">item one</el-menu-item>
+						<el-menu-item index="4-1"><router-link to="course">课程管理</router-link></el-menu-item>
 					</el-sub-menu>
 		
 					<el-sub-menu index="5">
@@ -49,7 +45,7 @@
 							<img src="../assets/img/个人管理.png">
 							<span><router-link to="personal">个人管理</router-link></span>
 						</template>
-						<el-menu-item index="5-1">item one</el-menu-item>
+						<el-menu-item index="5-1"><router-link to="mymail">我的邮件</router-link></el-menu-item>
 					</el-sub-menu>
 		
 					<el-sub-menu index="6">
@@ -59,7 +55,8 @@
 						</template>
 						<el-menu-item index="6-1"><router-link to="paymoney">报班缴费管理</router-link></el-menu-item>
 						<el-menu-item index="6-2"><router-link to="Refund">学员退费管理</router-link></el-menu-item>
-						<el-menu-item index="6-2"><router-link to="expenditure">校务支出管理</router-link></el-menu-item>
+						<el-menu-item index="6-3"><router-link to="expenditure">校务支出管理</router-link></el-menu-item>
+						<el-menu-item index="6-4"><router-link to="income">收入管理</router-link></el-menu-item>
 					</el-sub-menu>
 		
 					<el-sub-menu index="7">
@@ -81,7 +78,7 @@
 		
 				</el-menu>
 		</el-aside>
-		<el-main><router-view></router-view></el-main>
+		<el-main style="background: #f5f7fa;"><router-view></router-view></el-main>
 		</el-container>
 	</div>
 </template>
@@ -136,7 +133,6 @@ import tou from '../components/header.vue'
 		}
 	}
 	.el-main{
-		background-color: #FFF;
 		color: #000000;
 		font-size: 16px;
 	}
