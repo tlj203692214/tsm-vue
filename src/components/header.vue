@@ -8,9 +8,15 @@
           </div>
         </el-col>
         <el-col :span="4" class="rightsection">
+<<<<<<< HEAD
           <div class="bg-purple-light">
             <span class="el-dropdown-link userinfo-inner">欢迎管理员</span>
             <span class="userinfo-inner">退出</span>
+=======
+          <div class="grid-content bg-purple-light">
+            <span class="el-dropdown-link userinfo-inner">欢迎管理级员</span>
+            <span class="userinfo-inner" @click="signout">退出</span>
+>>>>>>> 62184e790fc7ff24030388ab0c190d88389b8783
           </div>
         </el-col>
       </el-row>
