@@ -12,7 +12,7 @@
             <span class="el-dropdown-link userinfo-inner">欢迎管理员</span>
             <span class="userinfo-inner">退出</span>
              </div>
-        </el-col>
+          </div>
       </el-row>
 </div>
 </template>
