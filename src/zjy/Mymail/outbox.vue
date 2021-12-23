@@ -213,10 +213,8 @@
 
 <style>
 	.el-input .el-input__inner {
-		height: 30px;
-		margin-left: 0px;
-
-		margin-top: -5%;
+		height: 36px;
+		
 	}
 
 	.c {
@@ -224,13 +222,13 @@
 		height: 30px;
 	}
 
-	.el-button {
+	/* .el-button {
 		margin-left: 8px;
 		margin-top: 0%;
 
-	}
+	} */
 
-	.el-table .gray {
+	/* .el-table .gray {
 		background-color: lightgray;
-	}
+	} */
 </style>

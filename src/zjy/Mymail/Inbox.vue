@@ -315,7 +315,7 @@
 		width: 100%;
 		background-color:#c0d4ff;
 	}
-	.el-table .gray{
+	/* .el-table .gray{
 		background-color:lightgray;
-	}
+	} */
 </style>

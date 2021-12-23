@@ -17,8 +17,15 @@ import income from '../finance/income.vue'
 import news from '../home/news.vue'
 import system from '../home/system.vue'
 
+import admin from '../cyj/admin.vue'
+import dept from '../cyj/dept.vue'
+import stafffiles from '../cyj/stafffiles.vue'
+import staffsign from '../cyj/staffsign.vue'
+
 import shitu from '../pzw/recruit/shitu.vue'
 import course from '../pzw/educational/course.vue'
+import kebiao from '../pzw/educational/kebiao.vue'
+import qudao from '../pzw/recruit/qudao.vue'
 
 import mymail from '../zjy/Mymail/mymail.vue'
 import composemail from '../zjy/Mymail/composemail.vue'
@@ -101,6 +108,36 @@ const routes = [{
                 path: '/course',
                 name: 'course',
                 component: course
+            },
+            {
+                path: '/channel',
+                name: 'channel',
+                component: qudao
+            },
+            {
+                path: '/Timetable',
+                name: 'Timetable',
+                component: kebiao
+            },
+            {
+                path: '/admin',
+                name: 'admin',
+                component: admin
+            },
+            {
+                path: '/dept',
+                name: 'dept',
+                component: dept
+            },
+            {
+                path: '/stafffiles',
+                name: 'stafffiles',
+                component: stafffiles
+            },
+            {
+                path: '/staffsign',
+                name: 'staffsign',
+                component: staffsign
             },
             {
                 path: '/mymail',

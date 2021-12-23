@@ -1,173 +1,319 @@
 <template>
-	<div class="payheader">
-		 
-		<span class="paysize">审核状态：</span>
-		<el-select v-model="value" placeholder="可用/不可用">
-			<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-			</el-option>
-		</el-select>
-		<span class="paysize">学员名称：</span>
-		<el-input v-model="stuname" placeholder="请输入名字" style="margin-right:30px"/>
-		<span class="kong"></span>
-		<el-button>查询</el-button>
-		<el-button>审核通过</el-button>
-		<el-button>删除</el-button>
-	
-	</div>
-	
-	 
-		<el-table ref="tableDate" :data="refundDate" border style="width: 100%;">
-			<el-table-column type="selection" width="50"></el-table-column>
-			<el-table-column prop="refundId" label="编号" width="120">
-				<template #default="scope">{{scope.row.refundId}}</template>
-			</el-table-column>
-			<el-table-column prop="refundDate" label="退费时间" width="180" />
-			<el-table-column prop="refundMoney" label="退费金额" width="180" />
-			<el-table-column prop="refundState" label="退费状态" width="100" >
-			<template #default="scope">
-				<span v-if="scope.row.refundState=='1'">未退</span>
-				<span v-else>已退</span>
-			</template>
-			</el-table-column>
-			<el-table-column prop="leaveschoolId" label="学员退学状态" />
-			<el-table-column prop="classrecordId" label="上课记录" />
-			<el-table-column prop="courseId" label="退费课程" />
-			<el-table-column prop="staffId" label="批准人" />
-			<el-table-column prop="deleted" label="是否可用" >
-				<template #default="scope">
-					<span v-if="scope.row.deleted=='1'">不可用</span>
-					<span v-else>可用</span>
-				</template>
-			</el-table-column>	
-		</el-table>
-		
-	<div class="block">
-		<el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-			:current-page="pageInfo.currentPage" :page-sizes="[2, 3, 6, 10]" :page-size="pageInfo.pagesize"
-			layout="total, sizes, prev, pager, next, jumper" :total="pageInfo.total">
-		</el-pagination>
-	</div>
+  <div class="payheader">
+    <span class="paysize">学员名称：</span>
+    <el-input
+      v-model="pageInfo.stuname"
+      placeholder="请输入名字"
+      style="margin-right: 30px"
+    />
+    <span class="paysize">退费状态：</span>
+    <el-select
+      v-model="pageInfo.state"
+      placeholder="全部状态"
+      @change="selectState"
+    >
+      <el-option
+        v-for="item in refundState"
+        :key="item.value"
+        :label="item.label"
+        :value="item.value"
+      >
+      </el-option>
+    </el-select>
+    <span class="kong"></span>
+
+    <el-button @click="selectState()">查询</el-button>
+    <el-button @click="updateState()">审核通过</el-button>
+    <el-button @click="deleteRefundAll()">批量删除</el-button>
+  </div>
+
+  <el-table
+    ref="tableDate"
+    :data="refundDate"
+    border
+    style="width: 100%"
+    @selection-change="handleSelectionChange"
+  >
+    <el-table-column type="selection" width="50"></el-table-column>
+    <el-table-column prop="refundId" label="编号" width="100">
+      <template #default="scope">{{ scope.row.refundId }}</template>
+    </el-table-column>
+    <el-table-column prop="refundDate" label="退费时间" width="180" />
+    <el-table-column prop="refundMoney" label="退费金额" width="100">
+      <template #default="scope">{{
+        scope.row.courseMoney + scope.row.bookFee
+      }}</template>
+    </el-table-column>
+    <el-table-column prop="refundState" label="退费状态" width="100">
+      <template #default="scope">
+        <span v-if="scope.row.refundState == '1'">未退</span>
+        <span v-else>已退</span>
+      </template>
+    </el-table-column>
+    <el-table-column prop="studentName" label="学员名字" />
+    <el-table-column prop="courseName" label="退费课程" />
+    <el-table-column prop="courseMoney" label="课程金额">
+      <template #default="scope">{{
+        scope.row.courseHour * scope.row.coursePrice
+      }}</template>
+    </el-table-column>
+    <el-table-column prop="courseHour" label="退费课时" />
+    <el-table-column prop="coursePrice" label="课时单价" />
+    <el-table-column prop="bookFee" label="教材费" />
+    <el-table-column prop="staffName" label="批准人" />
+    <el-table-column label="删除">
+      <template #default="scope">
+        <el-button type="primary" @click="deleteRefund(scope.row)"
+          >删除</el-button
+        >
+      </template>
+    </el-table-column>
+    <!-- <el-table-column prop="deleted" label="是否可用">
+      <template #default="scope">
+        <span v-if="scope.row.deleted == '1'">不可用</span>
+        <span v-else>可用</span>
+      </template>
+    </el-table-column> -->
+  </el-table>
+
+  <div class="block">
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="pageInfo.currentPage"
+      :page-sizes="[2, 3, 6, 10]"
+      :page-size="pageInfo.pagesize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="pageInfo.total"
+    >
+    </el-pagination>
+  </div>
 </template>
 
 <script>
-	import qs from 'qs'
-	import {
-		ref,
-		defineComponent
-	} from 'vue'
+import qs from "qs";
+import { ref, defineComponent } from "vue";
+import { ElMessage } from "element-plus";
 
-	export default({
-			data(){
-				return{
-					stuname:ref(''),
-					refundDate:[],
-					pageInfo: {
-						currentPage: 1,
-						pagesize: 3,
-						total: 0
-					},
-					options: ref([{
-						value: '可用',
-						label: '可用',
-					},
-					{
-						value: '不可用',
-						label: '不可用',
-					},
-				]),
-				value: ref(''),
-				}
-			},
-			methods:{
-				handleCurrentChange(page) {
-					var _this = this
-					this.pageInfo.currentPage = page
-					var ps = qs.stringify(this.pageInfo)
-					console.log(ps)
-					this.axios.get("http://localhost:8088/TSM/selectRefund", {
-							params: this.pageInfo
-						})
-						.then(function(response) {
-							console.log(response.data.data)
-							_this.refundDate = response.data.records
-						}).catch(function(error) {
-							console.log(error)
-						})
-				},
-				
-				//总页数
-				handleSizeChange(size) {
-					var _this = this
-					this.pageInfo.pagesize = size
-					var ps = qs.stringify(this.pageInfo)
-					console.log(ps)
-					this.axios.get("http://localhost:8088/TSM/selectRefund", {
-							params: this.pageInfo
-						})
-						.then(function(response) {
-							console.log(response.data)
-							_this.refundDate = response.data.records
-							_this.pageInfo.total = response.data.total
-						}).catch(function(error) {
-							console.log(error)
-						})
-				},
-			},
-		created(){
-			var _this = this
-			this.axios.get("http://localhost:8088/TSM/selectRefund", {
-					params: this.pageInfo
-				})
-				.then(function(response) {
-					console.log(response.data)
-					_this.refundDate = response.data.records
-					_this.pageInfo.total = response.data.total
-				}).catch(function(error) {
-					console.log(error)
-				})
-		}
-	})
+export default {
+  data() {
+    return {
+      refundDate: [],
+      pageInfo: {
+        stuname: ref(""),
+        currentPage: 1,
+        pagesize: 3,
+        total: 0,
+        state: ref(2),
+      },
+      refundState: ref([
+        {
+          value: 2,
+          label: "全部状态",
+        },
+        {
+          value: 1,
+          label: "未退",
+        },
+        {
+          value: 0,
+          label: "已退",
+        },
+      ]),
+      sels: [],
+    };
+  },
+  methods: {
+    //获取选中的值
+    handleSelectionChange(sels) {
+      this.sels = sels;
+      console.log("选中的值：", this.sels);
+    },
+    // 批量修改状态
+    updateState() {
+      var a = this.sels;
+      for (var i = 0; i < a.length; i++) {
+        this.editState(a[i]);
+      }
+      ElMessage({
+        message: "修改成功",
+        type: "success",
+      });
+    },
+
+    //修改状态
+    editState(row) {
+      var _this = this;
+      this.axios
+        .post("http://localhost:8088/TSM/refund/updateState", {
+          refundId: row.refundId,
+        })
+        .then(function (response) {
+          console.log(response.data.data);
+          _this.Refresh();
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+
+    //删除选中的员工
+    deleteRefund(row) {
+      var _this = this;
+      console.log(1 + "" + row.refundId);
+      this.axios
+        .post("http://localhost:8088/TSM/refund/deleteRefund", {
+          refundId: row.refundId,
+        })
+        .then(function (response) {
+          ElMessage({
+					       message: '删除成功',
+					       type: 'success',
+					     })
+          _this.Refresh();
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    //批量删除
+    deleteRefundAll() {
+      var a = this.sels;
+      for (var i = 0; i < a.length; i++) {
+        this.deleteRefund(a[i]);
+      }
+     ElMessage({
+					       message: '删除成功',
+					       type: 'success',
+					     })
+    },
+    handleCurrentChange(page) {
+      var _this = this;
+      this.pageInfo.currentPage = page;
+      var ps = qs.stringify(this.pageInfo);
+      console.log(ps);
+      this.axios
+        .get("http://localhost:8088/TSM/refundVo/selectRefundVoAll", {
+          params: this.pageInfo,
+        })
+        .then(function (response) {
+          console.log(response.data.data);
+          _this.refundDate = response.data.records;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+
+    //总页数
+    handleSizeChange(size) {
+      var _this = this;
+      this.pageInfo.pagesize = size;
+      var ps = qs.stringify(this.pageInfo);
+      console.log(ps);
+      this.axios
+        .get("http://localhost:8088/TSM/refundVo/selectRefundVoAll", {
+          params: this.pageInfo,
+        })
+        .then(function (response) {
+          console.log(response.data);
+          _this.refundDate = response.data.records;
+          _this.pageInfo.total = response.data.total;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    //根据状态查询
+    selectState() {
+      var _this = this;
+      this.axios
+        .get("http://localhost:8088/TSM/refundVo/selectRefundVoAll", {
+          params: this.pageInfo,
+        })
+        .then(function (response) {
+          console.log(response.data);
+          _this.Refresh();
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    //刷新方法
+    Refresh() {
+      var _this = this;
+      this.axios
+        .get("http://localhost:8088/TSM/refundVo/selectRefundVoAll", {
+          params: this.pageInfo,
+        })
+        .then(function (response) {
+          console.log(response.data);
+          _this.refundDate = response.data.records;
+          _this.pageInfo.total = response.data.total;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+  },
+  created() {
+    this.selectState();
+
+    var _this = this;
+    this.axios
+      .get("http://localhost:8088/TSM/refundVo/selectRefundVoAll", {
+        params: this.pageInfo,
+      })
+      .then(function (response) {
+        console.log(response.data);
+        _this.refundDate = response.data.records;
+        _this.pageInfo.total = response.data.total;
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  },
+};
 </script>
 
 <style>
-	.paysize {
-		font-size: 16px;
-		margin-right: 5px;
-		font-weight: 500;
-	}
+.paysize {
+  font-size: 16px;
+  margin-right: 5px;
+  font-weight: 500;
+}
 
-	.payheader .el-select .el-input__inner {
-		height: 30px;
-		/* border: 1px solid #000000; */
-		color: #000000;
-	}
+.payheader .el-select .el-input__inner {
+  height: 36px;
+  /* border: 1px solid #000000; */
+  color: #000000;
+}
 
-	.payheader .el-select {
-		margin-right: 30px;
-	}
-	.payheader{
-		margin-top: 40px;
-		margin-bottom: 40px;
-		float: left;
-	}
+.payheader .el-select {
+  margin-right: 30px;
+}
+.payheader {
+  margin-top: 40px;
+  margin-bottom: 40px;
+  float: left;
+}
 
-	.paybox {
-		margin-top: 30px;
-	}
-	.payheader .el-button {
-		width: 100px;
-		background: #f60;
-		color: white;
-		border: 1px solid white;
-		text-align: center;
-		
-	}
-	.payheader .el-button:hover{
-		background: #ff5500;
-	}
-	
-	.kong{
-		width: 235px;
-		display: inline-block;
-	}
+.paybox {
+  margin-top: 30px;
+}
+.payheader .el-button {
+  width: 100px;
+  background: #f60;
+  color: white;
+  border: 1px solid white;
+  text-align: center;
+}
+.payheader .el-button:hover {
+  background: #ff5500;
+}
+
+.kong {
+  width: 235px;
+  display: inline-block;
+}
 </style>

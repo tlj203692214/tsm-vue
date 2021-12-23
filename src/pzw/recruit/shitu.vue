@@ -1074,12 +1074,12 @@ export default {
 }
 .nianlin {
   -webkit-appearance: none;
-  background-color: var(--el-input-background-color, var(--el-color-white));
+  /* background-color: var(--el-input-background-color, var(--el-color-white));
   background-image: none;
   border-radius: var(--el-input-border-radius, var(--el-border-radius-base));
   border: var(--el-input-border, var(--el-border-base));
   box-sizing: border-box;
-  color: var(--el-input-font-color, var(--el-text-color-regular));
+  color: var(--el-input-font-color, var(--el-text-color-regular)); */
   display: inline-block;
   font-size: inherit;
   height: 40px;
