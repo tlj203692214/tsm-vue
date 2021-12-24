@@ -324,7 +324,7 @@
         <el-form-item prop="radio1">
           <span style="margin-left: -15.5%">性别 </span>
           <div style="display: inline-block">
-            <el-radio-group v-model="ruleForm.radio1">
+            <el-radio-group v-model="ruleForm.radio1" style="float: none">
               <el-radio :label="1">男</el-radio>
               <el-radio :label="2">女</el-radio>
               <el-radio :label="3">未知</el-radio>
@@ -962,13 +962,11 @@ export default {
 }
 </style>
 
-
 <style>
 * {
   margin: 0;
   padding: 0;
 }
-
 
 .tou {
   background: white;
@@ -1188,6 +1186,3 @@ li > span {
   color: #303133;
 }
 </style>
-
-
-

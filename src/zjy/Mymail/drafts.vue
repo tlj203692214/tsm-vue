@@ -9,7 +9,7 @@
 	
 	
 	<div class="e">
-		<el-button style="background-color: blue;color: white;" :icon="CircleCloseFilled" @click="deleteFileOrDirectory(cgxsz)" :disabled="this.cgxsz.length === 0"><CircleCloseFilled style="width: 1em; height: 1em; margin-right: 8px;" />删除</el-button>
+		<el-button style="background-color: blue;color: white;" :icon="CircleCloseFilled" @click="deleteFileOrDirectory(cgxsz)" :disabled="this.cgxsz.length === 0"><el-icon><delete-filled /></el-icon>删除</el-button>
 	</div>
 	<el-table border ref="mt" :data="draftData" style="width: 100%"  @selection-change="cgxszchange" :row-class-name="tableRowClassName">
 		<el-table-column type="selection" width="55" ></el-table-column>                                                                 
@@ -75,7 +75,7 @@
 			},
 			handeDel(row){
 						let _this=this
-							this.axios.post("http://localhost:8088/TSM/delectdraft",
+							this.axios.post("http://localhost:8088/TSM/draft/delectdraft",
 							{
 								draftId:row.draftId,
 								
@@ -92,7 +92,7 @@
 					},creat(){
 									
 						var _this=this
-						this.axios.get("http://localhost:8088/TSM/Draft"
+						this.axios.get("http://localhost:8088/TSM/draft/Draft"
 						                ,{params:this.pageInfo})
 						.then(function(response){
 							console.log(response.data)
@@ -122,7 +122,7 @@
 				this.pageInfo.input=inputs
 				
 				var _this=this
-				this.axios.get("http://localhost:8088/TSM/Draft"
+				this.axios.get("http://localhost:8088/TSM/draft/Draft"
 				                ,{params:this.pageInfo})
 				.then(function(response){
 					console.log(response.data)
@@ -141,7 +141,7 @@
 					
 					var ps=qs.stringify(this.pageInfo)
 					console.log(ps)
-					this.axios.get("http://localhost:8088/TSM/Draft",{params:this.pageInfo})
+					this.axios.get("http://localhost:8088/TSM/draft/Draft",{params:this.pageInfo})
 					.then(function(response){
 						console.log("1-------------------------------------------")
 						console.log(response.data)
@@ -155,7 +155,7 @@
 					this.pageInfo.pagesize=size
 					var ps=qs.stringify(this.pageInfo)
 					console.log(ps)
-					this.axios.get("http://localhost:8088/TSM/Draft",{params:this.pageInfo})
+					this.axios.get("http://localhost:8088/TSM/draft/Draft",{params:this.pageInfo})
 					.then(function(response){
 						console.log("2-------------------------------------------")
 						console.log(response.data)
@@ -170,7 +170,7 @@
 				
 				console.log("aaaaaaaaaa")
 				var _this=this
-				this.axios.get("http://localhost:8088/TSM/Draft"
+				this.axios.get("http://localhost:8088/TSM/draft/Draft"
 				                ,{params:this.pageInfo})
 				.then(function(response){
 				console.log(response.data)

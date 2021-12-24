@@ -1,15 +1,5 @@
 <template>
   <div class="payheader">
-    <span class="paysize">选择状态：</span>
-    <el-select v-model="value" placeholder="可用/不可用">
-      <el-option
-        v-for="item in options"
-        :key="item.value"
-        :label="item.label"
-        :value="item.value"
-      >
-      </el-option>
-    </el-select>
     <span class="paysize">学员名称：</span>
     <el-input
       v-model="stuname"
@@ -84,17 +74,6 @@ export default {
         pagesize: 3,
         total: 0,
       },
-      options: ref([
-        {
-          value: "可用",
-          label: "可用",
-        },
-        {
-          value: "不可用",
-          label: "不可用",
-        },
-      ]),
-      value: ref(""),
       payMode: ref([
         {
           value: "微信支付",

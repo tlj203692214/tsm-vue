@@ -67,6 +67,9 @@ export default {
                 console.log(res.data.message);
                 console.log("登录成功");
                 sessionStorage.setItem("isLogin", true);
+                sessionStorage.setItem("staffName", res.data.staffName);
+                sessionStorage.setItem("staffPass", res.data.staffPass);
+                sessionStorage.setItem("staffId", res.data.staffId);
                 _this.$router.push("/home");
                 ElMessage({
                   message: "登录成功",
@@ -104,4 +107,3 @@ export default {
   width: 80px;
 }
 </style>
-

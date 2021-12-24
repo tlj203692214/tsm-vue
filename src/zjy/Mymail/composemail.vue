@@ -1,255 +1,287 @@
-
 <template>
+  标题：<el-input
+    style="width: 1000px; height: 0.625rem; margin-top: 1%"
+    v-model="title"
+    clearable
+  />
+  <div style="margin-top: 4%">
+    收件人：<el-input
+      style="width: 1000px; height: 0.625rem"
+      readonly="readonly"
+      v-model="sjr"
+      @click="(centerDialogVisible = true), cx(), qk(), selectDept()"
+    />
+  </div>
+  <el-dialog
+    v-model="centerDialogVisible"
+    title="选择用户"
+    width="50%"
+    style="background-color: blue"
+  >
+    <div style="border: solid white; background-color: aliceblue">
+      <el-button @click="xzwc()" style="background-color: aqua"
+        >选择并关闭</el-button
+      >
+    </div>
+    部门查询：
+    <select
+      style="width: 15%; height: 30px; margin-right: 10%"
+      v-model="DeptId"
+      @change="cx"
+    >
+      <option value="0">所有部门</option>
+      <option v-for="DeptData in DeptData" :value="DeptData.deptId">
+        {{ DeptData.deptName }}
+      </option>
+    </select>
 
-	标题：<el-input style="width:1000px;height:0.625rem;margin-top:1%;"  v-model="title" clearable/>
-	<div style="margin-top:4%;">收件人：<el-input style="width:1000px;height:0.625rem;" readonly="readonly" v-model="sjr" @click="centerDialogVisible = true,cx(),qk()" /></div>
-	<el-dialog v-model="centerDialogVisible" title="选择用户" width="50%" style="background-color: blue;" >
-		<div style="border: solid white;background-color:aliceblue;"><el-button @click="xzwc()" style="background-color: aqua;">选择并关闭</el-button></div>
-	  部门查询：<el-input style="width:200px;height:auto;" v-model="ruleForm.staffName"  clearable/><el-button @click="namecx()">搜索</el-button>
-	    
-	  姓名查询：<el-input style="width:200px;height:auto;" v-model="ruleForm.staffName"  clearable/><el-button @click="namecx()">搜索</el-button>
-	   <el-checkbox-group v-model="yhsz">
-	      <el-checkbox v-for="staffData in staffData" :label="staffData.staffName" :key="staffData.staffName"><span>{{staffData.staffName}}</span></el-checkbox>
-	 
-		</el-checkbox-group>
-	 
-	 {{yhsz}}
-	</el-dialog>
-	<div style="margin-top:4%;">消息内容：<el-input style="width:1000px;height:0.625rem;position:position:left:60px"  v-model="content" clearable/></div>
-<el-button @click="qrfs()" style="background-color:blue;margin-top:2%;">确认发送</el-button>
-<el-button @click="bccg()" style="background-color:blue;margin-top:2%;">保存草稿</el-button>
+    姓名查询：<el-input
+      style="width: 200px; height: auto"
+      v-model="ruleForm.staffName"
+      clearable
+    /><el-button @click="cx()">
+      <el-icon><search /></el-icon
+    ></el-button>
+    <el-checkbox-group v-model="yhsz">
+      <el-checkbox
+        v-for="staffData in staffData"
+        :label="staffData.staffName"
+        :key="staffData.staffName"
+        ><span>{{ staffData.staffName }}</span></el-checkbox
+      >
+    </el-checkbox-group>
+  </el-dialog>
+  <div style="margin-top: 4%">
+    消息内容：<el-input
+      style="width:1000px;height:0.625rem;position:position:left:60px"
+      v-model="content"
+      clearable
+    />
+  </div>
+  <el-button @click="qrfs()" style="background-color: blue; margin-top: 2%"
+    >确认发送</el-button
+  >
+  <el-button @click="bccg()" style="background-color: blue; margin-top: 2%"
+    >保存草稿</el-button
+  >
 </template>
 
-
 <script>
-	import {defineComponent,ref} from 'vue'
-		import qs from 'qs'
-		
-	export default{
-		data(){
-			return{
-		
-				title:"",//邮件标题
-				content:"",//邮件内容
-				sjr:[],
-				staffData:[],
-				yhsz:[],
-				centerDialogVisible:ref(false),
-				ruleForm:{
-					staffName:"",
-					deleted:0,
-                    staffNamef:sessionStorage.getItem("staffName"),
-					staffNames:""
-				}
-			
-			}
-		},
-		methods:{ 
-			bccg(){    //保存草稿  在草稿箱中添加一条数据
-			    let _this=this
-			    	for (var i = 0; i <this.yhsz.length; i++) {
-			    	  this.ruleForm.staffNames += this.yhsz[i]+ ",";  //将数组转化为字符串
-			    	}
-			    	//去掉最后一个逗号
-			    	if (this.ruleForm.staffNames.length > 0) {
-			    	 this.ruleForm.staffNames = this.ruleForm.staffNames.substr(0, this.ruleForm.staffNames.length - 1);
-			    	}
-			    	
-			    	this.axios.post("http://localhost:8088/TSM/addDraft", {
-			    			draftTitle:this.title,
-			    			draftContent:this.content,
-			    			staffName1:this.ruleForm.staffNamef,
-			    			staffName2:this.ruleForm.staffNames,
-			    	
-			    		})
-			    		.then(function(res){
-			    	        console.log("woqu"+res.data.sendId)
-			    			console.log(_this.yhsz)
-			    		_this.ruleForm.staffNames=""
-			    		_this.title=""
-			    		_this.content=""
-			    		_this.sjr=[]
-			    			
-			    		}).catch(function(erreo) {
-			    			console.log(erreo)
-			    		})
-			},  
-			qk(){   //清空之前的数据
-				this.yhsz=this.sjr;
-				this.ruleForm.staffName=""; 
-			},
-			cx(){   //查询所有收件人
-				let _this=this
-			
-				this.axios.post("http://localhost:8088/TSM/cxyh",{
-				  deleted:this.ruleForm.deleted,
-				  staffName:this.ruleForm.staffName,
-				  })
-				  .then(res=>{
-						console.log(res)
-					console.log(res.data)
-					_this.staffData=res.data
-					
-					
-				})
-			},
-			 
-		namecx(){    //根据姓名模糊查询收件人
-			let _this=this
-						
-			this.axios.post("http://localhost:8088/TSM/namecx",{
-			staffName:this.ruleForm.staffName,
-			
-				
-			}).then(res=>{
-				
-					console.log(res)
-				console.log(res.data)
-				_this.staffData=res.data
-				
-				
-			})
-		},
-		xzwc(){
-			    this.centerDialogVisible=false   
-				
-				this.sjr=this.yhsz   //将数组读取
-			
-		},
-		aa(sz,id){    //添加收件表和发件表的中间表数据方法
-			console.log("猪猪"+id)
-			let _this=this
-			this.axios.post("http://localhost:8088/TSM/addsandr", {				 
-					staffName2:sz,
-					sendId:id,
-					
-				})
-				.then((response) => {
-				
-				console.log("ssssbbbbb")
-					
-				}).catch(function(erreo) {
-					console.log(erreo)
-				})
-		},
-		tjsjx(id){    //添加收件箱数据方法
-			let _this=this
-			this.axios.post("http://localhost:8088/TSM/addreceiving", {
-			receivingsId:id,
-					receivingsTitle:this.title,
-					receivingsContent:this.content,
-					staffName1:this.ruleForm.staffNamef,
-					staffName2:this.ruleForm.staffNames,
-			
-				})
-				.then((response) => {
-				
-					_this.ruleForm.staffNames=""
-			        _this.title=""
-					_this.content=""
-					_this.sjr=[]
-					
-				}).catch(function(erreo) {
-					console.log(erreo)
-				})
-			
-		},
-		qrfs(){    //点击确认发送添加数据
-			
-			let _this=this
-			
-			
-				for (var i = 0; i <this.sjr.length; i++) {
-				  this.ruleForm.staffNames += this.sjr[i]+ ",";
-				}//将数组转化为字符串
-				
-				//去掉最后一个逗号
-				if (this.ruleForm.staffNames.length > 0) {
-				 this.ruleForm.staffNames = this.ruleForm.staffNames.substr(0, this.ruleForm.staffNames.length - 1);
-				}   
-				
-				this.axios.post("http://localhost:8088/TSM/addsend", {  //添加发件箱
-						
-						sendTitle:this.title,
-						sendContent:this.content,
-						staffName1:this.ruleForm.staffNamef,
-						staffName2:this.ruleForm.staffNames,
-				
-					})
-					.then(function(res){
-				
-					_this.tjsjx(res.data.sendId)    //调用添加收件箱方法
-						for(var i=0;i<_this.sjr.length;i++){
-							_this.aa(_this.sjr[i],res.data.sendId)   //调用添加收件表和发件表的中间表数据方法
-				
-						} 
-					}).catch(function(erreo) {
-						console.log(erreo)
-					})
-					var id=sessionStorage.getItem("draftId")
-					if(sessionStorage.getItem("qkcs")=="delectdarfts"){
-						
-						let _this=this
-							this.axios.post("http://localhost:8088/TSM/delectdraft",
-							{
-								draftId:id,
-								
-							})
-							.then(res=>{
-								console.log("bianhaobianhao")
-					
-							
-							}).catch(function(error){
-								console.log(error)
-							})
-							sessionStorage.setItem("qkcs","")
-					}
-					
-					
-						const answer = window.confirm('发送成功')
-						
-		},
-		
-		
-			
-	},
-	created(){
-		
-		
-		  if(sessionStorage.getItem("qkcs")=="zf")  {           //读取收件箱内容做转发操作        
-						  
-		this.title=sessionStorage.getItem("zfbt")      //读取转发标题
-		
-		this.content=sessionStorage.getItem("zfnr")    //读取转发内容
-		
-	sessionStorage.setItem("qkcs","")  //清空参数
-	
-		}else if(sessionStorage.getItem("qkcs")=="hf"){   //读取收件箱内容做回复操作
-		
-			this.title=sessionStorage.getItem("hfbt")       //读取回复标题
-			
-				this.content=sessionStorage.getItem("hfnr")//读取回复内容
-				
-				this.sjr=sessionStorage.getItem("fjr").split(',')   //将字符串转化为数组读取回复人
-			
-			sessionStorage.setItem("qkcs","")    //清空参数
-			
-		}else if(sessionStorage.getItem("qkcs")=="cg"){     //读取草稿箱发邮件
-		
-			this.title=sessionStorage.getItem("draftTitle")       //读取草稿标题
-			
-				this.content=sessionStorage.getItem("draftContent") //读取草稿内容
-				
-				this.sjr=sessionStorage.getItem("staffName2").split(',')    //将字符串转化为数组读取收件人
-				
-				sessionStorage.setItem("qkcs","delectdarfts")    // 改变参数确认发送时判断sessionStorage.getItem("qkcs")删除草稿箱
-		}
-		
-	}
-	
-	
-	}
+import { defineComponent, ref } from "vue";
+import qs from "qs";
+
+export default {
+  data() {
+    return {
+      DeptId: 0, //部门id
+      DeptData: [], //部门表信息
+      title: "", //邮件标题
+      content: "", //邮件内容
+      sjr: [], //收件人
+      staffData: [], //员工表信息
+      yhsz: [], //所有用户
+      centerDialogVisible: ref(false),
+      ruleForm: {
+        staffName: "",
+        deleted: 0,
+        staffNamef: sessionStorage.getItem("staffName"),
+        staffNames: "",
+      },
+    };
+  },
+  methods: {
+    bccg() {
+      //保存草稿  在草稿箱中添加一条数据
+      let _this = this;
+      for (var i = 0; i < this.yhsz.length; i++) {
+        this.ruleForm.staffNames += this.yhsz[i] + ","; //将数组转化为字符串
+      }
+      //去掉最后一个逗号
+      if (this.ruleForm.staffNames.length > 0) {
+        this.ruleForm.staffNames = this.ruleForm.staffNames.substr(
+          0,
+          this.ruleForm.staffNames.length - 1
+        );
+      }
+
+      this.axios
+        .post("http://localhost:8088/TSM/draft/addDraft", {
+          draftTitle: this.title,
+          draftContent: this.content,
+          staffName1: this.ruleForm.staffNamef,
+          staffName2: this.ruleForm.staffNames,
+        })
+        .then(function (res) {
+          console.log("woqu" + res.data.sendId);
+          console.log(_this.yhsz);
+          _this.ruleForm.staffNames = "";
+          _this.title = "";
+          _this.content = "";
+          _this.sjr = [];
+        })
+        .catch(function (erreo) {
+          console.log(erreo);
+        });
+    },
+    qk() {
+      this.yhsz = this.sjr; //读取文本框用户
+      this.ruleForm.staffName = ""; //清空之前的数据
+    },
+    cx() {
+      //查询用户
+      let _this = this;
+
+      this.axios
+        .post("http://localhost:8088/TSM/staff/cxyh", {
+          staffId: this.DeptId,
+          staffName: this.ruleForm.staffName,
+        })
+        .then((res) => {
+          console.log(res);
+          console.log(res.data);
+          _this.staffData = res.data;
+        });
+    },
+    selectDept() {
+      //查询部门
+      let _this = this;
+
+      this.axios
+        .post("http://localhost:8088/TSM/dept/selectDept", {})
+        .then((res) => {
+          console.log(res);
+          console.log(res.data);
+          _this.DeptData = res.data;
+        });
+    },
+
+    xzwc() {
+      this.centerDialogVisible = false;
+
+      this.sjr = this.yhsz; //将数组读取
+    },
+    aa(sz, id) {
+      //添加收件表和发件表的中间表数据方法
+
+      this.axios
+        .post("http://localhost:8088/TSM/sendAndReceiving/addsandr", {
+          staffName2: sz,
+          sendId: id,
+        })
+        .then((response) => {})
+        .catch(function (erreo) {
+          console.log(erreo);
+        });
+    },
+    tjsjx(id) {
+      //添加收件箱数据方法
+      let _this = this;
+      this.axios
+        .post("http://localhost:8088/TSM/receiving/addreceiving", {
+          receivingsId: id,
+          receivingsTitle: this.title,
+          receivingsContent: this.content,
+          staffName1: this.ruleForm.staffNamef,
+          staffName2: this.ruleForm.staffNames,
+        })
+        .then((response) => {
+          _this.ruleForm.staffNames = "";
+          _this.title = "";
+          _this.content = "";
+          _this.sjr = [];
+        })
+        .catch(function (erreo) {
+          console.log(erreo);
+        });
+    },
+    qrfs() {
+      //点击确认发送添加数据
+
+      let _this = this;
+
+      for (var i = 0; i < this.sjr.length; i++) {
+        this.ruleForm.staffNames += this.sjr[i] + ",";
+      } //将数组转化为字符串
+
+      //去掉最后一个逗号
+      if (this.ruleForm.staffNames.length > 0) {
+        this.ruleForm.staffNames = this.ruleForm.staffNames.substr(
+          0,
+          this.ruleForm.staffNames.length - 1
+        );
+      }
+
+      this.axios
+        .post("http://localhost:8088/TSM/send/addsend", {
+          //添加发件箱
+
+          sendTitle: this.title,
+          sendContent: this.content,
+          staffName1: this.ruleForm.staffNamef,
+          staffName2: this.ruleForm.staffNames,
+        })
+        .then(function (res) {
+          _this.tjsjx(res.data.sendId); //调用添加收件箱方法
+          for (var i = 0; i < _this.sjr.length; i++) {
+            _this.aa(_this.sjr[i], res.data.sendId); //调用添加收件表和发件表的中间表数据方法
+          }
+
+          var id = sessionStorage.getItem("draftId");
+          if (sessionStorage.getItem("qkcs") == "delectdarfts") {
+            //邮件发出后删除草稿箱
+
+            _this.axios
+              .post("http://localhost:8088/TSM/draft/delectdraft", {
+                draftId: id,
+              })
+              .then((res) => {
+                console.log("bianhaobianhao");
+              })
+              .catch(function (error) {
+                console.log(error);
+              });
+            sessionStorage.setItem("qkcs", "");
+          }
+        })
+        .catch(function (erreo) {
+          console.log(erreo);
+        });
+
+      const answer = window.confirm("发送成功");
+    },
+  },
+  created() {
+    if (sessionStorage.getItem("qkcs") == "zf") {
+      //读取收件箱内容做转发操作
+
+      this.title = sessionStorage.getItem("zfbt"); //读取转发标题
+
+      this.content = sessionStorage.getItem("zfnr"); //读取转发内容
+
+      sessionStorage.setItem("qkcs", ""); //清空参数
+    } else if (sessionStorage.getItem("qkcs") == "hf") {
+      //读取收件箱内容做回复操作
+
+      this.title = sessionStorage.getItem("hfbt"); //读取回复标题
+
+      this.content = sessionStorage.getItem("hfnr"); //读取回复内容
+
+      this.sjr = sessionStorage.getItem("fjr").split(","); //将字符串转化为数组读取回复人
+
+      sessionStorage.setItem("qkcs", ""); //清空参数
+    } else if (sessionStorage.getItem("qkcs") == "cg") {
+      //读取草稿箱发邮件
+
+      this.title = sessionStorage.getItem("draftTitle"); //读取草稿标题
+
+      this.content = sessionStorage.getItem("draftContent"); //读取草稿内容
+
+      this.sjr = sessionStorage.getItem("staffName2").split(","); //将字符串转化为数组读取收件人
+
+      sessionStorage.setItem("qkcs", "delectdarfts"); // 改变参数确认发送时判断sessionStorage.getItem("qkcs")删除草稿箱
+    }
+  },
+};
 </script>
 
-<style>
-</style>
+<style></style>

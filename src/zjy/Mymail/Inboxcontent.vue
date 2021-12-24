@@ -1,10 +1,10 @@
 <template>
 	<div>
 	<div style="border: solid 1px white;background-color: #e1fff7;border-width: 100%;height:40px;">
-		<el-button style="background-color: #0000FF;color: aliceblue;" @click="hf()">回复</el-button>
-		<el-button style="background-color: #0000FF;color: aliceblue;" @click="zf()">转发</el-button>
-		<el-button style="background-color: #0000FF;color: aliceblue;" @click="scs()">删除</el-button>
-		<el-button style="background-color: #0000FF;color: aliceblue;" @click="fhs()">返回</el-button>
+		<el-button style="background-color: #0000FF;color: aliceblue;" @click="hf()"><el-icon><position /></el-icon>回复</el-button>
+		<el-button style="background-color: #0000FF;color: aliceblue;" @click="zf()"><el-icon><share /></el-icon>转发</el-button>
+		<el-button style="background-color: #0000FF;color: aliceblue;" @click="scs()"><el-icon><delete-filled /></el-icon>删除</el-button>
+		<el-button style="background-color: #0000FF;color: aliceblue;" @click="fhs()"><el-icon><toilet-paper /></el-icon>返回</el-button>
 	</div>
 	<div class="inbox">
 		<p>邮件标题：{{title}}</p>
@@ -24,7 +24,10 @@
 			ref
 		} from 'vue'
 		import qs from 'qs'
+	
+	
 	export default{
+	
 		data(){
 			return{	
 				staffName:sessionStorage.getItem("staffName"),
@@ -49,7 +52,7 @@
 		
 			scs(){
 				let _this=this
-					this.axios.post("http://localhost:8088/TSM/delectreceiving",
+					this.axios.post("http://localhost:8088/TSM/receiving/delectreceiving",
 					{
 						receivingsId:this.id,
 						staffName2:this.staffName,

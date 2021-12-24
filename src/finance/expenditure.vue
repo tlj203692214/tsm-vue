@@ -1,19 +1,5 @@
 <template>
   <div class="payheader">
-    <span class="paysize">审核状态：</span>
-    <el-select
-      v-model="pageInfo.value"
-      placeholder="可用/不可用"
-      @change="selectState"
-    >
-      <el-option
-        v-for="item in options"
-        :key="item.value"
-        :label="item.label"
-        :value="item.value"
-      >
-      </el-option>
-    </el-select>
     <span class="paysize">学员名称：</span>
     <el-input v-model="input" placeholder="请输入名字" />
     <span class="kong"></span>
@@ -163,19 +149,9 @@ export default {
         currentPage: 1,
         pagesize: 3,
         total: 0,
-        value: ref(0),
+      
       },
-      options: ref([
-        {
-          value: 0,
-          label: "可用",
-        },
-        {
-          value: 1,
-          label: "不可用",
-        },
-      ]),
-    };
+    }
   },
   methods: {
     handleCurrentChange(page) {

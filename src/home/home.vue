@@ -74,6 +74,9 @@
             <el-menu-item index="5-1"
               ><router-link to="mymail">我的邮件</router-link></el-menu-item
             >
+            <el-menu-item index="5-2"
+              ><router-link to="comments">我的意见箱</router-link></el-menu-item
+            >
           </el-sub-menu>
 
           <el-sub-menu index="6">
@@ -104,7 +107,16 @@
               <img src="../assets/img/xiaoxiguanli.png" />
               <span><router-link to="news">消息管理</router-link></span>
             </template>
-            <el-menu-item index="7-1">item one</el-menu-item>
+            <el-menu-item index="7-1"
+              ><router-link to="bulletinbox"
+                >公告管理</router-link
+              ></el-menu-item
+            >
+            <el-menu-item index="7-2"
+              ><router-link to="suggestions"
+                >意见箱设置</router-link
+              ></el-menu-item
+            >
           </el-sub-menu>
 
           <el-sub-menu index="8">

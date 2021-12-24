@@ -1,19 +1,21 @@
 <template>
 
 
-	快速检索:<select v-model="pageInfo.js" class="c">
-		<option value="标题">标题</option>
-		<option value="接收人">接收人</option>
-	</select>
-
-	<el-input style="width:200px;height:auto;" v-model="inputs" :placeholder="a+this.pageInfo.js+b" clearable />
-	<el-button @click="ksjs(inputs)">搜索</el-button>
+	<div class="fjx">
+		快速检索:<select v-model="pageInfo.js" class="c">
+			<option value="标题">标题</option>
+			<option value="接收人">接收人</option>
+		</select>
+		
+		<el-input style="width:200px;height:auto;" v-model="inputs" :placeholder="a+this.pageInfo.js+b" clearable />
+		<el-button @click="ksjs(inputs)">搜索</el-button>
+	</div>
 
 
 	<div class="e">
 		<el-button style="background-color: blue;color: white;" :icon="CircleCloseFilled"
 			@click="deleteFileOrDirectory(fjxsz)" :disabled="this.fjxsz.length === 0">
-			<CircleCloseFilled style="width: 1em; height: 1em; margin-right: 8px;" />删除
+			<el-icon><delete-filled /></el-icon>删除
 		</el-button>
 	</div>
 
@@ -89,7 +91,7 @@
 			handeDel(row) {  //删除单个数据
 				console.log("扁午"+row.sendId);
 				let _this = this
-				this.axios.post("http://localhost:8088/TSM/delectsend", {
+				this.axios.post("http://localhost:8088/TSM/send/delectsend", {
 						sendId:row.sendId,
 
 					})
@@ -105,7 +107,7 @@
 			},
 			creat() { //删除数据之后做查询刷新操作
 				var _this = this
-				this.axios.get("http://localhost:8088/TSM/Send", {
+				this.axios.get("http://localhost:8088/TSM/send/Send", {
 						params: this.pageInfo
 					})
 					.then(function(response) {
@@ -142,7 +144,7 @@
 				this.pageInfo.input = inputs
 
 				var _this = this
-				this.axios.get("http://localhost:8088/TSM/Send", {
+				this.axios.get("http://localhost:8088/TSM/send/Send", {
 						params: this.pageInfo
 					})
 					.then(function(response) {
@@ -162,7 +164,7 @@
 
 				var ps = qs.stringify(this.pageInfo)
 				console.log(ps)
-				this.axios.get("http://localhost:8088/TSM/Send", {
+				this.axios.get("http://localhost:8088/TSM/send/Send", {
 						params: this.pageInfo
 					})
 					.then(function(response) {
@@ -178,7 +180,7 @@
 				this.pageInfo.pagesize = size
 				var ps = qs.stringify(this.pageInfo)
 				console.log(ps)
-				this.axios.get("http://localhost:8088/TSM/Send", {
+				this.axios.get("http://localhost:8088/TSM/send/Send", {
 						params: this.pageInfo
 					})
 					.then(function(response) {
@@ -195,7 +197,7 @@
 			console.log("bbbbbbbbbbbbb")
 
 			var _this = this
-			this.axios.get("http://localhost:8088/TSM/Send", {
+			this.axios.get("http://localhost:8088/TSM/send/Send", {
 					params: this.pageInfo
 				})
 				.then(function(response) {
@@ -212,9 +214,10 @@
 </script>
 
 <style>
-	.el-input .el-input__inner {
-		height: 36px;
-		
+	.fjx .el-input .el-input__inner {
+		height: 30px;
+		margin-left: 0px;
+		margin-top: -5%;
 	}
 
 	.c {
@@ -222,11 +225,11 @@
 		height: 30px;
 	}
 
-	/* .el-button {
+	.el-button {
 		margin-left: 8px;
 		margin-top: 0%;
 
-	} */
+	}
 
 	/* .el-table .gray {
 		background-color: lightgray;

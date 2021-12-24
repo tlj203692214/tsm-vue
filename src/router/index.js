@@ -35,6 +35,11 @@ import outbox from '../zjy/Mymail/outbox.vue'
 import Inboxcontent from '../zjy/Mymail/Inboxcontent.vue'
 import outboxcontent from '../zjy/Mymail/outboxcontent.vue'
 import draftscontent from '../zjy/Mymail/draftscontent.vue'
+import bulletinbox from '../zjy/Messagemanagement/bulletinbox.vue'
+import suggestions from '../zjy/Messagemanagement/suggestions.vue'
+import comments from '../zjy/Mysuggestionbox/comments.vue'
+import commentsreceived from '../zjy/Mysuggestionbox/commentsreceived.vue'
+import commentsissued from '../zjy/Mysuggestionbox/commentsissued.vue'
 const routes = [{
         path: '/',
         name: 'login',
@@ -179,6 +184,32 @@ const routes = [{
                 path: '/draftscontent',
                 name: 'draftscontent',
                 component: draftscontent
+            },
+            {
+                path: '/bulletinbox',
+                name: 'bulletinbox',
+                component: bulletinbox
+            },
+            {
+                path: '/suggestions',
+                name: 'suggestions',
+                component: suggestions
+            },
+            {
+                path: '/comments',
+                name: 'comments',
+                component: comments,
+                children: [{
+                        path: '/commentsreceived',
+                        name: 'commentsreceived',
+                        component: commentsreceived
+                    },
+                    {
+                        path: '/commentsissued',
+                        name: 'commentsissued',
+                        component: commentsissued
+                    }
+                ]
             }
 
         ]

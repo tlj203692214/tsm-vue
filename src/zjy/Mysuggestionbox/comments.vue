@@ -1,13 +1,10 @@
 <template>
   <el-tabs type="card" @tab-click="handleClick" v-model="activeName" >
-    <el-tab-pane label="收件箱">
+    <el-tab-pane label="收到的意见">
 </el-tab-pane>
-    <el-tab-pane label="发件箱">
+    <el-tab-pane label="发出的意见">
 </el-tab-pane>
-    <el-tab-pane label="草稿箱">
-</el-tab-pane>
-    <el-tab-pane label="撰写邮件">
-</el-tab-pane>
+
   </el-tabs>
   <router-view></router-view>
 </template>
@@ -24,19 +21,13 @@ export default {
 	  console.log(this.activeName)
 	  if(this.activeName=='0'){
 		  sessionStorage.setItem("activeName",'0')
-		  this.$router.push("/Inbox")
+		  this.$router.push("/commentsreceived")
 		  
-	  }else if(this.activeName=='1'){
-		  sessionStorage.setItem("activeName",'1')
-		  this.$router.push("/outbox")
-	  }else if(this.activeName=='2'){
-		  sessionStorage.setItem("activeName",'2')
-		  this.$router.push("/drafts")
 	  }else{
-		  sessionStorage.setItem("activeName",'3')
-		    this.$router.push("/composemail")
+		  sessionStorage.setItem("activeName",'1')
+		  this.$router.push("/commentsissued")
 	  }
-    },
+    }
   },
   created(){	
 	  console.log("dassadadasdasa"+sessionStorage.getItem("activeName"))

@@ -128,13 +128,13 @@
 					name: [
 				    {
 				        required: true,
-				        message: 'Please input Activity name',
+				        message: '姓名不可为空',
 				        trigger: 'blur',
 			        },
 				    {
-				        min: 3,
+				        min: 2,
 				        max: 5,
-				        message: 'Length should be 3 to 5',
+				        message: '名字长度太短',
 			            trigger: 'blur',
 			        },
 				    ],
@@ -145,6 +145,13 @@
 						trigger: 'change',
 				        },
 				    ],
+					phone: [
+						{
+						required: true,
+						message: '电话不可为空',
+						trigger: 'blur',
+						},
+					],
 				    desc: [
 				        {
 				        required: true,
@@ -167,7 +174,7 @@
 		methods:{
 			stafffiles(){
 				var _this=this
-				this.axios.get("http://localhost:8088/TSM/stafffs"
+				this.axios.get("http://localhost:8088/TSM/stafffiles/stafffs"
 				                ,{params:this.pageInfo})
 				.then(function(response){
 					console.log(response.data)
@@ -182,7 +189,7 @@
 				this.pageInfo.currentPage=page
 				var ps=qs.stringify(this.pageInfo)
 				console.log(ps)
-				this.axios.get("http://localhost:8088/TSM/stafffs",{params:this.pageInfo})
+				this.axios.get("http://localhost:8088/TSM/stafffiles/stafffs",{params:this.pageInfo})
 				.then(function(response){
 					console.log("1-------------------------------------------")
 					console.log(response.data)
@@ -196,7 +203,7 @@
 				this.pageInfo.pagesize=size
 				var ps=qs.stringify(this.pageInfo)
 				console.log(ps)
-				this.axios.get("http://localhost:8088/TSM/stafffs",{params:this.pageInfo})
+				this.axios.get("http://localhost:8088/TSM/stafffiles/stafffs",{params:this.pageInfo})
 				.then(function(response){
 					console.log("2-------------------------------------------")
 					console.log(response.data)
@@ -209,7 +216,7 @@
 		},
 		created(){
 			var _this=this
-			this.axios.get("http://localhost:8088/TSM/stafffs"
+			this.axios.get("http://localhost:8088/TSM/stafffiles/stafffs"
 			                ,{params:this.pageInfo})
 			.then(function(response){
 				console.log(response.data)

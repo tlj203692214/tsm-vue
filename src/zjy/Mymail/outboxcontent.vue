@@ -55,7 +55,7 @@
 				
 			
 				let _this=this
-					this.axios.post("http://localhost:8088/TSM/delectsend",
+					this.axios.post("http://localhost:8088/TSM/send/delectsend",
 					{
 						sendId:this.id,
 						
@@ -83,7 +83,7 @@
 			this.sendContent=sessionStorage.getItem("sendContent")
 	      let _this=this
 	       			
-	       this.axios.post("http://localhost:8088/TSM/findsandr/"+this.id)
+	       this.axios.post("http://localhost:8088/TSM/sendAndReceiving/findsandr/"+this.id)
 	         
 			 .then(res=>{
 	       		console.log(res)
