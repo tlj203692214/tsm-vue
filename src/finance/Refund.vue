@@ -68,12 +68,6 @@
         >
       </template>
     </el-table-column>
-    <!-- <el-table-column prop="deleted" label="是否可用">
-      <template #default="scope">
-        <span v-if="scope.row.deleted == '1'">不可用</span>
-        <span v-else>可用</span>
-      </template>
-    </el-table-column> -->
   </el-table>
 
   <div class="block">

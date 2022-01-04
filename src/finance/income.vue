@@ -2,12 +2,16 @@
   <div class="payheader">
     <span class="paysize">学员名称：</span>
     <el-input
-      v-model="stuname"
+      v-model="pageInfo.stuname"
       placeholder="请输入名字"
       style="margin-right: 30px"
     />
     <span class="paysize">收款方式：</span>
-    <el-select v-model="pay" placeholder="微信/现金/支付宝">
+    <el-select
+      v-model="pageInfo.pay"
+      placeholder="微信/现金/支付宝"
+      @change="selectName"
+    >
       <el-option
         v-for="item in payMode"
         :key="item.value"
@@ -16,14 +20,17 @@
       >
       </el-option>
     </el-select>
-    <el-button>查询</el-button>
-    <el-button>审核通过</el-button>
+    <el-button @click="selectName">查询</el-button>
     <el-button>删除</el-button>
   </div>
 
-  <el-table :data="payMoney" border style="width: 100%">
+  <el-table
+    :data="payMoney"
+    border
+    style="width: 100%"
+    @selection-change="handleCurrentChange"
+  >
     <el-table-column type="selection" width="50"></el-table-column>
-
     <el-table-column prop="incomeId" label="编号" width="120">
       <template #default="scope">{{ scope.row.incomeId }}</template>
     </el-table-column>
@@ -38,12 +45,6 @@
     <el-table-column prop="paymoneyMode" label="收款方式" width="180" />
     <el-table-column prop="staffName" label="收款人" width="180" />
     <el-table-column prop="studentName" label="付款人" />
-    <!-- <el-table-column prop="deleted" label="是否可用">
-      <template #default="scope">
-        <span v-if="scope.row.deleted == '1'">不可用</span>
-        <span v-else>可用</span>
-      </template>
-    </el-table-column> -->
   </el-table>
 
   <div class="block">
@@ -67,14 +68,19 @@ import { ref, defineComponent } from "vue";
 export default {
   data() {
     return {
-      stuname: ref(""),
       payMoney: [],
       pageInfo: {
         currentPage: 1,
         pagesize: 3,
         total: 0,
+        stuname: ref(""),
+        pay: ref("全部支付"),
       },
       payMode: ref([
+        {
+          value: "全部支付",
+          label: "全部支付",
+        },
         {
           value: "微信支付",
           label: "微信支付",
@@ -88,7 +94,6 @@ export default {
           label: "现金支付",
         },
       ]),
-      pay: ref(""),
     };
   },
   methods: {
@@ -122,6 +127,51 @@ export default {
         })
         .then(function (response) {
           console.log(response.data);
+          _this.payMoney = response.data.records;
+          _this.pageInfo.total = response.data.total;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    //获取选中的值
+    handleSelectionChange(sels) {
+      this.sels = sels;
+      console.log("选中的值：", this.sels);
+    },
+    //修改方法
+    updateState() {
+      var _this = this;
+      this.axios.post()
+    },
+
+    //根据名字模糊查询
+    //根据状态查询
+    selectName() {
+      var _this = this;
+      this.axios
+        .get("http://localhost:8088/TSM/incomeVo/selectIncomeVo", {
+          params: this.pageInfo,
+        })
+        .then(function (response) {
+          console.log(response.data);
+          _this.payMoney = response.data.records;
+          _this.pageInfo.total = response.data.total;
+          _this.Refresh();
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    //刷新方法
+    Refresh() {
+      let _this = this;
+      this.axios
+        .get("http://localhost:8088/TSM/incomeVo/selectIncomeVo", {
+          params: this.pageInfo,
+        })
+        .then(function (response) {
+          console.log(response);
           _this.payMoney = response.data.records;
           _this.pageInfo.total = response.data.total;
         })

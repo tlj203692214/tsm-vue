@@ -1,17 +1,8 @@
 <template>
-	<router-link to="/"></router-link>
-	<!-- <router-link to="/home"></router-link> -->
-	<router-view></router-view>
+  <router-link to="/"></router-link>
+  <router-view></router-view>
 </template>
 
+<script></script>
 
-<script>
-	
-</script>
-
-
-
-
-<style>
-	
-</style>
+<style></style>

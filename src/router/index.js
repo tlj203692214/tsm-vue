@@ -75,8 +75,8 @@ const routes = [{
                 component: personal
             },
             {
-                path: '/Refund',
-                name: 'Refund',
+                path: '/refund',
+                name: 'refund',
                 component: Refund,
             },
             {

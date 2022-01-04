@@ -6,6 +6,21 @@
       placeholder="请输入名字"
       style="margin-right: 30px"
     />
+    <span class="paysize">到账状态：</span>
+    <el-select
+      v-model="pageInfo.payState"
+      placeholder="微信/现金/支付宝"
+      @change="selectName"
+    >
+      <el-option
+        v-for="item in Arrival"
+        :key="item.value"
+        :label="item.label"
+        :value="item.value"
+      >
+      </el-option>
+    </el-select>
+
     <span class="paysize">支付方式：</span>
     <el-select
       v-model="pageInfo.pay"
@@ -22,12 +37,11 @@
     </el-select>
     <el-button @click="selectName()">查询</el-button>
     <el-button @click="updateState()">审核通过</el-button>
-    <el-button>删除</el-button>
+    <el-button @click="deleteAll()">批量删除</el-button>
   </div>
 
   <el-table
     :data="payMoney"
-    border
     style="width: 100%"
     @selection-change="handleSelectionChange"
   >
@@ -53,6 +67,13 @@
       <template #default="scope">
         <span v-if="scope.row.incomeState == '0'">已到账</span>
         <span v-else>未到账</span>
+      </template>
+    </el-table-column>
+    <el-table-column label="删除">
+      <template #default="scope">
+        <el-button type="primary" @click="removeByIds(scope.row)"
+          >删除</el-button
+        >
       </template>
     </el-table-column>
   </el-table>
@@ -89,6 +110,7 @@ import { ElMessage } from "element-plus";
 export default {
   data() {
     return {
+      sels: [],
       payMoney: [],
       totalMoney: 0,
       stateMoney: 0,
@@ -99,6 +121,7 @@ export default {
         pagesize: 3,
         total: 0,
         pay: ref("全部支付"),
+        payState: ref(2),
       },
       payMode: ref([
         {
@@ -116,6 +139,20 @@ export default {
         {
           value: "现金支付",
           label: "现金支付",
+        },
+      ]),
+      Arrival: ref([
+        {
+          value: 2,
+          label: "全部状态",
+        },
+        {
+          value: 0,
+          label: "已到账",
+        },
+        {
+          value: 1,
+          label: "未到账",
         },
       ]),
     };
@@ -217,7 +254,6 @@ export default {
           console.log(error);
         });
     },
-
     //获取选中的值
     handleSelectionChange(sels) {
       this.sels = sels;
@@ -251,6 +287,35 @@ export default {
           console.log(error);
         });
     },
+
+    // 批量修改状态
+    deleteAll() {
+      var a = this.sels;
+      for (var i = 0; i < a.length; i++) {
+        this.removeByIds(a[i]);
+      }
+      ElMessage({
+        message: "删除成功",
+        type: "success",
+      });
+    },
+
+    //删除方法
+    removeByIds(row) {
+      let _this = this;
+      this.axios
+        .post("http://localhost:8088/TSM/payMoney/removeByIds", {
+          paymoneyId: row.paymoneyId,
+        })
+        .then(function (response) {
+          console.log(response.data.data);
+          _this.Refresh();
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+
     //刷新方法
     Refresh() {
       this.countMoney();

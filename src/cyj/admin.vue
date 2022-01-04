@@ -28,8 +28,8 @@
 		</div>
 		<div class="showTableData">
 			<el-table ref="mt" :data="adminData" @selection-change="handeselect" style="width: 100%;">
-				<el-table-column prop="empno" label="头像" width="80">
-					<template #default="scope">ID:{{scope.row.empno}}</template>
+				<el-table-column prop="portraitUrl" label="头像" width="80">
+					<template #default="scope"><img style="width:50px; height:50px" src="{{scope.row.portraitUrl}}"/></template>
 				</el-table-column>
 				<el-table-column prop="personalName" label="姓名"></el-table-column>
 				<el-table-column prop="personalPhone" label="手机号" width="200"></el-table-column>

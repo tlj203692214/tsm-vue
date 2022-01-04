@@ -1,16 +1,30 @@
 <template>
-  <div class="htmleaf-container">
+  <div class="box" style="height: 728px">
     <div class="login">
-      <el-form ref="staff" :model="staff" label-width="100px" :rules="rules">
+      <el-form
+        ref="staff"
+        :model="staff"
+        label-width="100px"
+        :rules="rules"
+        class="login_form"
+        style="margin-top: 80px"
+      >
         <el-form-item label="用户名" prop="staffName">
-          <el-input v-model="staff.staffName"></el-input>
+          <el-input
+            v-model="staff.staffName"
+            style="background: none"
+          ></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="staffPass">
           <el-input v-model="staff.staffPass" show-password></el-input>
         </el-form-item>
 
         <el-form-item>
-          <el-button type="primary" @click="login('staff')">登录</el-button
+          <el-button
+            type="primary"
+            @click="login('staff')"
+            style="margin-right: 60px; margin-left: 10px"
+            >登录</el-button
           >&nbsp;
           <el-button type="primary" @click="rest('staff')">重置</el-button>
         </el-form-item>
@@ -98,12 +112,33 @@ export default {
 </script>
 
 <style>
-.login .el-form {
-  margin: auto;
-  width: 380px;
-  text-align: center;
+.box {
+  width: 100%;
+  background-image: url(../assets/img/demo-1-bg.jpg);
+  position: relative;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center center;
+  z-index: 1;
 }
-.login .el-button {
-  width: 80px;
+.login {
+  width: 390px;
+  height: 300px;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 35px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -200px;
+  margin-top: -220px;
+  box-shadow: 0px 0px 10px black;
+}
+
+.login_form .el-input .el-input__inner {
+  width: 85%;
+  border: 1px solid gray;
+  color: white;
+  background: none;
 }
 </style>

@@ -8,7 +8,12 @@
   </div>
 
   <!--校务支出分页查询-->
-  <el-table ref="tableDate" :data="expenditureDate" border style="width: 100%">
+  <el-table
+    ref="tableDate"
+    :data="expenditureDate"
+    style="width: 100%"
+    @row-click="ddd"
+  >
     <el-table-column type="selection" width="50"></el-table-column>
     <el-table-column prop="expenditureId" label="编号" width="120">
       <template #default="scope">{{ scope.row.expenditureId }}</template>
@@ -26,12 +31,16 @@
     <el-table-column prop="expenditureDate" label="校务支出时间" width="180" />
     <el-table-column label="支出类型" width="180">
       <template #default="scope">
-        <span v-if="scope.row.purchaseId == null" @click="refundEdit(scope.row)"
+        <span
+          v-if="scope.row.purchaseId == null"
+          @click="refundEdit(scope.row)"
+          style="cursor: pointer"
           >退费支出</span
         >
         <span
           v-else-if="scope.row.refundId == 0"
           @click="purchaseEdit(scope.row)"
+          style="cursor: pointer"
           >采购支出</span
         >
       </template>
@@ -149,9 +158,8 @@ export default {
         currentPage: 1,
         pagesize: 3,
         total: 0,
-      
       },
-    }
+    };
   },
   methods: {
     handleCurrentChange(page) {
@@ -213,6 +221,9 @@ export default {
         .catch(function (error) {
           console.log(error);
         });
+    },
+    ddd(row, event, column) {
+      console.log(row);
     },
   },
   created() {
