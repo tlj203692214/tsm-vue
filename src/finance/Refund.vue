@@ -126,13 +126,20 @@ export default {
     // 批量修改状态
     updateState() {
       var a = this.sels;
-      for (var i = 0; i < a.length; i++) {
-        this.editState(a[i]);
+      if (a == 0) {
+        ElMessage({
+          message: "请选中你要修改一行",
+          type: "error",
+        });
+      } else {
+        for (var i = 0; i < a.length; i++) {
+          this.editState(a[i]);
+        }
+        ElMessage({
+          message: "修改成功",
+          type: "success",
+        });
       }
-      ElMessage({
-        message: "修改成功",
-        type: "success",
-      });
     },
 
     //修改状态
@@ -154,32 +161,45 @@ export default {
     //删除选中的员工
     deleteRefund(row) {
       var _this = this;
-      console.log(1 + "" + row.refundId);
-      this.axios
-        .post("http://localhost:8088/TSM/refund/deleteRefund", {
-          refundId: row.refundId,
-        })
-        .then(function (response) {
-          ElMessage({
-					       message: '删除成功',
-					       type: 'success',
-					     })
-          _this.Refresh();
-        })
-        .catch(function (error) {
-          console.log(error);
+      if (this.sels == 0) {
+        ElMessage({
+          message: "请选中你要删除的一行",
+          type: "error",
         });
+      } else {
+        this.axios
+          .post("http://localhost:8088/TSM/refund/deleteRefund", {
+            refundId: row.refundId,
+          })
+          .then(function (response) {
+            ElMessage({
+              message: "删除成功",
+              type: "success",
+            });
+            _this.Refresh();
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      }
     },
     //批量删除
     deleteRefundAll() {
       var a = this.sels;
-      for (var i = 0; i < a.length; i++) {
-        this.deleteRefund(a[i]);
+      if (a == 0) {
+        ElMessage({
+          message: "请选中你要删除一行",
+          type: "error",
+        });
+      } else {
+        for (var i = 0; i < a.length; i++) {
+          this.deleteRefund(a[i]);
+        }
+        ElMessage({
+          message: "删除成功",
+          type: "success",
+        });
       }
-     ElMessage({
-					       message: '删除成功',
-					       type: 'success',
-					     })
     },
     handleCurrentChange(page) {
       var _this = this;
@@ -275,11 +295,11 @@ export default {
   font-size: 16px;
   margin-right: 5px;
   font-weight: 500;
+  margin-left: 10px;
 }
 
 .payheader .el-select .el-input__inner {
   height: 36px;
-  /* border: 1px solid #000000; */
   color: #000000;
 }
 
@@ -288,8 +308,11 @@ export default {
 }
 .payheader {
   margin-top: 40px;
-  margin-bottom: 40px;
-  float: left;
+  margin-bottom: 15px;
+  background-color: white;
+  width: 1295px;
+  height: 64px;
+  line-height: 64px;
 }
 
 .paybox {

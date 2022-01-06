@@ -108,7 +108,7 @@
 	  					保存并新建</el-button>
 	  			</span>
 				<span class="dialog-footer">
-					<el-button type="primary"  @click="addNotice('ruleForm')">
+					<el-button type="primary"  @click="addNoticeg('ruleForm')">
 						保存并关闭</el-button>
 				</span>
 				<span class="dialog-footer">
@@ -117,7 +117,7 @@
 				</span>
 	  		</template>
 	  	</el-dialog>
-		<!-- 新增界面-->
+		<!-- 修改界面-->
 			<el-dialog v-model="xgjm" title="修改信息" width="50%" center>
 				<el-form ref="ruleForm"  label-width="200px" class="demo-ruleForm" :model="ruleForm" :rules="rules">
 	              
@@ -146,7 +146,7 @@
 							保存</el-button>
 					</span>
 						<span class="dialog-footer">
-							<el-button type="primary"  @click="xzjm=false">
+							<el-button type="primary"  @click="xgjm=false">
 								关闭</el-button>
 						</span>
 				</template>
@@ -159,6 +159,7 @@
 			ref
 		} from 'vue'
 		import qs from 'qs'
+		import { ElMessage } from 'element-plus'
     export default{
 		data(){
 			return{
@@ -180,7 +181,8 @@
 					noticeId:"",
 					noticeType:"",
 					noticeTheme: "",
-					noticeContent: ""
+					noticeContent: "",
+					noticeState:"",
 				},
 				rules: {
 					noticeType: [{
@@ -211,19 +213,21 @@
 				noticeType:this.ruleForm.noticeType,
 				noticeTheme:this.ruleForm.noticeTheme,
 				noticeContent:this.ruleForm.noticeContent,
+				noticeState:this.ruleForm.noticeState,
 				staffId:this.staffId,
 				})
 				.then((response) => {
-	
+	this.$refs[formName].resetFields();
 					console.log(response.data)
 				_this.creat();
-				alert("新增成功!")
+				_this.xgjm=false;
+				ElMessage({message: '修改成功！',type: 'success',})
 					
 			}).catch(function(erre) {
 				console.log(erre)
 			})
 							} else {
-								alert("请完善信息！")
+								ElMessage({message: '请完善信息！',type: 'warning',})
 								
 								return false
 							}
@@ -234,6 +238,7 @@
 				this.ruleForm.noticeType=row.noticeType;
 				this.ruleForm.noticeTheme=row.noticeTheme;
 				this.ruleForm.noticeContent=row.noticeContent;
+				this.ruleForm.noticeState=row.noticeState;
 			},
 			DeactivateNotice(row){   //暂停公告方法
 				let _this=this
@@ -243,7 +248,7 @@
 					
 					})
 					.then(res=>{
-						console.log("bianhaobianhao")
+				
 						
 					_this.creat()
 					
@@ -256,6 +261,7 @@
 				for(var i=0;i<ggxsz.length;i++){
 					this.DeactivateNotice(ggxsz[i])
 				}
+				ElMessage({message: '暂停成功！',type: 'success',})
 			},
 			releaseNotice(row){   //发布公告方法
 				let _this=this
@@ -278,6 +284,7 @@
 				for(var i=0;i<ggxsz.length;i++){
 					this.releaseNotice(ggxsz[i])
 				}
+				ElMessage({message: '发布成功！',type: 'success',})
 			},
 			handeDel(row){
 				let _this=this
@@ -300,6 +307,7 @@
 				for(var i=0;i<ggxsz.length;i++){
 					this.handeDel(ggxsz[i])
 				}
+				ElMessage({message: '删除成功！',type: 'success',})
 			},
 			
 			ggxszchange(ggxsz){  //将多选框勾选的内容放入数组
@@ -310,7 +318,33 @@
 				this.ruleForm.noticeTheme="";
 				this.ruleForm.noticeContent="";
 			},
-		          
+		       addNoticeg(formName) {    //新增公告并关闭弹窗
+		       				let _this=this
+		       				this.$refs[formName].validate((valid) => {
+		       					if (valid) {
+		       
+		       this.axios.post('http://localhost:8088/TSM/notice/addNotice', {
+		       	noticeType:this.ruleForm.noticeType,
+		       	noticeTheme:this.ruleForm.noticeTheme,
+		       	noticeContent:this.ruleForm.noticeContent,
+		       	staffId:this.staffId,
+		       	})
+		       	.then((response) => {
+		       
+		       		this.$refs[formName].resetFields();
+		       	_this.creat();
+		       	ElMessage({message: '新增成功！',type: 'success',})
+		       		this.xzjm=false
+		       	}).catch(function(erre) {
+		       		console.log(erre)
+		       	})
+		       					} else {
+		       						ElMessage({message: '请完善信息！',type: 'warning',})
+		       						
+		       						return false
+		       					}
+		       				})
+		       			},   
 					addNotice(formName) {    //新增公告
 						let _this=this
 						this.$refs[formName].validate((valid) => {
@@ -323,18 +357,16 @@
 			staffId:this.staffId,
 			})
 			.then((response) => {
-			_this.ruleForm.noticeType="";
-			_this.ruleForm.noticeTheme="";
-			_this.ruleForm.noticeContent="";
-				console.log(response.data)
+		
+				this.$refs[formName].resetFields();
 			_this.creat();
-			alert("新增成功!")
+			ElMessage({message: '新增成功！',type: 'success',})
 				
 			}).catch(function(erre) {
 				console.log(erre)
 			})
 							} else {
-								alert("请完善信息！")
+								ElMessage({message: '请完善信息！',type: 'warning',})
 								
 								return false
 							}

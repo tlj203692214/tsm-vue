@@ -4,8 +4,9 @@
       <tou></tou>
     </div>
     <el-container>
-      <el-aside width="auto" style="overflow: hidden;">
+      <el-aside width="auto" style="overflow: hidden">
         <el-menu
+          :default-active="$route.path"
           text-color="white"
           class="el-menu-vertical-demo"
           :collapse="isCollapse"
@@ -61,7 +62,7 @@
           </el-sub-menu>
         </el-menu>
       </el-aside>
-      <el-main style="width: 80%"><router-view></router-view></el-main>
+      <el-main><router-view></router-view></el-main>
     </el-container>
   </div>
 </template>

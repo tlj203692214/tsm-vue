@@ -6,16 +6,14 @@ import {
 import login from '../login/login.vue'
 import home from '../home/home.vue'
 import workbench from '../home/workbench.vue'
-import recruit from '../home/recruit.vue'
-import administration from '../home/administration.vue'
-import educational from '../home/educational.vue'
-import personal from '../home/personal.vue'
 import Refund from '../finance/Refund.vue'
 import paymoney from '../finance/payMoney.vue'
 import expenditure from '../finance/expenditure.vue'
 import income from '../finance/income.vue'
-import news from '../home/news.vue'
-import system from '../home/system.vue'
+import users from '../home/userManage.vue'
+import position from '../home/roleManage.vue'
+import menu from '../home/menuManage.vue'
+
 
 import admin from '../cyj/admin.vue'
 import dept from '../cyj/dept.vue'
@@ -40,10 +38,18 @@ import suggestions from '../zjy/Messagemanagement/suggestions.vue'
 import comments from '../zjy/Mysuggestionbox/comments.vue'
 import commentsreceived from '../zjy/Mysuggestionbox/commentsreceived.vue'
 import commentsissued from '../zjy/Mysuggestionbox/commentsissued.vue'
+import notepad from '../zjy/Notepad/notepad.vue'
+import addnotepad from '../zjy/Notepad/addnotepad.vue'
 const routes = [{
         path: '/',
         name: 'login',
         component: login
+    },
+    {
+        path: "/outlogin",
+        name: 'outlogin',
+        component: () =>
+            import ("../login/login.vue")
     },
     {
         path: '/home',
@@ -55,24 +61,19 @@ const routes = [{
                 component: workbench
             },
             {
-                path: '/recruit',
-                name: 'recruit',
-                component: recruit
+                path: '/users',
+                name: 'users',
+                component: users
             },
             {
-                path: '/administration',
-                name: 'administration',
-                component: administration
+                path: '/position',
+                name: 'position',
+                component: position
             },
             {
-                path: '/educational',
-                name: 'educational',
-                component: educational
-            },
-            {
-                path: '/personal',
-                name: 'personal',
-                component: personal
+                path: '/menu',
+                name: 'menu',
+                component: menu
             },
             {
                 path: '/refund',
@@ -93,16 +94,6 @@ const routes = [{
                 path: '/income',
                 name: 'income',
                 component: income
-            },
-            {
-                path: '/news',
-                name: 'news',
-                component: news
-            },
-            {
-                path: '/system',
-                name: 'system',
-                component: system
             },
             {
                 path: '/shitu',
@@ -210,7 +201,18 @@ const routes = [{
                         component: commentsissued
                     }
                 ]
+            },
+            {
+                path: '/notepad',
+                name: 'notepad',
+                component: notepad
+            },
+            {
+                path: '/addnotepad',
+                name: 'addnotepad',
+                component: addnotepad
             }
+
 
         ]
     },

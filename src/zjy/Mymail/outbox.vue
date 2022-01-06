@@ -53,7 +53,7 @@
 		ref
 	} from 'vue'
 	import qs from 'qs'
-
+import { ElMessage } from 'element-plus'
 	export default {
 		data() {
 			return {
@@ -67,7 +67,6 @@
 					pagesize: 3,
 					total: 0,
 					js: "标题",
-
 					input: "",
 					StaffNames: sessionStorage.getItem("staffName")
 				}
@@ -93,7 +92,7 @@
 				let _this = this
 				this.axios.post("http://localhost:8088/TSM/send/delectsend", {
 						sendId:row.sendId,
-
+                        deleted:"1",
 					})
 					.then(res => {
 						console.log("bianhaobianhao")
@@ -123,6 +122,7 @@
 					
 					this.handeDel(fjxsz[i])   //利用数组循环id做删除
 				}
+				 ElMessage({message: '删除成功！',type: 'success',})
 			},
 			fjxszchange(fjxsz) {
 				this.fjxsz = fjxsz  //将数据添加到数组
@@ -231,7 +231,7 @@
 
 	}
 
-	/* .el-table .gray {
+	.el-table .gray {
 		background-color: lightgray;
-	} */
+	}
 </style>

@@ -3,10 +3,10 @@
 		<option value="标题">标题</option>
 		<option value="接收人">接收人</option>
 	</select>
-	
+	<span class="drafts">
 	<el-input style="width:200px;height:auto;" v-model="inputs"  :placeholder="a+this.pageInfo.js+b" clearable/>
 	<el-button @click="ksjs(inputs)">搜索</el-button>
-	
+	</span>
 	
 	<div class="e">
 		<el-button style="background-color: blue;color: white;" :icon="CircleCloseFilled" @click="deleteFileOrDirectory(cgxsz)" :disabled="this.cgxsz.length === 0"><el-icon><delete-filled /></el-icon>删除</el-button>
@@ -188,4 +188,8 @@
 </script>
 
 <style>
+	.drafts .el-input .el-input__inner {
+	  height: 30px;
+	
+	}
 </style>

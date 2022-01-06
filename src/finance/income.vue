@@ -139,11 +139,6 @@ export default {
       this.sels = sels;
       console.log("选中的值：", this.sels);
     },
-    //修改方法
-    updateState() {
-      var _this = this;
-      this.axios.post()
-    },
 
     //根据名字模糊查询
     //根据状态查询
@@ -203,6 +198,7 @@ export default {
   font-size: 16px;
   margin-right: 5px;
   font-weight: 500;
+  margin-left: 10px;
 }
 
 .payheader .el-select .el-input__inner {
@@ -214,9 +210,14 @@ export default {
 .payheader .el-select {
   margin-right: 30px;
 }
+
 .payheader {
   margin-top: 40px;
-  margin-bottom: 40px;
+  margin-bottom: 15px;
+  background-color: white;
+  width: 1295px;
+  height: 64px;
+  line-height: 64px;
 }
 
 .paybox {

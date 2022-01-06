@@ -222,9 +222,6 @@ export default {
           console.log(error);
         });
     },
-    ddd(row, event, column) {
-      console.log(row);
-    },
   },
   created() {
     var _this = this;
@@ -249,11 +246,11 @@ export default {
   font-size: 16px;
   margin-right: 5px;
   font-weight: 500;
+  margin-left: 10px;
 }
 
 .payheader .el-select .el-input__inner {
   height: 36px;
-  /* border: 1px solid #000000; */
   color: #000000;
 }
 
@@ -263,8 +260,11 @@ export default {
 
 .payheader {
   margin-top: 40px;
-  margin-bottom: 40px;
-  float: left;
+  margin-bottom: 15px;
+  background-color: white;
+  width: 1295px;
+  height: 64px;
+  line-height: 64px;
 }
 
 .payheader .el-input {

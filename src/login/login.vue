@@ -24,6 +24,7 @@
             type="primary"
             @click="login('staff')"
             style="margin-right: 60px; margin-left: 10px"
+            @keyup.enter="login('staff')"
             >登录</el-button
           >&nbsp;
           <el-button type="primary" @click="rest('staff')">重置</el-button>
@@ -67,6 +68,7 @@ export default {
   },
   methods: {
     login(user) {
+      console.log(1);
       let _this = this;
       this.$refs[user].validate((valid) => {
         if (valid) {
@@ -107,6 +109,17 @@ export default {
       console.log("开始重置");
       this.$refs[user].resetFields();
     },
+    keyDown(e) {
+      if (e.keyCode === 13) {
+        this.login("staff");
+      }
+    },
+  },
+  mounted() {
+    window.addEventListener("keydown", this.keyDown);
+  },
+  destroyed() {
+    window.removeEventListener("keydown", this.keyDown, false);
   },
 };
 </script>

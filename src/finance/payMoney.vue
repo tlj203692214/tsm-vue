@@ -262,13 +262,20 @@ export default {
     // 批量修改状态
     updateState() {
       var a = this.sels;
-      for (var i = 0; i < a.length; i++) {
-        this.editState(a[i]);
+      if (a == 0) {
+        ElMessage({
+          message: "请选中你要修改的一行",
+          type: "error",
+        });
+      } else {
+        for (var i = 0; i < a.length; i++) {
+          this.editState(a[i]);
+        }
+        ElMessage({
+          message: "修改成功",
+          type: "success",
+        });
       }
-      ElMessage({
-        message: "修改成功",
-        type: "success",
-      });
     },
 
     //修改状态
@@ -288,32 +295,46 @@ export default {
         });
     },
 
-    // 批量修改状态
+    // 批量删除
     deleteAll() {
       var a = this.sels;
-      for (var i = 0; i < a.length; i++) {
-        this.removeByIds(a[i]);
+      if (a == 0) {
+        ElMessage({
+          message: "请选中你要删除一行",
+          type: "error",
+        });
+      } else {
+        for (var i = 0; i < a.length; i++) {
+          this.removeByIds(a[i]);
+        }
+        ElMessage({
+          message: "删除成功",
+          type: "success",
+        });
       }
-      ElMessage({
-        message: "删除成功",
-        type: "success",
-      });
     },
 
     //删除方法
     removeByIds(row) {
       let _this = this;
-      this.axios
-        .post("http://localhost:8088/TSM/payMoney/removeByIds", {
-          paymoneyId: row.paymoneyId,
-        })
-        .then(function (response) {
-          console.log(response.data.data);
-          _this.Refresh();
-        })
-        .catch(function (error) {
-          console.log(error);
+      if (this.sels == 0) {
+        ElMessage({
+          message: "请选中你要删除一行",
+          type: "error",
         });
+      } else {
+        this.axios
+          .post("http://localhost:8088/TSM/payMoney/removeByIds", {
+            paymoneyId: row.paymoneyId,
+          })
+          .then(function (response) {
+            console.log(response.data.data);
+            _this.Refresh();
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      }
     },
 
     //刷新方法
@@ -362,6 +383,7 @@ export default {
   font-size: 16px;
   margin-right: 5px;
   font-weight: 500;
+  margin-left: 10px;
 }
 
 .payheader .el-select .el-input__inner {
@@ -374,7 +396,11 @@ export default {
 }
 .payheader {
   margin-top: 40px;
-  margin-bottom: 40px;
+  margin-bottom: 15px;
+  background-color: white;
+  width: 1295px;
+  height: 64px;
+  line-height: 64px;
 }
 
 .paybox {

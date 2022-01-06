@@ -1,4 +1,5 @@
 <template>
+	
   <div style="margin-top: 2%" class="diva">
     阅读状态:<select v-model="pageInfo.zt" @change="sszt" class="d">
       <option value="a">全部邮件</option>
@@ -31,7 +32,7 @@
       :icon="CircleCloseFilled"
       @click="deleteFileOrDirectory(sjxsz)"
       :disabled="this.sjxsz.length === 0"
-      ><el-icon><delete-filled /></el-icon>删除</el-button
+      ><el-icon><toilet-paper /></el-icon>删除</el-button
     >
   </div>
 
@@ -112,6 +113,7 @@ import {
   ArrowDown,
   CircleCloseFilled,
 } from "@element-plus/icons";
+import { ElMessage } from 'element-plus'
 export default {
   data() {
     return {
@@ -133,24 +135,7 @@ export default {
     };
   },
   methods: {
-    // getWeek (day) {
-    //           var today = new Date();
-    //           var targetday_milliseconds=today.getTime() + 1000*60*60*24*day;
-    //           today.setTime(targetday_milliseconds);
-    //           var tYear = today.getFullYear();
-    //           var tMonth = today.getMonth();
-    //           var tDate = today.getDate();
-    //           tMonth = this.doHandleMonth(tMonth + 1);
-    //           tDate =  this.doHandleMonth(tDate);
-    //           return tYear+"-"+tMonth+"-"+tDate;
-    //       },
-    //       doHandleMonth(month){
-    //          var m = month;
-    //          if(month.toString().length == 1){
-    //             m = "0" + month;
-    //          }
-    //          return m;
-    //       },
+
     tableRowClassName({ row, rowIndex }) {
       if (rowIndex % 2 === 0) {
         return "gray";
@@ -165,7 +150,7 @@ export default {
           staffName2: this.staffName,
         })
         .then((res) => {
-          console.log("bianhaobianhao");
+          
 
           _this.creat();
         })
@@ -192,6 +177,7 @@ export default {
       for (var i = 0; i < sjxsz.length; i++) {
         this.handeDel(sjxsz[i]);
       }
+	  ElMessage({message: '删除成功！',type: 'success',})
     },
     sjxszchange(sjxsz) {
       this.sjxsz = sjxsz;
@@ -297,6 +283,7 @@ export default {
           console.log(response.data);
           _this.receivingData = response.data.records;
           _this.pageInfo.total = response.data.total;
+		  
         })
         .catch(function (error) {
           console.log(error);
@@ -304,8 +291,7 @@ export default {
     },
   },
   created() {
-    console.log(this.pageInfo.StaffNames);
-    console.log("aaaaaaaaaa");
+   
     var _this = this;
     this.axios
       .get("http://localhost:8088/TSM/receiving/receiving", {
@@ -315,6 +301,7 @@ export default {
         console.log(response.data);
         _this.receivingData = response.data.records;
         _this.pageInfo.total = response.data.total;
+		
       })
       .catch(function (error) {
         console.log(error);

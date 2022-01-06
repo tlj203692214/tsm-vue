@@ -9,13 +9,47 @@
       </el-col>
       <el-col :span="4" class="rightsection">
         <div class="bg-purple-light">
-          <span class="el-dropdown-link userinfo-inner">欢迎管理员</span>
-          <span class="userinfo-inner">退出</span>
+          <div class="pricture"><img :src="imgUrl.portraitUrl" alt="" /></div>
+          <span class="el-dropdown-link">{{ staffName }}</span>
+          <span class="userinfo-inner" @click="loginout">退出</span>
         </div>
       </el-col>
     </el-row>
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      staffName: "",
+      Id: 0,
+      imgUrl: "",
+    };
+  },
+  methods: {
+    loginout() {
+      window.sessionStorage.clear();
+      this.$router.push("/outlogin");
+    },
+  },
+  created() {
+    this.staffName = sessionStorage.getItem("staffName");
+    this.Id = sessionStorage.getItem("staffId");
+
+    var _this = this;
+    this.axios
+      .get("http://localhost:8088/TSM/personalVo/selectById/" + this.Id)
+      .then(function (response) {
+        console.log(response.data);
+        _this.imgUrl = response.data;
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  },
+};
+</script>
 
 <style>
 .header .el-row {
@@ -36,5 +70,22 @@
 
 .userinfo-inner {
   margin-left: 30px;
+  cursor: pointer;
+}
+
+.pricture {
+  float: left;
+  background-color: aqua;
+  width: 40px;
+  height: 40px;
+  margin-top: 9px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.pricture img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
 }
 </style>
