@@ -10,7 +10,7 @@
       <el-col :span="4" class="rightsection">
         <div class="bg-purple-light">
           <div class="pricture"><img :src="imgUrl.portraitUrl" alt="" /></div>
-          <span class="el-dropdown-link">{{ staffName }}</span>
+          <span>{{ staffName }}</span>
           <span class="userinfo-inner" @click="loginout">退出</span>
         </div>
       </el-col>
@@ -39,7 +39,7 @@ export default {
 
     var _this = this;
     this.axios
-      .get("http://localhost:8088/TSM/personalVo/selectById/" + this.Id)
+      .get("http://localhost:8088/TSM/portrait/selectPortrait/" + this.Id)
       .then(function (response) {
         console.log(response.data);
         _this.imgUrl = response.data;

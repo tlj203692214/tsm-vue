@@ -1,7 +1,4 @@
-<template>
-	
-	
-	
+<template>	
 	
 	<div style="margin-top:2%;" class="diva">
 	 	意见箱状态:<select v-model="pageInfo.zt" class="d"  @change="creat">
@@ -20,9 +17,9 @@
 	<el-button @click="this.creat()"><el-icon><search /></el-icon>搜索</el-button>
 	</div>
 	<div class="e">
-		<el-button style="background-color: blue;color: white;" :icon="CircleCloseFilled" @click="xzyjx=true,cxyh(),xzqk()"><el-icon><delete-filled /></el-icon>新增</el-button>
-	<el-button style="background-color: blue;color: white;" :icon="CircleCloseFilled"  @click="enablesuggestions(yjxsz)"><el-icon><delete-filled /></el-icon>启用</el-button>
-	<el-button style="background-color: blue;color: white;" :icon="CircleCloseFilled"  @click="disablesuggestions(yjxsz)"><el-icon><delete-filled /></el-icon>禁用</el-button>
+		<el-button style="background-color: blue;color: white;" :icon="CircleCloseFilled" @click="xzyjx=true,cxyh(),xzqk()" ><el-icon><circle-plus-filled /></el-icon>新增</el-button>
+	<el-button style="background-color: blue;color: white;" :icon="CircleCloseFilled"  @click="enablesuggestions(yjxsz)"><el-icon><check /></el-icon>启用</el-button>
+	<el-button style="background-color: blue;color: white;" :icon="CircleCloseFilled"  @click="disablesuggestions(yjxsz)"><el-icon><close-bold /></el-icon>禁用</el-button>
 	</div>
 	<el-table border ref="mt" :data="suggestionsData" style="width: 100%"  @selection-change="yjxszchange" :row-class-name="tableRowClassName">
 		<el-table-column type="selection" width="55" ></el-table-column>                                                                 
@@ -102,7 +99,7 @@
 	  						保存并关闭</el-button>
 	  				</span>
 	  				<span class="dialog-footer">
-	  					<el-button type="primary"  @click="xzyjx=false">
+	  					<el-button type="primary"  @click="gbjm('ruleForm')">
 	  						关闭</el-button>
 	  				</span>
 	  		</template>
@@ -142,7 +139,7 @@
 					</span>
 						
 						<span class="dialog-footer">
-							<el-button  @click="xgyjx=false">
+							<el-button type="primary" @click="gbjm('ruleForm')">
 								关闭</el-button>
 						</span>
 				</template>
@@ -230,6 +227,14 @@
 			}
 		},
 		methods:{ 
+			gbjm(formName){
+				this.$refs[formName].resetFields(),
+									 this.ruleForm.remarks="",  
+									this.ruleForm.userScope="",
+									this.yhsz=[],              //清空所有数据
+									this.xzyjx=false
+									this.xgyjx=false
+			},
 			enable(row){  //启用意见箱
 				let _this=this
 				this.axios.post('http://localhost:8088/TSM/suggestions/updateSuggestions', {

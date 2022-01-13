@@ -91,8 +91,10 @@ export default {
                   message: "登录成功",
                   type: "success",
                 });
+              } else if (res.data.staffState !== 1) {
+                ElMessage.error("登录失败，该用户状态为不可用");
               } else {
-                ElMessage.error("登录失败,用户名或密码错误");
+                ElMessage.error("登录失败，用户名或密码错误");
               }
             })
             .catch(function (error) {

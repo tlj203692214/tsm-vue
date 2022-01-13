@@ -39,16 +39,14 @@ export default {
     },
   },
   created(){	
-	 
+	 console.log("sssss+sssSdsds"+this.activeName)
 	if(this.activeName==null){
 		this.activeName='0'
 		sessionStorage.setItem("activeName",'0')
-	}else{
-		console.log("lll")
 	}
   
 	  	 this.handleClick()
-		 console.log("sssssss")
+		
   }
 }
 </script>

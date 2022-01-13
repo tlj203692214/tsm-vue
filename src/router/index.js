@@ -21,9 +21,14 @@ import stafffiles from '../cyj/stafffiles.vue'
 import staffsign from '../cyj/staffsign.vue'
 
 import shitu from '../pzw/recruit/shitu.vue'
-import course from '../pzw/educational/course.vue'
+import course from '../PZW/educational/kecheng.vue'
 import kebiao from '../pzw/educational/kebiao.vue'
 import qudao from '../pzw/recruit/qudao.vue'
+import management from '../PZW/educational/management.vue'
+import firststep from '../PZW/educational/firststep.vue'
+import studentcenter from '../PZW/educational/studentcenter.vue';
+import freshman from '../PZW/educational/freshman.vue';
+import secondstep from '../PZW/educational/secondstep.vue'
 
 import mymail from '../zjy/Mymail/mymail.vue'
 import composemail from '../zjy/Mymail/composemail.vue'
@@ -46,14 +51,9 @@ const routes = [{
         component: login
     },
     {
-        path: "/outlogin",
-        name: 'outlogin',
-        component: () =>
-            import ("../login/login.vue")
-    },
-    {
         path: '/home',
         name: 'home',
+        redirect: '/workbench',
         component: home,
         children: [{
                 path: '/workbench',
@@ -106,13 +106,38 @@ const routes = [{
                 component: course
             },
             {
+                path: '/management',
+                name: 'management',
+                component: management
+            },
+            {
+                path: '/firststep',
+                name: 'firststep',
+                component: firststep
+            },
+            {
+                path: '/studentcenter',
+                name: 'studentcenter',
+                component: studentcenter
+            },
+            {
+                path: '/freshman',
+                name: 'freshman',
+                component: freshman,
+            },
+            {
+                path: '/secondstep',
+                name: 'secondstep',
+                component: secondstep
+            },
+            {
                 path: '/channel',
                 name: 'channel',
                 component: qudao
             },
             {
-                path: '/Timetable',
-                name: 'Timetable',
+                path: '/kebiao',
+                name: 'kebiao',
                 component: kebiao
             },
             {

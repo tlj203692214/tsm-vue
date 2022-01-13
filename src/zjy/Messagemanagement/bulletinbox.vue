@@ -16,9 +16,9 @@
 	<el-button @click="this.creat()"><el-icon><search /></el-icon>搜索</el-button>
    </div>
    <div class="e">
-   	<el-button style="background-color: blue;color: white;" :icon="CircleCloseFilled" @click="xzjm=true,qk()"><el-icon><delete-filled /></el-icon>新增</el-button>
-   <el-button style="background-color: blue;color: white;" :icon="CircleCloseFilled"   @click="releaseNotices(ggxsz)"  :disabled="this.ggxsz.length === 0"><el-icon><delete-filled /></el-icon>发布</el-button>
-   <el-button style="background-color: blue;color: white;" :icon="CircleCloseFilled"  @click="DeactivateNotices(ggxsz)"  :disabled="this.ggxsz.length === 0"><el-icon><delete-filled /></el-icon>暂停</el-button>
+   	<el-button style="background-color: blue;color: white;" :icon="CircleCloseFilled" @click="xzjm=true,qk()"><el-icon><circle-plus-filled /></el-icon>新增</el-button>
+   <el-button style="background-color: blue;color: white;" :icon="CircleCloseFilled"   @click="releaseNotices(ggxsz)"  :disabled="this.ggxsz.length === 0"><el-icon><reading /></el-icon>发布</el-button>
+   <el-button style="background-color: blue;color: white;" :icon="CircleCloseFilled"  @click="DeactivateNotices(ggxsz)"  :disabled="this.ggxsz.length === 0"><el-icon><lock /></el-icon>暂停</el-button>
    <el-button style="background-color: blue;color: white;" :icon="CircleCloseFilled" @click="delectnotice(ggxsz)" :disabled="this.ggxsz.length === 0"><el-icon><delete-filled /></el-icon>删除</el-button>
    </div>
 
@@ -80,7 +80,7 @@
 	    </el-pagination>
 	  </div> 
 	  <!-- 新增界面-->
-	  	<el-dialog v-model="xzjm" title="新增信息" width="50%" center>
+	  	<el-dialog v-model="xzjm" title="新增信息" width="50%" center :show-close="false">
 	  		<el-form ref="ruleForm"  label-width="200px" class="demo-ruleForm" :model="ruleForm" :rules="rules">
 		
 	  			<el-form-item label="公告类型:" prop="noticeType">
@@ -112,13 +112,13 @@
 						保存并关闭</el-button>
 				</span>
 				<span class="dialog-footer">
-					<el-button type="primary"  @click="xzjm=false">
+					<el-button type="primary"  @click="gbjm('ruleForm')">
 						关闭</el-button>
 				</span>
 	  		</template>
 	  	</el-dialog>
 		<!-- 修改界面-->
-			<el-dialog v-model="xgjm" title="修改信息" width="50%" center>
+			<el-dialog v-model="xgjm" title="修改信息" width="50%" center :show-close="false">
 				<el-form ref="ruleForm"  label-width="200px" class="demo-ruleForm" :model="ruleForm" :rules="rules">
 	              
 					<el-form-item label="公告类型:" prop="noticeType">
@@ -146,7 +146,7 @@
 							保存</el-button>
 					</span>
 						<span class="dialog-footer">
-							<el-button type="primary"  @click="xgjm=false">
+							<el-button type="primary"  @click="gbjm('ruleForm')">
 								关闭</el-button>
 						</span>
 				</template>
@@ -204,6 +204,14 @@
 			}
 		},
 		methods:{
+			gbjm(formName){
+				this.$refs[formName].resetFields()
+				this.ruleForm.noticeType=""
+				this.ruleForm.noticeTheme=""
+				this.ruleForm.noticeContent=""
+				this.xzjm=false
+				this.xgjm=false
+			},
 			updateNotice(formName) {    //修改公告
 							let _this=this
 							this.$refs[formName].validate((valid) => {
@@ -218,6 +226,9 @@
 				})
 				.then((response) => {
 	this.$refs[formName].resetFields();
+	this.ruleForm.noticeType="";
+	this.ruleForm.noticeTheme="";
+	this.ruleForm.noticeContent="";
 					console.log(response.data)
 				_this.creat();
 				_this.xgjm=false;
@@ -332,6 +343,9 @@
 		       	.then((response) => {
 		       
 		       		this.$refs[formName].resetFields();
+					this.ruleForm.noticeType="";
+					this.ruleForm.noticeTheme="";
+					this.ruleForm.noticeContent="";
 		       	_this.creat();
 		       	ElMessage({message: '新增成功！',type: 'success',})
 		       		this.xzjm=false
@@ -359,6 +373,9 @@
 			.then((response) => {
 		
 				this.$refs[formName].resetFields();
+				this.ruleForm.noticeType="";
+				this.ruleForm.noticeTheme="";
+				this.ruleForm.noticeContent="";
 			_this.creat();
 			ElMessage({message: '新增成功！',type: 'success',})
 				

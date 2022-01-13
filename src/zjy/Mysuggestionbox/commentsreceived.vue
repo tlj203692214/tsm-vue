@@ -43,12 +43,12 @@
 	    </el-pagination>
 	  </div> 
 	  <!-- 回复界面-->
-	  <el-dialog v-model="xxjm" title="编辑意见" width="55%">
+	  <el-dialog v-model="xxjm" title="编辑意见" width="55%" :show-close="false">
 		  <div class="yjxx" style="background-color:lightblue">
 			  	<div :style="{display:b}" style="float:left;margin-right:5px;">
-		  	<el-button  type="primary" style="background-color: blue;color: white;" :icon="CircleCloseFilled" size="mini"  @click="replyOpinion('ruleForm')"><el-icon><delete-filled /></el-icon>确定回复</el-button>
+		  	<el-button  type="primary" style="background-color: blue;color: white;" :icon="CircleCloseFilled" size="mini"  @click="replyOpinion('ruleForm')"><el-icon><edit /></el-icon>确定回复</el-button>
 			</div>
-		  	<el-button style="background-color: blue;color: white;" :icon="CircleCloseFilled" size="mini"  @click="xxjm=false"><el-icon><delete-filled /></el-icon>关闭</el-button>
+		  	<el-button style="background-color: blue;color: white;" :icon="CircleCloseFilled" size="mini"  @click="gbjm('ruleForm')"><el-icon><delete-filled /></el-icon>关闭</el-button>
 		  </div>
 		  <el-form ref="ruleForm"  class="demo-ruleForm" :model="xx" :rules="rules">
 	  	意见信息
@@ -88,6 +88,7 @@
 			onMounted
 		} from 'vue'
 		import qs from 'qs'
+		import { ElMessage } from 'element-plus'
 	export default{
 		data(){
 			return{
@@ -126,7 +127,10 @@
 			}
 		},
 		methods:{
-			
+			gbjm(formName){
+				this.$refs[formName].resetFields()
+				this.xxjm=false
+			},
 			replyOpinion(formName) {    //回复意见
 							let _this=this
 							
@@ -142,15 +146,16 @@
 				replyContent:this.xx.replyContent,
 				})
 				.then((response) => {
+					this.$refs[formName].resetFields()
 				this.xxjm=false
 				this.creat();
-				alert("回复成功!")
+			ElMessage({message: '回复成功！',type: 'success',})
 					
 				}).catch(function(error) {
 					console.log(error)
 				})
 								} else {
-									alert("回复内容为必填项！")
+									ElMessage({message: '回复内容为必填项！',type: 'warning',})
 									
 									return false
 								}

@@ -12,7 +12,6 @@
 			
 		},
 		created(){
-		
 			sessionStorage.setItem("activeName",'3')
 			this.$router.push("mymail")
 		}

@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper">
+  <div style="background: #f5f7fa">
     <div class="tou">
       <el-tabs v-model="activeName" @tab-click="handleClick">
         <!-- 课程管理 -->
@@ -156,7 +156,7 @@
                   --el-button-border-color: black;
                   --el-button-hover-color: #f60;
                   color: white;
-                  margin-left: 51%;
+                  margin-left: 57%;
                 "
               >
                 <el-icon><plus /></el-icon>
@@ -644,8 +644,8 @@ export default {
       xgjiaocaick:false,
       //分页
        sizes:[1,2,3,4],
-          size:1,
-        currentPage: 1,
+      size:1,
+      currentPage: 1,
     //编辑课程
       bjkc: {
         kcname: "java",

@@ -9,7 +9,7 @@
 	</div>
 	</div>
 	<div class="e">
-		<el-button style="background-color: blue;color: white;" :icon="CircleCloseFilled" @click="fsyj=true"><el-icon><delete-filled /></el-icon>新增</el-button>
+		<el-button style="background-color: blue;color: white;" :icon="CircleCloseFilled" @click="fsyj=true"><el-icon><circle-plus-filled /></el-icon>新增</el-button>
 	
 	</div>
 	<el-table border ref="mt" :data="commentsfData" style="width: 100%"  @selection-change="sjxszchange" :row-class-name="tableRowClassName">
@@ -61,7 +61,7 @@
 	  </div> 
 	  
 	  <!-- 新增界面-->
-	  	<el-dialog v-model="fsyj" title="新增意见" width="70%" center>
+	  	<el-dialog v-model="fsyj" title="新增意见" width="70%" center  :show-close="false">
 	  		<el-form ref="ruleForm"  class="demo-ruleForm" :model="ruleForm" :rules="rules">
 	  		
 	  			<el-form-item label="选择意见箱:" style="float: left" prop="suggestionsId">
@@ -90,24 +90,25 @@
 	  		<template #footer>
 	  			<span class="dialog-footer">
 	  				<el-button type="primary"  @click="addOpinion('ruleForm')">
-	  					保存</el-button>
+	  					<el-icon><check /></el-icon>保存</el-button>
 	  			</span>
 	  				
 	  				<span class="dialog-footer">
-	  					<el-button type="primary"  @click="xzjm=false">
-	  						关闭</el-button>
+	  					<el-button type="primary"  @click="gbjm('ruleForm')">
+	  						<el-icon><circle-close-filled /></el-icon>关闭</el-button>
 	  				</span>
 	  		</template>
 			</el-dialog>
 			
 			<!-- 修改界面-->
-			<el-dialog v-model="xgyj" title="编辑意见" width="55%">
+			<el-dialog v-model="xgyj" title="编辑意见" width="55%" :show-close="false">
+					<el-form ref="ruleForm"  class="demo-ruleForm" :model="ruleForm" :rules="rules" >
 				<div class="yjxx" style="background-color:lightblue">
 					<div :style="{display:b}" style="float:left;margin-right:5px;">
-					<el-button style="background-color: blue;color: white;" :icon="CircleCloseFilled" size="mini" @click="updateopinion()"><el-icon><delete-filled /></el-icon>保存</el-button>
+					<el-button type="primary" style="background-color: blue;color: white;" :icon="CircleCloseFilled" size="mini" @click="updateopinion('ruleForm')"><el-icon><check /></el-icon>保存</el-button>
 					<el-button style="background-color: blue;color: white;" :icon="CircleCloseFilled" size="mini" @click="delectopinion()"><el-icon><delete-filled /></el-icon>删除</el-button>
 					</div>
-					<el-button style="background-color: blue;color: white;" :icon="CircleCloseFilled" size="mini"  @click="xgyj=false"><el-icon><delete-filled /></el-icon>关闭</el-button>
+					<el-button type="primary" style="background-color: blue;color: white;" :icon="CircleCloseFilled" size="mini"  @click="gbjm('ruleForm')"><el-icon><circle-close-filled /></el-icon>关闭</el-button>
 				</div>
 				意见信息
 				<div class="yjxx" style="border:1px solid;height:20%">
@@ -115,16 +116,19 @@
 					<p><span>发表人：{{this.xx.publisher}}</span><span style="margin-left:50%">发表时间：{{this.xx.publicationTime}}</span></p>		
 				</div>
 				意见内容
+				<el-form-item  prop="opinionContent">
 				<div class="wenbenyu">
 					 <el-input
 					    :disabled=a
 					 
-					    v-model="this.xx.opinionContent"
+					    v-model="this.ruleForm.opinionContent"
 						
 					    type="textarea"
 						
 						></el-input>
 				</div>
+				</el-form-item>
+				</el-form>
 				回复信息
 				<div class="yjxx" style="border:1px solid;height:20%">
 					<p>回复内容：{{this.xx.replyContent}}</p>
@@ -141,6 +145,7 @@
 			onMounted
 		} from 'vue'
 		import qs from 'qs'
+		import { ElMessage } from 'element-plus'
 	export default{
 		data(){
 			return{
@@ -198,35 +203,58 @@
 			}
 		},
 		methods:{
+			gbjm(formName){
+				this.$refs[formName].resetFields()
+				this.ruleForm.opinionContent=""
+		        this.xgyj=false
+				this.fsyj=false
+			},
 			delectopinion(){  //删除意见
 				let _this=this
-				this.axios.post('http://localhost:8088/TSM/opinion/delectOpinion/'+this.xx.opinionId)
+				this.axios.post('http://localhost:8088/TSM/opinion/delectOpinion',
+				{
+					opinionId:this.xx.opinionId,				
+					staffId:this.xx.staffId,
+					deleted:"1",
+					suggestionsId:this.xx.suggestionsId,
+					
+				})
 				.then((response) => {
-					alert("删除成功!")
+				
 				_this.xgyj=false	
-						_this.creat();
+						_this.creat()
 						
-							
+								ElMessage({message: '删除成功！',type: 'success',})
 						}).catch(function(error) {
 							console.log(error)
 						})
 			},
-			updateopinion(){   //修改意见
-				let _this=this
+			updateopinion(formName){   //修改意见
+				                   let _this=this
+				                   this.$refs[formName].validate((valid) => {
+				                   	if (valid) {
 				this.axios.post('http://localhost:8088/TSM/opinion/updateOpinion', {
 					opinionId:this.xx.opinionId,
 					staffId:this.xx.staffId,
-				    opinionContent:this.xx.opinionContent,
+				    opinionContent:this.ruleForm.opinionContent,
 					suggestionsId:this.xx.suggestionsId,
 					})
 					.then((response) => {
-			_this.xgyj=false
-						console.log(response.data)
+			
+						_this.$refs[formName].resetFields()
+						_this.ruleForm.opinionContent=""
+						_this.xgyj=false
 					_this.creat();
-					alert("修改成功!")
+					ElMessage({message: '修改成功！',type: 'success',})
 						
 					}).catch(function(error) {
 						console.log(error)
+					})
+					} else {
+							ElMessage({message: '内容不能为空！',type: 'warning',})
+							
+							return false
+						}
 					})
 			},
 			cknr(row){
@@ -234,7 +262,7 @@
 	            this.xx.staffId=row.staffId,
 				this.xx.opinionId=row.opinionId,
 				this.xx.opinionTitle=row.opinionTitle,
-				this.xx.opinionContent=row.opinionContent,
+				this.ruleForm.opinionContent=row.opinionContent,
 				this.xx.publisher=row.publisher,
 				this.xx.publicationTime=row.publicationTime,
 				this.xx.respondent=row.respondent,
@@ -261,19 +289,17 @@
 				staffId:this.pageInfo.staffId,
 				})
 				.then((response) => {
-				_this.ruleForm.suggestionsId="";
-				_this.ruleForm.opinionTitle="";
-				_this.ruleForm.opinionContent="";
+				this.$refs[formName].resetFields();
 					console.log(response.data)
 					_this.fsyj=false
 				_this.creat();
-				alert("新增成功!")
+				ElMessage({message: '新增成功！',type: 'success',})
 					
 				}).catch(function(error) {
 					console.log(error)
 				})
 								} else {
-									alert("请完善信息！")
+									ElMessage({message: '请完善信息！',type: 'warning',})
 									
 									return false
 								}

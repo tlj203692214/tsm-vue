@@ -32,7 +32,7 @@
       :icon="CircleCloseFilled"
       @click="deleteFileOrDirectory(sjxsz)"
       :disabled="this.sjxsz.length === 0"
-      ><el-icon><toilet-paper /></el-icon>删除</el-button
+      ><el-icon><delete-filled /></el-icon>删除</el-button
     >
   </div>
 

@@ -3,7 +3,8 @@
     <span class="paysize">学员名称：</span>
     <el-input v-model="input" placeholder="请输入名字" />
     <span class="kong"></span>
-    <el-button>查询</el-button>
+    <el-button> 查询</el-button
+    >
     <el-button>删除</el-button>
   </div>
 
@@ -34,13 +35,13 @@
         <span
           v-if="scope.row.purchaseId == null"
           @click="refundEdit(scope.row)"
-          style="cursor: pointer"
+          style="cursor: pointer; color: rgb(9, 130, 211)"
           >退费支出</span
         >
         <span
           v-else-if="scope.row.refundId == 0"
           @click="purchaseEdit(scope.row)"
-          style="cursor: pointer"
+          style="cursor: pointer; color: rgb(9, 130, 211)"
           >采购支出</span
         >
       </template>
@@ -143,7 +144,6 @@
 <script>
 import qs from "qs";
 import { ref, defineComponent } from "vue";
-import { ElConfigProvider } from "element-plus";
 
 export default {
   data() {

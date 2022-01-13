@@ -116,6 +116,7 @@
         :model="xgqudao"
         label-width="120px"
       >
+      
         <el-form-item label="地址" prop="channelLoc">
           <el-input v-model="xgqudao.channelLoc"></el-input>
         </el-form-item>

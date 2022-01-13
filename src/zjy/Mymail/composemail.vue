@@ -20,6 +20,7 @@
   <el-form-item label="邮件内容:"  prop="content">
 
    <el-input
+   type="textarea"
       style="width:1000px;height:0.625rem;position:position:left:60px"
       v-model="ruleForm.content"
       clearable
@@ -295,7 +296,7 @@ export default {
 
       this.ruleForm.title = sessionStorage.getItem("hfbt"); //读取回复标题
 
-      this.ruleForm.content = sessionStorage.getItem("hfnr"); //读取回复内容
+    
 
       this.ruleForm.sjr = sessionStorage.getItem("fjr").split(","); //将字符串转化为数组读取回复人
 
@@ -307,10 +308,11 @@ export default {
 
       this.ruleForm.content = sessionStorage.getItem("draftContent"); //读取草稿内容
 
-      this.ruleForm.sjr = sessionStorage.getItem("staffName2").split(","); //将字符串转化为数组读取收件人
-
-      sessionStorage.setItem("qkcs", "delectdarfts"); // 改变参数确认发送时判断sessionStorage.getItem("qkcs")删除草稿箱
+      this.ruleForm.sjr = sessionStorage.getItem("staffName2").split(",") //将字符串转化为数组读取收件人
+sessionStorage.setItem("qkcs", "delectdarfts");
+     
     }
+	
   }
 };
 </script>
