@@ -37,7 +37,6 @@
     </el-select>
     <el-button @click="selectName()">查询</el-button>
     <el-button @click="updateState()">审核通过</el-button>
-    <el-button @click="deleteAll()">批量删除</el-button>
   </div>
 
   <el-table
@@ -63,17 +62,10 @@
     <el-table-column prop="bookFee" label="教材金额" />
     <el-table-column prop="studentName" label="缴费学员" />
     <el-table-column prop="staffName" label="收款人" />
-    <el-table-column prop="incomeState" label="到账状态">
+    <el-table-column prop="paymoneyState" label="到账状态">
       <template #default="scope">
-        <span v-if="scope.row.incomeState == '0'">已到账</span>
+        <span v-if="scope.row.paymoneyState == '0'">已到账</span>
         <span v-else>未到账</span>
-      </template>
-    </el-table-column>
-    <el-table-column label="删除">
-      <template #default="scope">
-        <el-button type="primary" @click="removeByIds(scope.row)"
-          >删除</el-button
-        >
       </template>
     </el-table-column>
   </el-table>
@@ -281,10 +273,10 @@ export default {
     //修改状态
     editState(row) {
       var _this = this;
-      console.log(row.incomeId);
+      console.log(row.paymoneyId);
       this.axios
-        .post("http://localhost:8088/TSM/income/updateState", {
-          incomeId: row.incomeId,
+        .post("http://localhost:8088/TSM/payMoney/updateStateById", {
+          paymoneyId: row.paymoneyId,
         })
         .then(function (response) {
           console.log(response.data.data);
@@ -294,49 +286,6 @@ export default {
           console.log(error);
         });
     },
-
-    // 批量删除
-    deleteAll() {
-      var a = this.sels;
-      if (a == 0) {
-        ElMessage({
-          message: "请选中你要删除一行",
-          type: "error",
-        });
-      } else {
-        for (var i = 0; i < a.length; i++) {
-          this.removeByIds(a[i]);
-        }
-        ElMessage({
-          message: "删除成功",
-          type: "success",
-        });
-      }
-    },
-
-    //删除方法
-    removeByIds(row) {
-      let _this = this;
-      if (this.sels == 0) {
-        ElMessage({
-          message: "请选中你要删除一行",
-          type: "error",
-        });
-      } else {
-        this.axios
-          .post("http://localhost:8088/TSM/payMoney/removeByIds", {
-            paymoneyId: row.paymoneyId,
-          })
-          .then(function (response) {
-            console.log(response.data.data);
-            _this.Refresh();
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
-      }
-    },
-
     //刷新方法
     Refresh() {
       this.countMoney();

@@ -250,7 +250,7 @@
                   <el-table-column fixed="right" label="操作" width="100">
                     <template #default="scope">
                       <el-button
-                        @click="open(), handleClick(scope.row)"
+                        @click="open()"
                         type="text"
                         size="small"
                         >删除</el-button
@@ -589,7 +589,7 @@
                <el-button
           v-if="this.active==1"
           style="margin-left: 4%"
-          @click="next1()"
+          @click="next1('tablesj')"
           >下一步</el-button
         >
        
@@ -817,9 +817,10 @@ export default {
             type: 'warning',
           })
       }else{
+         console.log(this.multipleSelection.courseMoney+"json数据name");
           this.active++;
             var cour = {
-                courseId:this.tablesj.courseId,
+              courseId:this.tablesj.courseId,
               courseMoney:this.tablesj.courseMoney,
               courseName:this.tablesj.courseName,
               courseHour:this.tablesj.courseHour,
@@ -830,7 +831,7 @@ export default {
             };
          sessionStorage.setItem('cour', JSON.stringify(cour));
           var courJson = sessionStorage.getItem('cour');
-          cour = JSON.parse(userJsonStr);
+          cour = JSON.parse(courJson);
           this.tablesess=cour
           console.log(cour.courseId+"json数据ID"); // => tom
           if (this.active > 2) {
@@ -887,9 +888,9 @@ export default {
     // 第二步方法
     //=============================================================================================================================
      // 表格
-    handleClick(row) {
-      console.log(row);
-    },
+    // handleClick(row) {
+    //   console.log(row);
+    // },
    // 表格的选中 可以获得当前选中的数据
     handleSelectionChange(val) {
       this.multipleSelection = val;
@@ -1010,6 +1011,7 @@ rowClick(row, column) {
         type: "warning",
       })
         .then(() => {
+          this.tablesj=[]
           this.$message({
             type: "success",
             message: "删除成功!",

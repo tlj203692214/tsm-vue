@@ -24,7 +24,6 @@
 
     <el-button @click="selectState()">查询</el-button>
     <el-button @click="updateState()">审核通过</el-button>
-    <el-button @click="deleteRefundAll()">批量删除</el-button>
   </div>
 
   <el-table
@@ -61,14 +60,18 @@
     <el-table-column prop="coursePrice" label="课时单价" />
     <el-table-column prop="bookFee" label="教材费" />
     <el-table-column prop="staffName" label="批准人" />
-    <el-table-column label="删除">
-      <template #default="scope">
-        <el-button type="primary" @click="deleteRefund(scope.row)"
-          >删除</el-button
-        >
-      </template>
-    </el-table-column>
   </el-table>
+  <div class="statistics">
+    <span
+      >缴费金额：<span>{{ totalMoney }}</span></span
+    >
+    <span
+      >到账金额：<span>{{ stateMoney }}</span></span
+    >
+    <span
+      >未到账金额：<span>{{ stateMoney2 }}</span></span
+    >
+  </div>
 
   <div class="block">
     <el-pagination
@@ -92,6 +95,9 @@ import { ElMessage } from "element-plus";
 export default {
   data() {
     return {
+      totalMoney:0,
+      stateMoney:0,
+      stateMoney2:0,
       refundDate: [],
       pageInfo: {
         stuname: ref(""),
@@ -118,6 +124,48 @@ export default {
     };
   },
   methods: {
+    // 统计所有的金额
+     countMoney() {
+      var _this = this;
+      this.axios
+        .get("http://localhost:8088/TSM/refundVo/countAllMoney")
+        .then(function (response) {
+          // console.log(response);
+          _this.totalMoney = response.data;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    // 统计已退费的金额
+     countStateMoney() {
+      var _this = this;
+      this.axios
+        .get("http://localhost:8088/TSM/refundVo/countByStateMoney")
+
+        .then(function (response) {
+          // console.log(response);
+          _this.stateMoney = response.data;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    // 统计未退费的金额
+     countStateMoney2() {
+      var _this = this;
+      this.axios
+        .get("http://localhost:8088/TSM/refundVo/countByStateMoney2")
+
+        .then(function (response) {
+          // console.log(response);
+          _this.stateMoney2 = response.data;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+
     //获取选中的值
     handleSelectionChange(sels) {
       this.sels = sels;
@@ -158,49 +206,6 @@ export default {
         });
     },
 
-    //删除选中的员工
-    deleteRefund(row) {
-      var _this = this;
-      if (this.sels == 0) {
-        ElMessage({
-          message: "请选中你要删除的一行",
-          type: "error",
-        });
-      } else {
-        this.axios
-          .post("http://localhost:8088/TSM/refund/deleteRefund", {
-            refundId: row.refundId,
-          })
-          .then(function (response) {
-            ElMessage({
-              message: "删除成功",
-              type: "success",
-            });
-            _this.Refresh();
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
-      }
-    },
-    //批量删除
-    deleteRefundAll() {
-      var a = this.sels;
-      if (a == 0) {
-        ElMessage({
-          message: "请选中你要删除一行",
-          type: "error",
-        });
-      } else {
-        for (var i = 0; i < a.length; i++) {
-          this.deleteRefund(a[i]);
-        }
-        ElMessage({
-          message: "删除成功",
-          type: "success",
-        });
-      }
-    },
     handleCurrentChange(page) {
       var _this = this;
       this.pageInfo.currentPage = page;
@@ -270,9 +275,10 @@ export default {
         });
     },
   },
-  created() {
-    this.selectState();
-
+  created() { 
+    this.countMoney();
+    this.countStateMoney();
+    this.countStateMoney2();
     var _this = this;
     this.axios
       .get("http://localhost:8088/TSM/refundVo/selectRefundVoAll", {

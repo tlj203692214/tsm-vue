@@ -31,12 +31,12 @@
     @selection-change="handleCurrentChange"
   >
     <el-table-column type="selection" width="50"></el-table-column>
-    <el-table-column prop="incomeId" label="编号" width="120">
-      <template #default="scope">{{ scope.row.incomeId }}</template>
+    <el-table-column prop="paymoneyId" label="编号" width="120">
+      <template #default="scope">{{ scope.row.paymoneyId }}</template>
     </el-table-column>
-    <el-table-column prop="incomeState" label="收入状态" width="180">
+    <el-table-column prop="paymoneyState" label="收入状态" width="180">
       <template #default="scope">
-        <span v-if="scope.row.incomeState == '0'">已到账</span>
+        <span v-if="scope.row.paymoneyState==0">已到账</span>
         <span v-else>未到账</span>
       </template>
     </el-table-column>

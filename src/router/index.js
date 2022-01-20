@@ -19,6 +19,10 @@ import admin from '../cyj/admin.vue'
 import dept from '../cyj/dept.vue'
 import stafffiles from '../cyj/stafffiles.vue'
 import staffsign from '../cyj/staffsign.vue'
+import personals from '../cyj/personal.vue'
+import examine from '../cyj/examine.vue'
+import staffleave from '../cyj/staffleave.vue'
+import business from '../cyj/staffbusiness.vue'
 
 import shitu from '../pzw/recruit/shitu.vue'
 import course from '../PZW/educational/kecheng.vue'
@@ -156,9 +160,27 @@ const routes = [{
                 component: stafffiles
             },
             {
+                path: '/personals',
+                component: personals
+            },
+            {
                 path: '/staffsign',
                 name: 'staffsign',
                 component: staffsign
+            },
+            {
+                path: '/examine',
+                redirect: '/staffleave',
+                component: examine,
+                children: [{
+                        path: '/staffleave',
+                        component: staffleave
+                    },
+                    {
+                        path: '/business',
+                        component: business
+                    }
+                ]
             },
             {
                 path: '/mymail',

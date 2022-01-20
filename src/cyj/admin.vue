@@ -1,11 +1,11 @@
 <template>
 	<div>
 		<div class="query-form" style="margin-top: 15px">
-		    <el-input
+		    <el-input clearable
 		      v-model="pageInfo.input"
 		      placeholder="请输入内容"
 		      class="input-with-select"
-			  style="width: 32.5rem;"
+			  style="width: 25rem;"
 		    >
 				<template #prepend>
 					<el-select v-model="pageInfo.select" style="width: 90px">
@@ -18,34 +18,36 @@
 					<el-button :icon="Search" @click="selectAdmins()"></el-button>
 				</template>
 		    </el-input>
-			<el-radio-group v-model="radio" style="margin-left: 1rem;">
-			    <el-radio :label="3">在职</el-radio>
-			    <el-radio :label="6">离职</el-radio>
+			<el-radio-group v-model="pageInfo.radio" @change="selectAdmins">
+				<el-radio :label="3">在职</el-radio>
+				<el-radio :label="6">离职</el-radio>
 			</el-radio-group>
-			<el-button id="xzstaff">
+			<el-button id="xzstaff" @click="centerDialogVisible = true">
 				+ 新增员工
 			</el-button>
 		</div>
 		<div class="showTableData">
 			<el-table ref="mt" :data="adminData" @selection-change="handeselect" style="width: 100%;">
-				<el-table-column prop="portraitUrl" label="头像" width="80">
-					<template #default="scope"><img style="width:50px; height:50px" src="{{scope.row.portraitUrl}}"/></template>
+				<el-table-column prop="portraitUrl" label="头像" width="80"><!-- {{scope.row.portraitUrl}} :src="scope.row.portraitUrl" -->
+					<template #default="scope"><img style="width: 3rem;height: 3rem;" src="../assets/img/headx/勾勾.jpg"></template>
 				</el-table-column>
 				<el-table-column prop="personalName" label="姓名"></el-table-column>
-				<el-table-column prop="personalPhone" label="手机号" width="200"></el-table-column>
+				<el-table-column prop="personalPhone" label="手机号" width="150"></el-table-column>
 				<el-table-column prop="deptName" label="部门"></el-table-column>
-				<el-table-column prop="positionName" label="职位" width="200"></el-table-column>
+				<el-table-column prop="staffId" label="员工工号"></el-table-column>
+				<el-table-column prop="positionName" label="职位"></el-table-column>
 				<el-table-column prop="entryTime" label="入职时间" width="120"></el-table-column>
-				<el-table-column prop="administrationState" label="是否在职">
-					<template #default="scope">
-						<span v-if="scope.row.administrationState==0">在职</span>
-						<span v-else>离职</span>
-					</template>
-				</el-table-column>
 				<el-table-column label="操作" width="150">
 					<template #default="scope">
-						<el-button size="mini" @click="handeEdit(scope.$index,scope.row)">编辑</el-button>
-						<el-button type="danger" size="mini" @click="handeDel(scope.row)">辞退</el-button>
+						<span v-if="scope.row.staffId==staffid">
+							<el-button size="mini" @click="">编辑</el-button>
+							<el-button size="mini" disabled>辞退</el-button>
+						</span>
+						<span v-else-if="scope.row.administrationState==0">
+							<el-button size="mini" @click="">编辑</el-button>
+							<el-button type="danger" size="mini" @click="tranmission(scope.row)">辞退</el-button>
+						</span>
+						<span v-else><el-button size="mini" @click="tranmission(scope.row)">恢复</el-button></span>
 					</template>
 				</el-table-column>
 			</el-table>
@@ -61,32 +63,218 @@
 			    </el-pagination>
 			</div>
 		</div>
+		<el-dialog v-model="centerDialogVisible" title="新增员工信息" width="52%" center>
+		    <el-form 
+		        ref="ruleForm"
+		        :model="ruleForm"
+		        :rules="rules"
+		        label-width="120px"
+		        class="demo-ruleForm"
+		    >
+		        <el-form-item label="姓名" prop="name" style="float: left;">
+		          <el-input style="width: 200px;" v-model="ruleForm.name"></el-input>
+		        </el-form-item>
+		        <el-form-item label="性别" prop="sex" style="width: 240px;">
+		          <el-radio-group v-model="ruleForm.sex">
+		            <el-radio label="男"></el-radio>
+		            <el-radio label="女"></el-radio>
+		          </el-radio-group>
+		        </el-form-item>
+		        <el-form-item label="联系电话" prop="phone" style="float: left;">
+		        	<el-input onkeyup="value=value.replace(/[^\d]/g,'')" onafterpaste="value=value.replace(/[^\d]/g,'')"
+					 maxlength="11" style="width: 200px;" v-model="ruleForm.phone"></el-input>
+		        </el-form-item>
+				<el-form-item label="年龄" prop="age" style="width: 240px;">
+					<el-input type="number" min="18" max="60" v-model="ruleForm.age"></el-input>
+				</el-form-item>
+				<el-form-item label="身份证号" prop="card">
+					<el-input maxlength="18" style="width: 200px;" v-model="ruleForm.card"></el-input>
+				</el-form-item>
+		    </el-form>
+			<template #footer>
+				<el-button @click="resetaddFrom('ruleForm')">取消</el-button>
+				<el-button type="primary" @click="addstafffiles('ruleForm')">提交</el-button>
+		    </template>
+		</el-dialog>
+		<el-dialog v-model="centerDel" title="提示" width="35%">
+			<el-icon><i-warning-filled /></el-icon>
+			<span>确定把员工【{{admin.sname}}】辞退？</span>
+			<template #footer>
+				<el-button @click="centerDel = false">取消</el-button>
+				<el-button type="primary" @click="updateadmin()">确定</el-button>
+			</template>
+		</el-dialog>
+		<el-dialog v-model="centerHuiFu" title="提示" width="35%">
+			<el-icon><i-warning-filled /></el-icon>
+			<span>确定把【{{admin.sname}}】恢复成机构员工？</span>
+			<template #footer>
+				<el-button @click="centerHuiFu = false">取消</el-button>
+				<el-button type="primary" @click="updateadmin()">确定</el-button>
+			</template>
+		</el-dialog>
 	</div>
 </template>
 
 <script setup lang="ts">
 	import { ref } from 'vue'
 	import { Search } from '@element-plus/icons'
-	const input = ref('')
-	const select = ref('')
-	const radio = ref(3)
 </script>
 <script lang="ts">
 	import qs from 'qs'
+	import { ElMessage } from 'element-plus'
 	export default{
 		data() {
 			return {
+				ruleForm: {
+				    name: '',
+				    sex: '',
+					phone: '',
+					age: '',
+					card: '',
+				},
+				rules: {
+					name: [
+				    {
+				        required: true,
+				        message: '姓名不可为空',
+				        trigger: 'blur',
+				    },
+				    {
+				        min: 2,
+				        message: '名字长度太短',
+				        trigger: 'blur',
+				    },
+				    ],
+				    sex: [
+				        {
+				        required: true,
+				        message: '请选择您的性别',
+						trigger: 'change',
+				        },
+				    ],
+					phone: [
+						{
+						required: true,
+						message: '电话不可为空',
+						trigger: 'blur',
+						},
+						{
+						 min: 11,
+						 max: 11,
+						 message: '请输入11位的手机号',
+						 trigger: 'blur',   
+						},
+					],
+					age: [
+						{
+						required: true,
+						message: '年龄不可为空',
+						trigger: 'blur',	
+						},
+						{
+						 min: 2,
+						 max: 2,
+						 message: '年龄不符合标准',
+						 trigger: 'blur',   
+						},
+					],
+				},
+				staffid: sessionStorage.getItem("staffId"),
 				adminData: [],
 				pageInfo:{
+					radio:3,
 					select:'1',
 					input:'',
 					currentPage:1,
 					pagesize:3,
 					total:0
 				},
+				centerDialogVisible: ref(false),
+				centerDel:ref(false),
+				centerHuiFu:ref(false),
+				admin:{
+					sname:'',
+					state:'',
+					staffid:'',
+				}
 			}
 		},
 		methods:{
+			resetaddFrom(addformName){
+				this.$refs[addformName].resetFields()
+				this.centerDialogVisible = false
+			},
+			addstafffiles(addformName){
+				this.$refs[addformName].validate((valid) => {
+					if(valid){
+						var _this=this
+						this.axios.post("http://localhost:8088/TSM/personal/addpersonal",{
+							personalName:this.ruleForm.name,
+							personalSex:this.ruleForm.sex,
+							personalAge:this.ruleForm.age,
+							entryTime:new Date,
+							personalPhone:this.ruleForm.phone,
+							personalIdcard:this.ruleForm.card,
+							staffId:5,
+							portraitId:5
+						}).then(function(response){
+							console.log(response.data)
+						}).catch(function(error){
+							console.log(error)
+						})
+						ElMessage({message: '员工新增成功！',type: 'success',})
+						this.centerDialogVisible = false
+						this.$refs[addformName].resetFields()
+					}else {
+						console.log('error submit!!')
+						return false
+					}
+				})
+			},
+			tranmission(row){
+				this.admin.staffid=row.staffId
+				this.admin.sname=row.personalName
+				this.admin.state=row.administrationState
+				if(row.administrationState==0){
+					this.centerDel = true
+				}else{
+					this.centerHuiFu = true
+				}
+			},
+			updateadmin(){
+				var _this=this
+				this.axios.post("http://localhost:8088/TSM/administration/upAdministration/"+this.admin.staffid
+				).then(function(response){
+					console.log(response.data)
+					_this.upstaffstate()
+				}).catch(function(error){
+					console.log(error)
+				})
+			},
+			upstaffstate(){
+				if(this.admin.state==0){
+					var _this=this
+					this.axios.post("http://localhost:8088/TSM/staff/upstaffstate/"+this.admin.staffid)
+					.then(function(response){
+						console.log(response.data)
+					}).catch(function(error){
+						console.log(error)
+					})
+					ElMessage({message: '辞退员工【'+this.admin.sname+'】成功！',type: 'success',})
+					this.centerDel = false
+				}else{
+					var _this=this
+					this.axios.post("http://localhost:8088/TSM/staff/upstaffstate/"+this.admin.staffid)
+					.then(function(response){
+						console.log(response.data)
+					}).catch(function(error){
+						console.log(error)
+					})
+					ElMessage({message: '恢复员工【'+this.admin.sname+'】成功！',type: 'success',})
+					this.centerHuiFu = false
+				}
+				this.selectAdmins()
+			},
 			selectAdmins(){
 				var _this=this
 				this.axios.get("http://localhost:8088/TSM/findsadminvo"

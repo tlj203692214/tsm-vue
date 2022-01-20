@@ -89,7 +89,7 @@
                     >
                   </el-form-item>
                   <!-- 新生报名按钮 -->
-                  <el-form-item
+                  <!-- <el-form-item
                     size="large"
                     style="margin-top: -61px; margin-left: 789px"
                   >
@@ -99,7 +99,7 @@
                       @click="routepath()"
                       >新生报名</el-button
                     >
-                  </el-form-item>
+                  </el-form-item> -->
                 </div>
                 <div style="background-color: white">
                   <!-- 所在班级  下拉框搜索 -->
@@ -114,7 +114,7 @@
                       placeholder="所在班级"
                       class="dowone"
                       id="dowone"
-                     @click="dowone()"
+                      @click="dowone()"
                       @change="mohuchaxun()"
                     >
                       <el-option
@@ -133,7 +133,11 @@
                     style="margin-top: -83px; margin-left: 35px"
                     prop="checked"
                   >
-                    <el-checkbox v-model="formData.checked" @change="mohuchaxun()">未分班</el-checkbox>
+                    <el-checkbox
+                      v-model="formData.checked"
+                      @change="mohuchaxun()"
+                      >未分班</el-checkbox
+                    >
                   </el-form-item>
                   <!-- 单选框查询在课学员 -->
                 </div>
@@ -259,12 +263,12 @@
                   >重&nbsp;置</el-link
                 >
                 <!--历史学员：  新生报名按钮 -->
-                <el-button
+                <!-- <el-button
                   type="primary"
                   style="margin-left: 55%; background: #f60"
                   @click="routepath()"
                   >新生报名</el-button
-                >
+                > -->
               </div>
               <div style="background-color: white">
                 <!--历史学员：  所在班级  下拉框搜索 -->
@@ -321,6 +325,9 @@
                   </el-table-column>
                   <el-table-column label="操作" width="130">
                     <template #default>
+                      <el-button type="text" size="small" @click="routepath()"
+                        >续报</el-button
+                      >
                       <el-button type="text" size="small" @click="opendelect"
                         >删除</el-button
                       >
@@ -343,7 +350,123 @@
             </div>
           </div>
         </el-tab-pane>
+        <!-- 
+          退学学员信息
+    ============================================================================================================================      
+         -->
+          <el-tab-pane label="退学学员信息" name="third">
+              <div>
+            <el-form
+              ref="formData"
+              :model="formData"
+              :rules="rules"
+              size="medium"
+              label-width="100px"
+            >
+            <el-form-item
+                
+                    label-width="0"
+                    prop="input"
+                  >
+                 
+                      <el-input
+                        style="width: 150px"
+                        placeholder="请输入学生姓名"
+                        v-model="formData.input"
+                        clearable
+                      >
+                      </el-input>
+                  </el-form-item>
+            <el-form-item
+                    size="large"
+                    style="margin-top: -62px; margin-left: 50px"
+                  >
+                    <el-button
+                      type="primary"
+                      style="background: #f60; border: 10px white"
+                      @click="mohuchaxun()"
+                    >
+                      <el-icon><search /></el-icon>
+                    </el-button>
+                  </el-form-item>
+                  <!-- 文字链接     重置 -->
+                  &nbsp;&nbsp;&nbsp;
+                  <el-form-item
+                    size="large"
+                    style="margin-top: -84px; margin-left: 150px"
+                  >
+                    <el-link
+                      @click="resetForm1('formData')"
+                      :underline="false"
+                      style="color: #000000"
+                      >重&nbsp;置</el-link
+                    >
+                  </el-form-item>
+                  </el-form>
+                  </div>
+      <!-- 
+        学员学退信息表格
+       -->
+                   <el-table
+                  :data="tableDataOne"
+                  style="width: 100%"
+                  max-height="300"
+                >
+                  <el-table-column prop="nameone" label="姓名" width="125">
+                  </el-table-column>
+                  <el-table-column prop="ageone" label="年龄" width="125">
+                  </el-table-column>
+                  <el-table-column prop="sexssone" label="性别" width="125">
+                  </el-table-column>
+                  <el-table-column
+                    prop="phonesone"
+                    label="联系电话"
+                    width="205"
+                  >
+                  </el-table-column>
+                  <el-table-column
+                    prop="addressone"
+                    label="学生住址"
+                    width="225"
+                  >
+                  </el-table-column>
+                  <el-table-column prop="classsone" label="所学专业" width="155">
+                  </el-table-column>
+                  <el-table-column prop="timeone" label="退学时间" width="155">
+                     </el-table-column>
+                      <el-table-column prop="timeone" label="退学原因" width="160"></el-table-column>
+                      <el-table-column prop="classsone" label="退费金额" width="155">
+                  </el-table-column>
+                  <el-table-column label="操作" width="130">
+                    <template #default>
+                      <el-button type="text" size="small" @click="routepath()"
+                        >重新报读</el-button
+                      >
+                      <el-button type="text" size="small" @click="opendelect"
+                        >删除</el-button
+                      >
+                    </template>
+                  </el-table-column>
+                </el-table>
+                <!-- 
+                  分页
+                 -->
+                <div class="block">
+                  <el-pagination
+                    @size-change="handleSizeChangeOne"
+                    @current-change="handleCurrentChangeOne"
+                    :current-page="currentPageOne"
+                    :page-sizes="sizesOne"
+                    :page-size="sizeOne"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="4"
+                  >
+                  </el-pagination>
+                </div>
+          </el-tab-pane>
       </el-tabs>
+
+
       <!-- 
        ============================================================================================================ 
         在读学员： 编辑弹框 
@@ -553,6 +676,35 @@
               </div>
             </div>
           </el-tab-pane>
+          <!--
+  =============================================================================================================================          
+             转班记录
+           -->
+          <el-tab-pane label="转班记录" name="drum">
+            <div style="margin-top: 2%">
+              <el-table
+                class="recordtable"
+                :data="recordtable"
+                style="width: 100%"
+                max-height="300"
+              >
+                <el-table-column prop="recorddate" label="学员姓名" width="180">
+                </el-table-column>
+                <el-table-column
+                  prop="recordclass"
+                  label="转班前班级"
+                  width="180"
+                >
+                </el-table-column>
+                <el-table-column prop="recordcurriculum" label="转班后班级">
+                </el-table-column>
+                <el-table-column prop="recordrom" label="转班时间">
+                </el-table-column>
+                <el-table-column prop="recordteacher" label="转班理由">
+                </el-table-column>
+              </el-table>
+            </div>
+          </el-tab-pane>
           <!-- 
       =================================================================================================================
       上课记录 
@@ -616,6 +768,10 @@
               </div>
             </div>
           </el-tab-pane>
+          <!-- 
+     ==========================================================================================================================       
+            学员荣誉
+           -->
           <el-tab-pane label="学员荣誉" name="honor">
             <div>
               <div
@@ -676,6 +832,11 @@
               </div>
             </div>
           </el-tab-pane>
+
+          <!-- 
+      ==========================================================================================================================      
+            学员谈话
+           -->
           <el-tab-pane label="学员谈话" name="conversation">
             <div>
               <!-- 头部 -->
@@ -730,6 +891,70 @@
                   :current-page="convercurrentPage"
                   :page-sizes="conversizes"
                   :page-size="conversize"
+                  layout="total, sizes, prev, pager, next, jumper"
+                  :total="4"
+                >
+                </el-pagination>
+              </div>
+            </div>
+          </el-tab-pane>
+          <!-- 
+            学员处罚
+          ==================================================================================================================
+           -->
+          <el-tab-pane label="学员处罚" name="fine">
+            <div>
+              <div
+                style="
+                  margin-top: 1%;
+                  border-bottom: 1px solid #edf0f6;
+                  padding-bottom: 2%;
+                "
+              >
+                <el-button
+                  type="primary"
+                  style="background-color: #f60"
+                  size="small"
+                  @click="addpunish = true"
+                  >添加处罚</el-button
+                >
+              </div>
+              <!-- 表格内容 -->
+              <div style="margin-top: 3%">
+                <el-table
+                  class="honortable"
+                  :data="honortable"
+                  style="width: 100%"
+                  max-height="300"
+                >
+                  <el-table-column prop="honorname" label="学员名字">
+                  </el-table-column>
+                  <el-table-column prop="honorclassname" label="处罚等级">
+                  </el-table-column>
+                  <el-table-column prop="honorcontent" label="处罚理由">
+                  </el-table-column>
+                  <el-table-column prop="honortime" label="处罚时间">
+                  </el-table-column>
+                  <el-table-column fixed="right" label="操作" width="100">
+                    <template #default>
+                      <el-button type="text" size="small" @click="openhonor"
+                        >删除</el-button
+                      >
+                    </template>
+                  </el-table-column>
+                </el-table>
+              </div>
+              <!-- 
+         ================================================================================================================ 
+          分页 
+          -->
+              <div style="margin-top: 1%">
+                <el-pagination
+                  @size-change="honorhandleSizeChange"
+                  @current-change="honorhandleCurrentChange"
+                  :current-page="honorcurrentPage"
+                  :page-sizes="honorsizes"
+                  :page-size="honorsize"
                   layout="total, sizes, prev, pager, next, jumper"
                   :total="4"
                 >
@@ -1134,6 +1359,90 @@
         </el-form-item>
       </el-form>
     </el-dialog>
+    <!-- 
+      在读学员：添加处罚弹窗
+      ==========================================================================================================================
+     -->
+    <el-dialog
+      v-model="addpunish"
+      title="添加处罚"
+      width="40%"
+      @close="addhonorresetForm"
+      center
+    >
+      <el-form
+        :model="addhonorruleForm"
+        :rules="addrules"
+        ref="addhonorruleForm"
+        label-width="100px"
+        class="demo-addhonorruleForm"
+      >
+        <el-row :span="24">
+          <el-col :span="12">
+            <!-- 学员名称 -->
+            <el-form-item label="学员名称" prop="addhonorname">
+              <el-input
+                v-model="addhonorruleForm.addhonorname"
+                size="small"
+                readonly="readonly"
+                style="width: 70%"
+              ></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <!-- 处罚等级 -->
+            <el-form-item label="处罚等级" prop="addhonorclass">
+              <el-select v-model="value" clearable placeholder="Select">
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <!-- 处罚内容 -->
+        <el-form-item label="处罚理由" prop="addhonortext">
+          <el-input
+            style="width: 88%"
+            type="textarea"
+            placeholder="请输入内容"
+            v-model="addhonorruleForm.addhonortext"
+            maxlength="200"
+            show-word-limit
+          >
+          </el-input>
+        </el-form-item>
+        <!-- 处罚时间 -->
+        <el-form-item label="处罚时间" prop="addhonortime">
+          <el-date-picker
+            size="small"
+            v-model="addhonorruleForm.addhonortime"
+            type="date"
+            placeholder="选择日期"
+          >
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item>
+          <el-button
+            @click="addhonorresetForm('addhonorruleForm')"
+            size="small"
+            style="margin-left: 23%"
+            >取消</el-button
+          >
+          <el-button
+            type="primary"
+            @click="addhonorsubmitForm('addhonorruleForm')"
+            size="small"
+            style="margin-left: 8%"
+            >确认</el-button
+          >
+        </el-form-item>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 
@@ -1425,6 +1734,8 @@ export default {
       honorcurrentPage: 1,
       // 在读学员： 添加荣誉弹框
       addcenterDialogVisible: ref(false),
+      //在读学员：添加处罚弹窗
+      addpunish: ref(false),
       // 在读学员： 添加荣誉弹框表单
       addhonorruleForm: {
         addhonorname: "wwww", //学员名称
@@ -1493,14 +1804,14 @@ export default {
       console.log(ps);
       this.axios
         .get("http://localhost:8088/TSM/mohustudent", {
-         params: {
+          params: {
             currentPage: _this.pageInfo.currentPage,
-              size: _this.pageInfo.size,
-                values:_this.formData.value,
-            xsname:_this.formData.input,//学生姓名
-            bj:_this.formData.downOne,//学生所在班级
-            sffb:_this.formData.checked//是否分班
-             }
+            size: _this.pageInfo.size,
+            values: _this.formData.value,
+            xsname: _this.formData.input, //学生姓名
+            bj: _this.formData.downOne, //学生所在班级
+            sffb: _this.formData.checked, //是否分班
+          },
         })
         .then(function (response) {
           console.log("1-------------------------------------------");
@@ -1520,12 +1831,12 @@ export default {
         .get("http://localhost:8088/TSM/mohustudent", {
           params: {
             currentPage: _this.pageInfo.currentPage,
-              size: _this.pageInfo.size,
-                values:_this.formData.value,
-            xsname:_this.formData.input,//学生姓名
-            bj:_this.formData.downOne,//学生所在班级
-            sffb:_this.formData.checked//是否分班
-             }
+            size: _this.pageInfo.size,
+            values: _this.formData.value,
+            xsname: _this.formData.input, //学生姓名
+            bj: _this.formData.downOne, //学生所在班级
+            sffb: _this.formData.checked, //是否分班
+          },
         })
         .then(function (response) {
           console.log("2-------------------------------------------");
@@ -1549,28 +1860,30 @@ export default {
       //  this.centerDialogVisible = false
     },
     //在读学员模糊查询
-    mohuchaxun(){
-      console.log(this.formData.value)
-      console.log(this.formData.downOne)
-      console.log(this.formData.value)
-        var _this=this
-          this.axios.get("http://localhost:8088/TSM/mohustudent",{
-             params: {
+    mohuchaxun() {
+      console.log(this.formData.value);
+      console.log(this.formData.downOne);
+      console.log(this.formData.value);
+      var _this = this;
+      this.axios
+        .get("http://localhost:8088/TSM/mohustudent", {
+          params: {
             currentPage: _this.pageInfo.currentPage,
-              size: _this.pageInfo.size,
-             values:_this.formData.value,
-            xsname:_this.formData.input,//学生姓名
-            bj:_this.formData.downOne,//学生所在班级
-            sffb:_this.formData.checked//是否分班
-             }
-      }).then(response=>{
- console.log(response);
-        this.tableData = response.data.records;
-        this.pageInfo.total = response.data.total;
-      }).catch(function(err){
-        console.log(err)
-      })
-      
+            size: _this.pageInfo.size,
+            values: _this.formData.value,
+            xsname: _this.formData.input, //学生姓名
+            bj: _this.formData.downOne, //学生所在班级
+            sffb: _this.formData.checked, //是否分班
+          },
+        })
+        .then((response) => {
+          console.log(response);
+          this.tableData = response.data.records;
+          this.pageInfo.total = response.data.total;
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
     },
     // 在读学员: 删除弹出框
     openschool() {
@@ -1622,14 +1935,15 @@ export default {
     //在读学员：    访客状态下拉框样式：使点击的字体变蓝色
     dowone() {
       document.getElementById("dowone").style.color = "#409eff";
-      this.axios.post("http://localhost:8088/TSM/classes/cxclasscount",{
-
-      }).then(response=>{
-        console.log(response.data)
-        this.selectionone=response.data
-      }).catch(function(err){
-        console.log(err)
-      })
+      this.axios
+        .post("http://localhost:8088/TSM/classes/cxclasscount", {})
+        .then((response) => {
+          console.log(response.data);
+          this.selectionone = response.data;
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
     },
 
     //历史学员：    访客状态下拉框样式：使点击的字体变蓝色

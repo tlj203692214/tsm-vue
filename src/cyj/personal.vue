@@ -5,41 +5,32 @@
 		      v-model="pageInfo.input"
 		      placeholder="请输入内容"
 		      class="input-with-select"
-			  style="width: 32.5rem;"
+			  style="width: 20rem;"
 		    >
 				<template #prepend>
 					姓名
-				</template>
-				<template #append>
-					<el-button :icon="Search" @click="staffsigns()"></el-button>
+				  </template>
+				  <template #append>
+					<el-button @click="personals()" :icon="Search"></el-button>
 				</template>
 		    </el-input>
-			<el-radio-group v-model="radio" style="margin-left: 1rem;">
-			    <el-radio :label="3">打卡</el-radio>
-			    <el-radio :label="6">未打卡</el-radio>
-			</el-radio-group>
+			<el-button id="xzstaff" @click="centerDialogVisible = true">
+				+ 新增员工档案
+			</el-button>
 		</div>
 		<div class="showTableData">
-			<el-table ref="mt" :data="signData" @selection-change="handeselect" style="width: 100%;">
-				<el-table-column prop="signId" label="编号" width="200">
-					<template #default="scope">ID:{{scope.row.signId}}</template>
+			<el-table ref="mt" :data="personalData" @selection-change="handeselect" style="width: 100%;">
+				<el-table-column prop="personalId" label="档案编号">
+					<template #default="scope">ID:{{scope.row.personalId}}</template>
 				</el-table-column>
-				<el-table-column prop="personalName" label="员工姓名" width="200"></el-table-column>
-				<el-table-column prop="signDate" label="上次打卡时间" width="240"></el-table-column>
-				<el-table-column prop="signState" label="状态" width="200">
-					<template #default="scope">
-						<span v-if="scope.row.signState==0">未打卡</span>
-						<span v-else>已打卡</span>
-					</template>
-				</el-table-column>
+				<el-table-column prop="personalName" label="姓名"></el-table-column>
+				<el-table-column prop="personalSex" label="性别"></el-table-column>
+				<el-table-column prop="personalAge" label="年龄"></el-table-column>
+				<el-table-column prop="personalPhone" label="手机号"></el-table-column>
+				<el-table-column prop="entryTime" label="存档时间" width="150"></el-table-column>
 				<el-table-column label="操作">
 					<template #default="scope">
-						<span v-if="scope.row.signState==0">
-							<el-button type="primary" size="mini" @click="updatesigns(scope.row)">打卡</el-button>
-						</span>
-						<span v-else>
-							<el-button type="danger" disabled size="mini">打卡</el-button>
-						</span>
+						<el-button size="mini" @click="handeEdit(scope.$index,scope.row)">编辑</el-button>
 					</template>
 				</el-table-column>
 			</el-table>
@@ -61,7 +52,6 @@
 <script setup lang="ts">
 	import { ref } from 'vue'
 	import { Search } from '@element-plus/icons'
-	const radio = ref(3)
 </script>
 <script lang="ts">
 	import qs from 'qs'
@@ -69,9 +59,10 @@
 	export default{
 		data() {
 			return {
-				signData: [],
+				personalData: [],
 				pageInfo:{
-					input: '',
+					select:'1',
+					input:'',
 					currentPage:1,
 					pagesize:3,
 					total:0
@@ -79,41 +70,13 @@
 			}
 		},
 		methods:{
-			updatesigns(row){
-				if(row.staffId==sessionStorage.getItem("staffId")){
-					var _this=this
-					console.log("idididiidididi ",row.signId)
-					this.axios.post("http://localhost:8088/TSM/updatestaffsign",{signId:row.signId})
-					.then(function(response){
-						console.log(response.data)
-						_this.staffsigns()
-						ElMessage({message: '打卡成功！',type: 'success',})
-						_this.addAttendance()
-					}).catch(function(error){
-						console.log(error)
-					})
-				}else{
-					ElMessage({message: '不能给别人打卡否则扣工资！',type: 'warning',})
-				}
-			},
-			addAttendance(){
+			personals(){
 				var _this=this
-				this.axios.post("http://localhost:8088/TSM/attendance/addattendance",{
-					staffId: sessionStorage.getItem("staffId"),
-				}).then(function(response){
-					console.log(response.data)
-					alert("新增数据！！")
-				}).catch(function(error){
-					console.log(error)
-				})				
-			},
-			staffsigns(){
-				var _this=this
-				this.axios.get("http://localhost:8088/TSM/Staffsignvo"
+				this.axios.get("http://localhost:8088/TSM/personal/findpersonals"
 				                ,{params:this.pageInfo})
 				.then(function(response){
 					console.log(response.data)
-					_this.signData=response.data.records
+					_this.personalData=response.data.records
 					_this.pageInfo.total=response.data.total
 				}).catch(function(error){
 					console.log(error)
@@ -124,11 +87,11 @@
 				this.pageInfo.currentPage=page
 				var ps=qs.stringify(this.pageInfo)
 				console.log(ps)
-				this.axios.get("http://localhost:8088/TSM/Staffsignvo",{params:this.pageInfo})
+				this.axios.get("http://localhost:8088/TSM/personal/findpersonals",{params:this.pageInfo})
 				.then(function(response){
 					console.log("1-------------------------------------------")
 					console.log(response.data)
-					_this.signData=response.data.records
+					_this.personalData=response.data.records
 				}).catch(function(error){
 					console.log(error)
 				})
@@ -138,11 +101,11 @@
 				this.pageInfo.pagesize=size
 				var ps=qs.stringify(this.pageInfo)
 				console.log(ps)
-				this.axios.get("http://localhost:8088/TSM/Staffsignvo",{params:this.pageInfo})
+				this.axios.get("http://localhost:8088/TSM/personal/findpersonals",{params:this.pageInfo})
 				.then(function(response){
 					console.log("2-------------------------------------------")
 					console.log(response.data)
-					_this.signData=response.data.records
+					_this.personalData=response.data.records
 					_this.pageInfo.total=response.data.total
 				}).catch(function(error){
 					console.log(error)
@@ -151,11 +114,11 @@
 		},
 		created(){
 			var _this=this
-			this.axios.get("http://localhost:8088/TSM/Staffsignvo"
+			this.axios.get("http://localhost:8088/TSM/personal/findpersonals"
 			                ,{params:this.pageInfo})
 			.then(function(response){
 				console.log(response.data)
-				_this.signData=response.data.records
+				_this.personalData=response.data.records
 				_this.pageInfo.total=response.data.total
 			}).catch(function(error){
 				console.log(error)
@@ -172,6 +135,15 @@
 	}
 	.input-with-select .el-input-group__prepend {
 	  background-color: #fff;
+	}
+	#xzstaff{
+		color: #FFFFFF; 
+		margin-left: 1rem;
+		background-color: #FF6600;
+		border: none;
+	}
+	#xzstaff:hover{
+		background-color: #FF7E00;
 	}
 	.showTableData{
 		background: #fff;

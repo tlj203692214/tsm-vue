@@ -10,35 +10,12 @@
           size="medium"
           label-width="100px"
         >
-          <!-- <el-col :span="4"> -->
-            <!-- <el-form-item label-width="0" prop="field102"> -->
-            <el-select
-              class="xxmc"
-              v-model="formData.field102"
-          
-                 placeholder="学员姓名"
-            >
-              <el-option
-                v-for="(item, index) in field102Options"
-                :key="index"
-                :label="item.label"
-                :value="item.value"
-                :disabled="item.disabled"
-              ></el-option>
-            </el-select>
-
-            <!-- </el-form-item> -->
-          <!-- </el-col> -->
-
-          <!-- 搜索文本框 -->
-          <!-- <el-col :span="4"> -->
             <el-form-item
               style="margin-left: 119px;
     margin-top: -46px;"
               label-width="0"
               prop="field101"
             >
-            <span v-if="formData.field102=='学生姓名'">
               <el-input
                  class="xxss"
                 v-model="formData.field101"
@@ -47,28 +24,6 @@
               
               >
               </el-input>
-              </span>
-              <span v-else-if="formData.field102=='家长电话'">
-                  <el-input
-                 class="xxss"
-                v-model="formData.field101"
-                placeholder="请输入家长电话"
-                clearable
-              
-              >
-              </el-input>
-              </span>
-              <span v-else>
-                 <el-input
-                class="xxss"
-                v-model="formData.field101"
-                placeholder="请输入学生姓名"
-                clearable
-              
-              >
-              </el-input>
-              </span>
-
             </el-form-item>
           <!-- </el-col> -->
           <!-- 搜索按钮 -->
@@ -80,24 +35,6 @@
               <span style="width: 10px; height: 10px"> </span>
             </el-button>
           </div>
-          <!-- 开始结束日期 -->
-          <el-config-provider :locale="locale">
-            <app />
-          </el-config-provider>
-          <!-- <el-col :span="10">
-            <el-form-item class="sjfw" label-width="0" prop="field105">
-              <el-date-picker
-                type="daterange"
-                v-model="formData.field105"
-                :style="{ width: '100%' }"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期"
-                range-separator="至"
-                clearable
-                @change="selectmohhu()"
-              ></el-date-picker>
-            </el-form-item>
-          </el-col> -->
 
           <!-- 重置按钮 -->
           <!-- <el-col :span="24"> -->
@@ -108,21 +45,6 @@
           <!-- </el-col> -->
 
           <!-- 新增潜客按钮 -->
-          <el-col :span="10">
-            <el-form-item label-width="0" prop="field106" class="xzqk">
-              <el-button
-                type="primary"
-                size="medium"
-                @click="
-                  selectqudao(), selectkecheng(), (centerDialogVisible = true)
-                "
-              >
-                <el-icon><plus /></el-icon>
-                新增潜客
-              </el-button>
-            </el-form-item>
-          </el-col>
-
           <br />
           <br />
           <br />

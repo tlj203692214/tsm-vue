@@ -30,7 +30,7 @@
       </template>
     </el-table-column>
     <el-table-column prop="expenditureDate" label="校务支出时间" width="180" />
-    <el-table-column label="支出类型" width="180">
+    <el-table-column label="支出类型">
       <template #default="scope">
         <span
           v-if="scope.row.purchaseId == null"
@@ -46,12 +46,6 @@
         >
       </template>
     </el-table-column>
-    <el-table-column prop="deleted" label="是否可用">
-      <template #default="scope">
-        <span v-if="scope.row.deleted == '1'">不可用</span>
-        <span v-else>可用</span>
-      </template>
-    </el-table-column>
   </el-table>
 
   <!-- 退费的弹窗-->
@@ -62,16 +56,6 @@
     center
     :show-close="false"
   >
-    <el-button
-      style="
-        width: 100px;
-        background: #f60;
-        color: white;
-        border: 1px solid white;
-        text-align: center;
-      "
-      >审核通过</el-button
-    >
     <el-table :data="refundData" border style="width: 100%">
       <el-table-column prop="refundDate" label="退费时间" width="180" />
       <el-table-column prop="refundMoney" label="退费金额" width="180">
@@ -116,7 +100,7 @@
           scope.row.purchaseNumber * scope.row.purchasePrice
         }}</template>
       </el-table-column>
-      <el-table-column prop="purchaseDate" label="教材采购时间" width="180" />
+      <el-table-column prop="purchaseDate" label="教材采购时间" />
     </el-table>
     <template #footer>
       <span class="dialog-footer">
