@@ -3,15 +3,15 @@
     <div class="box-header">
       <tou></tou>
     </div>
-    <el-container>
-      <el-aside width="auto" style="overflow: hidden;" >
+    <el-container style="height: 100%">
+      <el-aside width="auto" style="overflow: hidden;background-color:red">
         <el-menu
           :default-active="$route.path"
           text-color="white"
           class="el-menu-vertical-demo"
           :collapse="isCollapse"
           background-color="#272a36"
-          style="height: 91.5vh"
+          style="color: white; height:91.5vh"
           :collapse-transition="true"
           :unique-opened="true"
           router
@@ -61,9 +61,8 @@
             </el-menu-item-group>
           </el-sub-menu>
         </el-menu>
-        
       </el-aside>
-      
+
       <el-main><router-view></router-view></el-main>
     </el-container>
   </div>
@@ -78,6 +77,7 @@ export default {
   data() {
     return {
       nav: [],
+      staffId: 0,
       //是否折叠
       isCollapse: false,
     };
@@ -98,8 +98,11 @@ export default {
   },
   created() {
     let _this = this;
+    this.staffId = sessionStorage.getItem("staffId");
     this.axios
-      .get("http://localhost:8088/TSM/navigation/selectNavigation", {})
+      .get(
+        "http://localhost:8088/TSM/navigation/selectNavigation/" + this.staffId
+      )
       .then(function (response) {
         console.log(response);
         _this.nav = response.data;

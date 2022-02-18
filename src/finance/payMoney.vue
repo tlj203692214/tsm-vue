@@ -43,6 +43,9 @@
     :data="payMoney"
     style="width: 100%"
     @selection-change="handleSelectionChange"
+     border
+    :row-style="{ height: '23px' }"
+    :cell-style="{ padding: '0px' }"
   >
     <el-table-column type="selection" width="50"></el-table-column>
     <el-table-column prop="paymoneyId" label="编号">
@@ -60,7 +63,7 @@
     <el-table-column prop="courseHour" label="课时时间" />
     <el-table-column prop="coursePrice" label="课时价格" />
     <el-table-column prop="bookFee" label="教材金额" />
-    <el-table-column prop="studentName" label="缴费学员" />
+    <el-table-column prop="studentfilesName" label="缴费学员" />
     <el-table-column prop="staffName" label="收款人" />
     <el-table-column prop="paymoneyState" label="到账状态">
       <template #default="scope">

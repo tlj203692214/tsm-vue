@@ -1,14 +1,14 @@
 <template>
 	<div style="background-color:lightblue" :style="{display:add}">
-		<el-button style="background-color: blue;color: white;" :icon="CircleCloseFilled" size="mini" @click="addNotepad('ruleForm')"><el-icon><delete-filled /></el-icon>保存并新建</el-button>
-		<el-button style="background-color: blue;color: white;" :icon="CircleCloseFilled" size="mini" @click="addNotepadf('ruleForm')"><el-icon><delete-filled /></el-icon>保存并返回</el-button>
-	<el-button style="background-color: blue;color: white;" :icon="CircleCloseFilled" size="mini"  @click="fh()"><el-icon><delete-filled /></el-icon>返回</el-button>
+		<el-button style="background-color: blue;color: white;" :icon="CircleCloseFilled" size="mini" @click="addNotepad('ruleForm')"><el-icon><folder-checked /></el-icon>保存并新建</el-button>
+		<el-button style="background-color: blue;color: white;" :icon="CircleCloseFilled" size="mini" @click="addNotepadf('ruleForm')"><el-icon><folder-delete /></el-icon>保存并返回</el-button>
+	<el-button style="background-color: blue;color: white;" :icon="CircleCloseFilled" size="mini"  @click="fh()"><el-icon><d-arrow-left /></el-icon>返回</el-button>
 	</div>
 	<div style="background-color:lightblue" :style="{display:update}">
 		
-		<el-button style="background-color: blue;color: white;" :icon="CircleCloseFilled" size="mini" @click="updateNotepad('ruleForm')"><el-icon><delete-filled /></el-icon>保存并返回</el-button>
+		<el-button style="background-color: blue;color: white;" :icon="CircleCloseFilled" size="mini" @click="updateNotepad('ruleForm')"><el-icon><folder-delete /></el-icon>保存并返回</el-button>
 		<el-button style="background-color: blue;color: white;" :icon="CircleCloseFilled" size="mini" @click="delectNotepad()"><el-icon><delete-filled /></el-icon>删除</el-button>
-	<el-button style="background-color: blue;color: white;" :icon="CircleCloseFilled" size="mini"  @click="fh()"><el-icon><delete-filled /></el-icon>返回</el-button>
+	<el-button style="background-color: blue;color: white;" :icon="CircleCloseFilled" size="mini"  @click="fh()"><el-icon><d-arrow-left /></el-icon>返回</el-button>
 	</div>	
 	<el-form ref="ruleForm"  class="demo-ruleForm" :model="ruleForm" :rules="rules">
 	<div style="margin-top:20px" class="notepadTheme">

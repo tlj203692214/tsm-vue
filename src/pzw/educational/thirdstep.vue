@@ -89,6 +89,7 @@
             <span style="font-size: 14px; color: #606266">应付价格</span>
             <span style="color: red; margin-left: 2%">￥ 4500元</span>
           </div>
+          
           <!-- 经办人 -->
           <el-form-item
             label="经办人"

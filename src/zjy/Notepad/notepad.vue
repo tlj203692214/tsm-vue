@@ -85,6 +85,9 @@ setup(){
 		sessionStorage.setItem("notepad","add")//参数（区别修改和新增）
 	},
 	updatenotepad(notepad){ //修改记事本
+	  // sessionStorage.setItem("zzz",JSON.stringify(notepad))  存数组转json格式
+	   // JSON.parse(sessionStorage.getItem("zzz"))   得到json数据
+	
 		this.$router.push("/addnotepad")    
 		sessionStorage.setItem("notepad","update")  //参数（区别修改和新增）
         sessionStorage.setItem("notepadTheme",notepad.notepadTheme)    //记事本主题
@@ -95,6 +98,7 @@ setup(){
 		sessionStorage.setItem("notepadContent",notepad.notepadContent)     //记事本内容
 		sessionStorage.setItem("notepadId",notepad.notepadId)   //记事本id
 				  	
+				 
 	},
 	selectNotepad(){	//查询记事本
 	  this.axios.get("http://localhost:8088/TSM/notepad/selectNotepad/"+this.staffId)

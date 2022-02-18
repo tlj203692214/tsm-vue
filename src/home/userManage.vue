@@ -5,7 +5,7 @@
         <span>用户名字：</span>
         <el-input
           v-model="pageInfo.userName"
-          placeholder="请输入员工名字"
+          placeholder="请输入用户名字"
         ></el-input>
       </div>
       <div class="user_button">
@@ -16,12 +16,18 @@
     </div>
 
     <div class="user_content">
-      <el-table :data="usertable" style="width: 100%">
+      <el-table
+        :data="usertable"
+        style="width: 100%"
+        border
+        :row-style="{ height: '23px' }"
+        :cell-style="{ padding: '0px' }"
+      >
         <el-table-column type="selection" width="50" />
         <el-table-column prop="staffPosition_id" label="编号" width="80">
-          <template #default="scope">{{ scope.row.personalId }}</template>
+          <template #default="scope">{{ scope.row.personalId }} </template>
         </el-table-column>
-        <el-table-column label="用户头像" width="120">
+        <!-- <el-table-column label="用户头像" width="120">
           <template #default="scope">
             <img
               :src="scope.row.portraitUrl"
@@ -29,15 +35,15 @@
               style="width: 50px; height: 50px"
             />
           </template>
-        </el-table-column>
-        <el-table-column prop="personalName" label="用户名字" width="120" />
-        <el-table-column prop="deptName" label="部门名字" width="120" />
-        <el-table-column prop="positionName" label="角色名字" width="120" />
-        <el-table-column prop="entryTime" label="入职时间" width="160" />
-        <el-table-column prop="personalState" label="员工状态" width="120">
-          <template #default="scop">
-            <span v-if="scop.row.personalState == 0">未入职</span>
-            <span v-else>在职</span>
+        </el-table-column> -->
+        <el-table-column prop="personalName" label="用户名字"/>
+        <el-table-column prop="deptName" label="部门名字"/>
+        <el-table-column prop="positionName" label="角色名字"/>
+        <el-table-column prop="entryTime" label="入职时间" />
+        <el-table-column prop="personalState" label="用户状态">
+          <template #default="scope">
+            <span v-if="scope.row.personalState == 0">不可用</span>
+            <span v-else>可用</span>
           </template>
         </el-table-column>
         <el-table-column label="操作">
@@ -45,27 +51,39 @@
             <el-button
               type="text"
               @click="detailsUp(scope.row)"
-              style="margin-right: 20px"
               >详情</el-button
             >
-            <el-switch
-              v-model="value2"
-              :active-icon="Check"
-              :inactive-icon="Close"
-            >
-            </el-switch>
+            <el-button type="text" @click="toUserPopup(scope.row),selectPosition()">分配角色</el-button>
           </template>
         </el-table-column>
       </el-table>
     </div>
   </div>
 
+<!-- 给用户分配角色 -->
+  <el-dialog title="给用户分配角色" v-model="toUserDialogVisible">
+    <div>
+      <el-checkbox-group v-model="checkedRole">
+        <el-checkbox
+          v-for="role in roleList"
+          :key="role.positionId"
+          :label="role.positionId"
+          >{{ role.positionName }}</el-checkbox
+        ></el-checkbox-group
+      >
+    </div>
+    <div slot="footer">
+      <el-button @click="toUserDialogVisible = false">取 消</el-button>
+      <el-button type="primary" @click="toGranforposition()">确 定</el-button>
+    </div>
+  </el-dialog>
+
   <!-- 详情弹窗 -->
   <el-dialog v-model="centerDialogVisible" title="用户信息" center>
     <div id="details">
       <el-form :model="personal" :label-position="right" label-width="120px">
         <input type="text" :value="personal.personalId" style="display: none" />
-        <div id="photo">
+        <!-- <div id="photo">
           <el-upload
             class="avatar-uploader"
             action="http://localhost:8088/TSM/photo/upload"
@@ -73,17 +91,17 @@
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
           >
-            <!-- <img
+           <img
               v-if="personal.portraitUrl"
               :src="personal.portraitUrl"
               class="avatar"
               :fit="scale - down"
-            /> -->
-			<img :src="imageUrl" alt="" v-if="imageUrl">
+            /> 
+            <img :src="imageUrl" alt="" v-if="imageUrl" />
             <el-icon v-else class="avatar-uploader-icon"><plus /></el-icon>
           </el-upload>
-        </div>
-		
+        </div> -->
+
         <el-row :gutter="24">
           <el-col :span="12">
             <el-form-item label="用户名字：">
@@ -133,14 +151,14 @@
         <el-row :gutter="10">
           <el-col :span="12">
             <el-form-item label="用户入职时间：">
-              <el-input v-model="personal.entryTime"></el-input>
+              <el-input v-model="personal.entryTime" disabled></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="用户是否在职：">
+            <el-form-item label="用户状态：">
               <el-radio-group v-model="personal.personalState">
-                <el-radio :label="0" value="0">不在职</el-radio>
-                <el-radio :label="1" value="1">在职</el-radio>
+                <el-radio :label="0" value="0">不可用</el-radio>
+                <el-radio :label="1" value="1">可用</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
@@ -151,9 +169,7 @@
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="centerDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="updateDetails(), updateportrait()"
-          >确认</el-button
-        >
+        <el-button type="primary" @click="updateDetails()">确认</el-button>
       </span>
     </template>
   </el-dialog>
@@ -177,12 +193,20 @@ const value2 = ref(true);
 <script>
 import qs from "qs";
 import { ref } from "vue";
-
+// import MTree from './tree.vue'
 export default {
   data() {
     return {
+      editcontent: false,
       centerDialogVisible: false,
-      imageUrl: '',
+      toUserDialogVisible:false,
+      // 选中的角色
+      checkedRole:[],
+      checkedInfo:[],
+      // 所有角色集合
+      roleList: [],
+      userId:"",
+      imageUrl: "",
       usertable: [],
       pageInfo: {
         currentPage: 1,
@@ -202,15 +226,38 @@ export default {
         personalState: 1,
         personalId: "",
         portraitId: "",
+        staffId:''
       },
     };
   },
+  computed: {
+    powerId() {
+      return this.editpower.positionId;
+    },
+  },
   methods: {
+    // 给用户分配权限弹窗(该用户下的角色，选中)
+    toUserPopup(row){
+      this.toUserDialogVisible =  true;
+      this.userId = row.staffId;
+      this.axios
+        .post("http://localhost:8088/TSM/staff-position/selectPosById", {
+          staffId: row.staffId,
+        })
+        .then((res) => {
+          this.checkedRole = res.data;
+          this.checkedInfo = res.data;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+
+    },
     handleAvatarSuccess(res, file) {
       console.log(res);
-	  this.imageUrl=res
-    //   this.personal.portraitUrl = URL.createObjectURL(file.raw);
-	this.personal.portraitUrl=res
+      this.imageUrl = res;
+      //   this.personal.portraitUrl = URL.createObjectURL(file.raw);
+      this.personal.portraitUrl = res;
     },
     beforeAvatarUpload(file) {
       const isJPG = file.type === "image/jpeg";
@@ -229,8 +276,31 @@ export default {
     detailsUp(row) {
       this.centerDialogVisible = true;
       this.personal = row;
+      this.personal.staffId = row.staffId;
     },
-
+    // 给角色授权
+    toGranforposition(){
+        console.log(this.checkedRole !== this.checkedInfo);
+      if (this.checkedRole !== "" && this.checkedRole !== this.checkedInfo) {
+        for (let i = 0; i < this.checkedRole.length; i++) {
+          this.axios
+            .post("http://localhost:8088/TSM/staff-position/insertStaffPosition", {
+              positionId: this.checkedRole[i],
+              staffId: this.userId,
+            })
+            .then(() => {
+              console.log("添加成功");
+              this.toUserDialogVisible = false;
+               this.flesh();
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        }
+      } else {
+        this.toUserDialogVisible = false;
+      }
+    },
     // 修改用户信息
     updateDetails() {
       var _this = this;
@@ -244,14 +314,26 @@ export default {
           personalPhone: this.personal.personalPhone,
           entryTime: this.personal.entryTime,
           personalState: this.personal.personalState,
-          staffId: sessionStorage.getItem("staffId"),
+          staffId:this.personal.staffId,
           portraitId: this.personal.portraitId,
         })
         .then((res) => {
           console.log(res);
           console.log("修改成功");
           //   _this.centerDialogVisible = false;
-          _this.flesh();
+          this.flesh();
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    // 查询所有的角色信息
+    selectPosition() {
+      this.axios
+        .get("http://localhost:8088/TSM/position/selectPositionAll")
+        .then((res) => {
+          console.log(res);
+          this.roleList = res.data;
         })
         .catch(function (error) {
           console.log(error);
@@ -353,6 +435,7 @@ export default {
       })
       .then(function (response) {
         console.log(response.data);
+        _this.roleList = response.data.records;
         _this.usertable = response.data.records;
         _this.pageInfo.total = response.data.total;
       })
@@ -373,6 +456,7 @@ export default {
 }
 
 .user_section {
+  margin-left: 10px;
   float: left;
   margin-right: 30px;
 }
@@ -382,13 +466,12 @@ export default {
 }
 
 .user_section .el-input .el-input__inner {
-  border: 1px solid lightslategray;
   width: 180px;
   height: 36px;
 }
 
 .user_top .el-button {
-  width: 100px;
+  width: 110px;
   background: #f60;
   color: white;
   text-align: center;

@@ -6,6 +6,7 @@
 =================================================================================================================================            
                   排课
                -->
+      
       <el-tab-pane label="排课" name="first">
         <div style="background: #f5f7fa; width: 100%; height: 2ex"></div>
         <!-- 搜索框 -->
@@ -74,7 +75,6 @@
           <el-table-column prop="skdate" label="上课时间" width="180" />
           <el-table-column prop="kcname" label="课程名称" width="180" />
           <el-table-column prop="banjiname" label="班级名称" width="180" />
-          <el-table-column prop="sklaoshi" label="上课教师" width="180" />
           <el-table-column prop="skzuangtai" label="状态" />
           <el-table-column label="操作">
             <template #default="scope">

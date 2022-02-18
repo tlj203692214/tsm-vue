@@ -33,6 +33,7 @@ import firststep from '../PZW/educational/firststep.vue'
 import studentcenter from '../PZW/educational/studentcenter.vue';
 import freshman from '../PZW/educational/freshman.vue';
 import secondstep from '../PZW/educational/secondstep.vue'
+import xsbm from '../PZW/recruit/xsbm.vue'
 
 import mymail from '../zjy/Mymail/mymail.vue'
 import composemail from '../zjy/Mymail/composemail.vue'
@@ -103,6 +104,11 @@ const routes = [{
                 path: '/shitu',
                 name: 'shitu',
                 component: shitu
+            },
+            {
+                path: '/xsbm',
+                name: 'xsbm',
+                component: xsbm
             },
             {
                 path: '/course',

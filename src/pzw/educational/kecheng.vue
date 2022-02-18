@@ -5,6 +5,7 @@
         <!-- 课程管理 -->
         <el-tab-pane label="课程管理" name="first">
           <div style="background: #f5f7fa; width: 100%; height: 2ex"></div>
+          <el-button style="margin-left: 77%;margin-top: 16px;" @click="xinzhenkc=true">新增课程</el-button>
           <div class="kecheng">
             <el-table :data="tableData" stripe style="width: 100%">
               <el-table-column prop="kcname" label="课程名称" width="180" />
@@ -22,6 +23,7 @@
             </el-table>
           </div>
         </el-tab-pane>
+        
 
         <!-- 教程管理 -->
         <el-tab-pane label="教程管理" name="second">
@@ -223,12 +225,79 @@ layout="total, sizes, prev, pager, next, jumper"
         </el-tab-pane>
       </el-tabs>
     </div>
-
+  <!--
+    =========================================================================================================================
+    新增课程
+   -->
+   <el-form ref="xzkc"  :rules="rules1" :model="xzkc" label-width="120px">
+      <el-dialog v-model="xinzhenkc" title="编辑课程管理" width="50%" center>
+        <!-- 新增课程名称 -->
+        <el-form-item label="课程名称">
+          <el-input
+            style="width: 30%"
+            disabled
+            v-model="xzkc.kcname"
+          ></el-input>
+        </el-form-item>
+        <!-- 新增课程金额 -->
+        <el-form-item
+          prop="kcje"
+          style="position: relative; top: -8.4ex; left: 40%"
+          label="课程金额"
+         
+        >
+          <el-input style="width: 30%" v-model.number="xzkc.kcje"></el-input>
+        </el-form-item>
+        <!-- 新增课程课时 -->
+        <el-form-item
+          prop="kcks"
+          style="position: relative; top: -3.4ex"
+          label="课程数量"
+       
+        >
+          <el-input
+            style="width: 30%"
+            @change="suan()"
+            v-model.number="xzkc.kcks"
+          ></el-input>
+        </el-form-item>
+        <!-- 新增课程单价 -->
+        <el-form-item
+          prop="kcdj"
+          style="position: relative; top: -11.7ex; left: 40%"
+          label="课程单价"
+         
+        >
+          <el-input
+            style="width: 30%"
+            @change="suan()"
+            v-model.number="xzkc.kcdj"
+          ></el-input>
+        </el-form-item>
+        <!-- 新增书本费 -->
+        <el-form-item
+          prop="shuben"
+          style="position: relative; top: -7.7ex"
+          label="书本价格"
+         
+        >
+          <el-input style="width: 30%" v-model.number="xzkc.shuben"></el-input>
+        </el-form-item>
+        <template #footer>
+          <span class="dialog-footer">
+            <el-button @click="xzresetForm('xzkc')">取消</el-button>
+            <el-button type="primary" @click="xzsubmitForm('xzkc')"
+              >确定</el-button
+            >
+          </span>
+        </template>
+      </el-dialog>
+    </el-form>
     <!-- 
 ==========================================================================================================================
         编辑管理
      -->
-    <el-form ref="bjkc" :model="bjkc" label-width="120px">
+    <el-form ref="bjkc" :rules="rules2" :model="bjkc" label-width="120px">
       <el-dialog v-model="bianjikc" title="编辑课程管理" width="50%" center>
         <!-- 编辑课程名称 -->
         <el-form-item label="课程名称">
@@ -284,9 +353,11 @@ layout="total, sizes, prev, pager, next, jumper"
         </el-form-item>
         <template #footer>
           <span class="dialog-footer">
+            <el-button @click="bjresetForm('bjkc')">取消</el-button>
             <el-button type="primary" @click="submitForm('bjkc')"
               >确定</el-button
             >
+              
           </span>
         </template>
       </el-dialog>
@@ -632,6 +703,8 @@ export default {
       locale: zhCn,
       activeName: "first",
       activeName1: "first",
+      //新增课程弹窗
+      xinzhenkc:false,
       //编辑课程弹窗
       bianjikc: false,
       //新增课程弹窗
@@ -646,14 +719,64 @@ export default {
        sizes:[1,2,3,4],
       size:1,
       currentPage: 1,
+      //新增课程
+      xzkc:{
+         kcname: "java",
+        kcks: 0,
+        kcdj: 0,
+        shuben: 0,
+        kcje: 0,
+      },
+       rules1: {
+          kcname: [
+            { required: true, message: '请输入活动名称', trigger: 'blur' },
+          ],
+          kcks:[
+           { required: true, message: '课程数量不能为空', trigger: 'blur' },
+            { type: 'number', message: '请输入正确课程数量' }
+          ],
+        kcdj:[
+           { required: true, message: '课时单价不能为空', trigger: 'blur' },
+            { type: 'number', message: '请输入正确课时单价' }
+        ],
+        shuben:[
+           { required: true, message: '书本费不能为空', trigger: 'blur' },
+            { type: 'number', message: '请输入正确书本费' }
+        ],
+        kcje:[
+           { required: true, message: '课程金额不能为空', trigger: 'blur' },
+            { type: 'number', message: '请输入正确课程金额' }
+        ]
+          },
     //编辑课程
       bjkc: {
         kcname: "java",
         kcks: 0,
         kcdj: 0,
-        shuben: "",
+        shuben: 0,
         kcje: 0,
       },
+      rules2: {
+          kcname: [
+            { required: true, message: '请输入活动名称', trigger: 'blur' },
+          ],
+          kcks:[
+           { required: true, message: '课程数量不能为空', trigger: 'blur' },
+            { type: 'number', message: '请输入正确课程数量' }
+          ],
+        kcdj:[
+           { required: true, message: '课时单价不能为空', trigger: 'blur' },
+            { type: 'number', message: '请输入正确课时单价' }
+        ],
+        shuben:[
+           { required: true, message: '书本费不能为空', trigger: 'blur' },
+            { type: 'number', message: '请输入正确书本费' }
+        ],
+        kcje:[
+           { required: true, message: '课程金额不能为空', trigger: 'blur' },
+            { type: 'number', message: '请输入正确课程金额' }
+        ]
+          },
       //课程
       tableData: [
         {
@@ -826,6 +949,21 @@ export default {
   watch: {},
   computed: {},
   methods: {
+    //新增课程确定
+    xzsubmitForm(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.xinzhenkc = false;
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
+    },
+    xzresetForm(formName){
+       this.$refs[formName].resetFields()
+        this.xinzhenkc = false;
+    },
        //编辑教程库存窗口
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
@@ -836,6 +974,10 @@ export default {
           return false;
         }
       });
+    },
+    bjresetForm(formName){
+      this.$refs[formName].resetFields()
+        this.bianjikc = false;
     },
     //添加教程库存窗口
       kconoff(formName) {

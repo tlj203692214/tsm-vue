@@ -150,19 +150,14 @@
 		<el-dialog v-model="centerDialogVisible" title="选择用户" width="50%" style="background-color: blue;" >
 			<div style="border: solid white;background-color:aliceblue;"><el-button @click="xzwc()" style="background-color: aqua;">选择并关闭</el-button></div>
 		  部门查询：
-		    <select style="width:15%;
-			height:30px;margin-right:10%" v-model="DeptId" @change="cx" >
-			<option value="0">所有部门</option>
-			<option v-for="DeptData in DeptData" :value="DeptData.deptId">{{DeptData.deptName}}</option>
-			
-		</select>
+		   <el-cascader  :props="props" @change="cx" v-model="DeptId"/>
 		  
 		  姓名查询：<el-input style="width:200px;height:auto;" v-model="ruleForm.staffName"  clearable/><el-button @click="cx()"> <el-icon><search /></el-icon></el-button>
 		   <el-checkbox-group v-model="yhsz">
 		      <el-checkbox v-for="staffData1 in staffData1" :label="staffData1.staffName" :key="staffData1.staffName"><span>{{staffData1.staffName}}</span></el-checkbox>
 		 
 			</el-checkbox-group>
-
+{{this.DeptId}}
 		</el-dialog>
 </template>
 
@@ -178,10 +173,16 @@
 
 		data(){
 			return{
-				
+				props:{
+						
+						  checkStrictly: true,
+						lazy: true,
+						lazyLoad: this.getCheckedNodes,
+					},
 				yhsz:[],//所有用户
 				DeptData:[],  //部门集合
-				DeptId:0,
+				DeptId:"0",//部门id(数组)
+				deptId:"",//部门id（字符串）
 				centerDialogVisible:ref(false),  //查询员工弹窗
 				xzyjx:ref(false),     // 新增意见箱弹窗
 				xgyjx:ref(false),   //修改意见箱弹窗
@@ -227,6 +228,52 @@
 			}
 		},
 		methods:{ 
+			getCheckedNodes(node,resolve){
+				
+					const {data,level} = node;
+			
+			if(level===0){
+				
+						  
+						const nodes =  Array.from({ length: 1 }).map((item) =>{
+							return{
+								value:"0",
+								label:"所有部门",
+								leaf:false,
+								
+							};
+							
+						});
+							resolve(nodes);
+							
+							
+					
+			}else{
+				this.axios.post("http://localhost:8088/TSM/dept/selectDeptsl/"+node.value)
+					  .then(response=>{
+						  
+						
+					this.axios.post("http://localhost:8088/TSM/dept/selectDeptjl/"+node.value)
+						  .then(res=>{
+							  
+							const nodes = (res.data).map((item) =>{
+								return{
+									value:item.deptId,
+									label:item.deptName,
+									leaf:false,
+									
+								};
+								
+							});
+								resolve(nodes);
+								
+								
+						});
+						
+					});
+					}
+				},
+				
 			gbjm(formName){
 				this.$refs[formName].resetFields(),
 									 this.ruleForm.remarks="",  
@@ -301,7 +348,7 @@
 	    qk(){
 			this.yhsz=this.ruleForm.userScopesz,  //读取文本用户范围
 			this.ruleForm.staffName=""      //清空参数
-			this.DeptId=0                   //回到初始值     
+			this.DeptId="0"                   //回到初始值     
 		},
 			
 		xzqk(){    //新增按钮清空所有参数
@@ -510,9 +557,9 @@
 					},
 					cx(){   //查询用户
 				
-					
+					    this.deptId=this.DeptId[this.DeptId.length-1]
 						this.axios.post("http://localhost:8088/TSM/staff/cxyh",{
-					     staffId:this.DeptId,     
+					     staffId:this.deptId,     
 						 staffName:this.ruleForm.staffName,
 						  })
 						  .then(res=>{

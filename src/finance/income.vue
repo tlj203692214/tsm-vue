@@ -29,22 +29,24 @@
     border
     style="width: 100%"
     @selection-change="handleCurrentChange"
+    :row-style="{ height: '23px' }"
+    :cell-style="{ padding: '0px' }"
   >
     <el-table-column type="selection" width="50"></el-table-column>
-    <el-table-column prop="paymoneyId" label="编号" width="120">
+    <el-table-column prop="paymoneyId" label="编号">
       <template #default="scope">{{ scope.row.paymoneyId }}</template>
     </el-table-column>
-    <el-table-column prop="paymoneyState" label="收入状态" width="180">
+    <el-table-column prop="paymoneyState" label="收入状态">
       <template #default="scope">
         <span v-if="scope.row.paymoneyState==0">已到账</span>
         <span v-else>未到账</span>
       </template>
     </el-table-column>
-    <el-table-column prop="paymoneyMoney" label="收入金额" width="180" />
-    <el-table-column prop="paymoneyDate" label="收入时间" width="180" />
-    <el-table-column prop="paymoneyMode" label="收款方式" width="180" />
-    <el-table-column prop="staffName" label="收款人" width="180" />
-    <el-table-column prop="studentName" label="付款人" />
+    <el-table-column prop="paymoneyMoney" label="收入金额"/>
+    <el-table-column prop="paymoneyDate" label="收入时间"/>
+    <el-table-column prop="paymoneyMode" label="收款方式"/>
+    <el-table-column prop="staffName" label="收款人"/>
+    <el-table-column prop="studentfilesName" label="付款人" />
   </el-table>
 
   <div class="block">

@@ -46,16 +46,7 @@
       >
     </div>
     部门查询：
-    <select
-      style="width: 15%; height: 30px; margin-right: 10%"
-      v-model="DeptId"
-      @change="cx"
-    >
-      <option value="0">所有部门</option>
-      <option v-for="DeptData in DeptData" :value="DeptData.deptId">
-        {{ DeptData.deptName }}
-      </option>
-    </select>
+      <el-cascader  :props="props" @change="cx" v-model="DeptId"/>
   
     姓名查询：<el-input
       style="width: 200px; height: auto"
@@ -73,6 +64,7 @@
       >
     </el-checkbox-group>
   </el-dialog>
+
 </template>
 
 <script>
@@ -82,7 +74,14 @@ import { ElMessage } from 'element-plus'
 export default {
   data() {
     return {
-      DeptId: 0, //部门id
+		props:{
+				
+				  checkStrictly: true,
+				lazy: true,
+				lazyLoad: this.getCheckedNodes,
+			},
+     DeptId:"0",//部门id(数组)
+     deptId:"",//部门id（字符串）
       DeptData: [], //部门表信息
       staffData: [], //员工表信息
       yhsz: [], //所有用户
@@ -116,6 +115,51 @@ export default {
     }
   },
   methods: {
+	  getCheckedNodes(node,resolve){
+	  	
+	  		const {data,level} = node;
+	  
+	  if(level===0){
+	  	
+	  			  
+	  			const nodes =  Array.from({ length: 1 }).map((item) =>{
+	  				return{
+	  					value:"0",
+	  					label:"所有部门",
+	  					leaf:false,
+	  					
+	  				};
+	  				
+	  			});
+	  				resolve(nodes);
+	  				
+	  				
+	  		
+	  }else{
+	  	this.axios.post("http://localhost:8088/TSM/dept/selectDeptsl/"+node.value)
+	  		  .then(response=>{
+	  			  
+	  			
+	  		this.axios.post("http://localhost:8088/TSM/dept/selectDeptjl/"+node.value)
+	  			  .then(res=>{
+	  				  
+	  				const nodes = (res.data).map((item) =>{
+	  					return{
+	  						value:item.deptId,
+	  						label:item.deptName,
+	  						leaf:false,
+	  						
+	  					};
+	  					
+	  				});
+	  					resolve(nodes);
+	  					
+	  					
+	  			});
+	  			
+	  		});
+	  		}
+	  	},
     bccg(formName) {  //保存草稿  在草稿箱中添加一条数据
      let _this=this
      this.$refs[formName].validate((valid) => {
@@ -161,17 +205,17 @@ export default {
     },
     cx() {
       //查询用户
-      let _this = this;
-
+      
+  this.deptId=this.DeptId[this.DeptId.length-1]
       this.axios
         .post("http://localhost:8088/TSM/staff/cxyh", {
-          staffId: this.DeptId,
+          staffId: this.deptId,
           staffName: this.ruleForm.staffName,
         })
         .then((res) => {
           console.log(res);
           console.log(res.data);
-          _this.staffData = res.data;
+          this.staffData = res.data;
         });
     },
     selectDept() {

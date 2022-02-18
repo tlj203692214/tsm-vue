@@ -27,6 +27,7 @@
 </template>
 
 <script>
+	import { ElMessage } from 'element-plus'
 	export default{
 		data(){
 			return{	
@@ -58,14 +59,14 @@
 					this.axios.post("http://localhost:8088/TSM/send/delectsend",
 					{
 						sendId:this.id,
-						
+						deleted:"1",
 					})
 					.then(res=>{
-						console.log("bianhaobianhao")
+					
 						
 				sessionStorage.setItem("activeName",'1')
 				_this.$router.replace("/mymail");
-					
+					 ElMessage({message: '删除成功！',type: 'success',})
 					}).catch(function(error){
 						console.log(error)
 					})

@@ -27,6 +27,7 @@
 				<el-table-column prop="deptName" label="部门名称"></el-table-column>
 				<el-table-column label="操作">
 					<template #default="scope">
+						<el-button type="text" style="color: #f60;" @click="sonadddept(scope.row)">添加子部门</el-button>
 						<el-button type="text" style="color: #f60;" @click="updatedept(scope.row)">编辑</el-button>
 						<el-button type="text" style="color: #f60;" @click="tranmission(scope.row)">删除</el-button>
 					</template>
@@ -44,6 +45,23 @@
 			    </el-pagination>
 			</div>
 		</div>
+		<el-dialog v-model="sondeptAdd" title="添加子部门" width="35%" center>
+			<el-form ref="addsonform" :model="addsonform" :rules="addsonrules" label-width="120px">
+				<el-form-item label="上级部门编号" style="display: none;" >
+					<el-input v-model="addsonform.did"></el-input>
+				</el-form-item>
+				<el-form-item label="上级部门名称" style="width: 360px;">
+					<el-input disabled v-model="addsonform.dname"></el-input>
+				</el-form-item>
+				<el-form-item label="子部门名称" prop="name" style="width: 360px;">
+					<el-input v-model="addsonform.name"></el-input>
+				</el-form-item>
+			</el-form>
+			<template #footer>
+				<el-button @click="resetsonFrom('addsonform')">取消</el-button>
+				<el-button type="primary" @click="insertsonFrom('addsonform')">确定</el-button>
+			</template>
+		</el-dialog>
 		<el-dialog v-model="centerAdd" title="添加部门" width="35%" center>
 			<el-form ref="addform" :model="addform" :rules="addrules" label-width="120px">
 				<el-form-item label="部门名称" prop="name" style="width: 360px;">
@@ -105,8 +123,14 @@
 					dname:'',
 				},
 				centerDel:ref(false),
+				sondeptAdd:ref(false),
 				centerUpdate:ref(false),
 				centerAdd:ref(false),
+				addsonform:{
+					did:'',
+					dname:'',
+					name:'',
+				},
 				addform:{
 					name:'',
 				},
@@ -132,6 +156,15 @@
 				        },
 				    ],
 				},
+				addsonrules:{
+				    name: [
+				        {
+				            required: true,
+				            message: '子部门名称不可为空',
+				            trigger: 'blur',
+				        },
+				    ],
+				},
 			}
 		},
 		methods:{
@@ -139,6 +172,42 @@
 				this.addform.name = ''
 				this.centerAdd = true
 				this.listDepts()
+			},
+			insertsonFrom(sonformName){
+				for(var i=0;i<this.listDept.length;i++){
+					console.log("集合",this.listDept)
+					if(this.listDept[i].deptName==this.addsonform.name){
+						this.fordept=false;
+						console.log("循环")
+						break;
+					}else{
+						this.fordept=true;
+						console.log("嘻嘻嘻嘻嘻")
+					}
+				}
+				if(this.fordept==false){
+					ElMessage({message: '该部门已存在！！！',type: 'warning',})	
+				}else{
+					this.$refs[sonformName].validate((valid) => {
+						if (valid) {
+							var _this=this
+							this.axios.post("http://localhost:8088/TSM/dept/addDept",{
+								deptName:this.addsonform.name,
+								deptdid:this.addsonform.did,
+							}).then(function(response){
+								console.log(response.data)
+							}).catch(function(error){
+								console.log(error)
+							})
+							ElMessage({message: '添加子部门【'+this.addsonform.name+'】成功！',type: 'success',})
+							this.sondeptAdd = false
+						} else {
+							console.log('error submit!!')
+							return false
+						}
+					})
+					this.depts()
+				}
 			},
 			insertForm(addformName){
 				for(var i=0;i<this.listDept.length;i++){
@@ -211,11 +280,20 @@
 					this.depts()
 				}
 			},
+			sonadddept(row){
+				this.addsonform.did = row.deptId
+				this.addsonform.dname = row.deptName
+				this.sondeptAdd = true
+			},
 			updatedept(row){
 				this.form.id = row.deptId
 				this.form.name = row.deptName
 				this.centerUpdate = true
 				this.listDepts()
+			},
+			resetsonFrom(sonfromName){
+				this.$refs[sonfromName].resetFields()
+				this.sondeptAdd = false
 			},
 			resetaddFrom(addformName){
 				this.$refs[addformName].resetFields()

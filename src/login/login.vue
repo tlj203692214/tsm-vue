@@ -9,14 +9,14 @@
         class="login_form"
         style="margin-top: 80px"
       >
-        <el-form-item label="用户名" prop="staffName">
+        <el-form-item label="用户名" prop="staffName" style="color:white">
           <el-input
             v-model="staff.staffName"
             style="background: none"
           ></el-input>
         </el-form-item>
-        <el-form-item label="密码" prop="staffPass">
-          <el-input v-model="staff.staffPass" show-password></el-input>
+        <el-form-item label="密码" prop="staffPass" style="color:white">
+          <el-input v-model="staff.staffPass" type="password"></el-input>
         </el-form-item>
 
         <el-form-item>
@@ -68,7 +68,6 @@ export default {
   },
   methods: {
     login(user) {
-      console.log(1);
       let _this = this;
       this.$refs[user].validate((valid) => {
         if (valid) {
@@ -91,9 +90,9 @@ export default {
                   message: "登录成功",
                   type: "success",
                 });
-              } else if (res.data.staffState !== 1) {
+              } else if (res.data.staffState == 1) {
                 ElMessage.error("登录失败，该用户状态为不可用");
-              } else {
+              } else{
                 ElMessage.error("登录失败，用户名或密码错误");
               }
             })
@@ -148,6 +147,9 @@ export default {
   margin-left: -200px;
   margin-top: -220px;
   box-shadow: 0px 0px 10px black;
+}
+.login .el-form-item__label{
+  color: white;
 }
 
 .login_form .el-input .el-input__inner {

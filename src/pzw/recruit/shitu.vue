@@ -73,7 +73,8 @@
           <!-- </el-col> -->
           <!-- 搜索按钮 -->
           <div class="sstp">
-            <el-button type="primary" @click="selectmohhu()">
+            <el-button type="primary" @click="selectmohhu()" style="position: relative;
+    left: 269px;">
               <i-icon style="width: 10px; height: 10px">
                 <search />
               </i-icon>
@@ -902,7 +903,6 @@ export default {
        studentfilesName: "",//名称
         studentfilesSex: ref(""),//性别
         studentfilesAge: 0,  //年龄
-        courseId: "",//意向课程
     followDate: ref([]),//跟进时间
     studentfilesSchool:'',//毕业学校
     studentfilesLoc:'',//家庭住址
@@ -914,6 +914,8 @@ export default {
         studentfilesRemarks: ref(""), //备注信息
         studentfilesState:'',//意向学生状态
           lyqd: ref([]),//获取渠道信息
+            channelid: '',//来源渠道编号
+          courseId: "",//意向课程编号
       },
        //跟进添加
       gjruleForm:{
@@ -1120,13 +1122,23 @@ export default {
       var ps = qs.stringify(this.pageInfo);
       console.log(ps);
       this.axios
-        .get("http://localhost:8088/TSM/selectfollowvo", {
-          params: _this.pageInfo,
+        .get("http://localhost:8088/TSM/ssss", {
+           params: {
+            size: _this.pageInfo.size,
+            currentPage: _this.pageInfo.currentPage,
+            nameabc: _this.formData.field101, //名字
+            // sj1:sj1,//时间
+            // sj2:sj2,
+            qkzt:_this.formData.field114,//潜客状态
+            lyqd:_this.formData.field115,//来源渠道
+            yxkc:_this.formData.field117,//意向课程
+          //  gjr:_this.formData.field118,//跟进人
+          },
         })
-        .then(function (response) {
-          console.log("1-------------------------------------------");
+        .then((response) => {
           console.log(response.data);
-          _this.tableData = response.data.records;
+            this.tableData = response.data.records;
+         
         })
         .catch(function (error) {
           console.log(error);
@@ -1138,14 +1150,23 @@ export default {
       var ps = qs.stringify(this.pageInfo);
       console.log(ps);
       this.axios
-        .get("http://localhost:8088/TSM/selectfollowvo", {
-          params: _this.pageInfo,
+        .get("http://localhost:8088/TSM/ssss", {
+           params: {
+            size: _this.pageInfo.size,
+            currentPage: _this.pageInfo.currentPage,
+            nameabc: _this.formData.field101, //名字
+            // sj1:sj1,//时间
+            // sj2:sj2,
+            qkzt:_this.formData.field114,//潜客状态
+            lyqd:_this.formData.field115,//来源渠道
+            yxkc:_this.formData.field117,//意向课程
+          //  gjr:_this.formData.field118,//跟进人
+          },
         })
-        .then(function (response) {
-          console.log("2-------------------------------------------");
+        .then((response) => {
           console.log(response.data);
-          _this.tableData = response.data.records;
-          _this.pageInfo.total = response.data.total;
+            this.tableData = response.data.records;
+          this.pageInfo.total = response.data.total;
         })
         .catch(function (error) {
           console.log(error);
@@ -1193,7 +1214,14 @@ export default {
  bjsubmitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.axios
+          
+var numReg = /^[0-9]*$/
+ 
+var numRe = new RegExp(numReg)
+ 
+if(!numRe.test(this.xgruleForm1.courseName) && !numRe.test(this.xgruleForm1.channelLoc)){
+  console.log('3')
+         this.axios
             .post("http://localhost:8088/TSM/studentfiles/updatestudentfiles", {
               studentfilesId:this.xgruleForm1.studentfilesId,
               studentfilesName: this.xgruleForm1.studentfilesName,
@@ -1206,7 +1234,7 @@ export default {
               studentfilesLoc: this.xgruleForm1.studentfilesLoc,
               studentfilesRemarks: this.xgruleForm1.studentfilesRemarks,
               courseId: this.xgruleForm1.courseId,
-              channelid: this.xgruleForm1.channelid,
+           channelid: this.xgruleForm1.channelid,
             })
             .then((response) => {
               console.log(response.data);
@@ -1222,6 +1250,103 @@ export default {
             .catch(function (error) {
               console.log(error);
             });
+}else if (!numRe.test(this.xgruleForm1.channelLoc)) {
+    console.log('1')
+     this.axios
+            .post("http://localhost:8088/TSM/studentfiles/updatestudentfiles", {
+              studentfilesId:this.xgruleForm1.studentfilesId,
+              studentfilesName: this.xgruleForm1.studentfilesName,
+              studentfilesSex: this.xgruleForm1.studentfilesSex,
+              studentfilesAge: this.xgruleForm1.studentfilesAge,
+              studentfilesBirthday: this.xgruleForm1.studentfilesBirthday,
+              studentfilesPhone: this.xgruleForm1.studentfilesPhone,
+              parentPhone: this.xgruleForm1.parentPhone,
+              studentfilesSchool: this.xgruleForm1.studentfilesSchool,
+              studentfilesLoc: this.xgruleForm1.studentfilesLoc,
+              studentfilesRemarks: this.xgruleForm1.studentfilesRemarks,
+            courseId: this.xgruleForm1.courseName,
+               channelid: this.xgruleForm1.channelid,
+             
+            })
+            .then((response) => {
+              console.log(response.data);
+              this.crea();
+              this.$refs[formName].resetFields();
+              this.bjcenterDialogVisible = false;
+            
+               ElMessage({
+        message: '修改成功',
+         type: 'success',
+               })
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+}else if(!numRe.test(this.xgruleForm1.courseName)){
+    console.log('2')
+            this.axios
+            .post("http://localhost:8088/TSM/studentfiles/updatestudentfiles", {
+              studentfilesId:this.xgruleForm1.studentfilesId,
+              studentfilesName: this.xgruleForm1.studentfilesName,
+              studentfilesSex: this.xgruleForm1.studentfilesSex,
+              studentfilesAge: this.xgruleForm1.studentfilesAge,
+              studentfilesBirthday: this.xgruleForm1.studentfilesBirthday,
+              studentfilesPhone: this.xgruleForm1.studentfilesPhone,
+              parentPhone: this.xgruleForm1.parentPhone,
+              studentfilesSchool: this.xgruleForm1.studentfilesSchool,
+              studentfilesLoc: this.xgruleForm1.studentfilesLoc,
+              studentfilesRemarks: this.xgruleForm1.studentfilesRemarks,
+              courseId: this.xgruleForm1.courseId,
+             channelid: this.xgruleForm1.channelLoc,
+             
+            })
+            .then((response) => {
+              console.log(response.data);
+              this.crea();
+              this.$refs[formName].resetFields();
+              this.bjcenterDialogVisible = false;
+            
+               ElMessage({
+        message: '修改成功',
+         type: 'success',
+               })
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+}else{
+  console.log('4')
+  this.axios
+            .post("http://localhost:8088/TSM/studentfiles/updatestudentfiles", {
+              studentfilesId:this.xgruleForm1.studentfilesId,
+              studentfilesName: this.xgruleForm1.studentfilesName,
+              studentfilesSex: this.xgruleForm1.studentfilesSex,
+              studentfilesAge: this.xgruleForm1.studentfilesAge,
+              studentfilesBirthday: this.xgruleForm1.studentfilesBirthday,
+              studentfilesPhone: this.xgruleForm1.studentfilesPhone,
+              parentPhone: this.xgruleForm1.parentPhone,
+              studentfilesSchool: this.xgruleForm1.studentfilesSchool,
+              studentfilesLoc: this.xgruleForm1.studentfilesLoc,
+              studentfilesRemarks: this.xgruleForm1.studentfilesRemarks,
+              courseId: this.xgruleForm1.courseName,
+               channelid: this.xgruleForm1.channelLoc,
+            })
+            .then((response) => {
+              console.log(response.data);
+              this.crea();
+              this.$refs[formName].resetFields();
+              this.bjcenterDialogVisible = false;
+            
+               ElMessage({
+        message: '修改成功',
+         type: 'success',
+               })
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+}
+          
         } else {
           console.log("error submit!!");
           return false;

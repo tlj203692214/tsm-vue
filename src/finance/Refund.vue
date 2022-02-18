@@ -29,21 +29,23 @@
   <el-table
     ref="tableDate"
     :data="refundDate"
-    border
     style="width: 100%"
     @selection-change="handleSelectionChange"
+     border
+    :row-style="{ height: '23px' }"
+    :cell-style="{ padding: '0px' }"
   >
     <el-table-column type="selection" width="50"></el-table-column>
-    <el-table-column prop="refundId" label="编号" width="100">
+    <el-table-column prop="refundId" label="编号">
       <template #default="scope">{{ scope.row.refundId }}</template>
     </el-table-column>
-    <el-table-column prop="refundDate" label="退费时间" width="180" />
-    <el-table-column prop="refundMoney" label="退费金额" width="100">
+    <el-table-column prop="refundDate" label="退费时间"/>
+    <el-table-column prop="refundMoney" label="退费金额">
       <template #default="scope">{{
         scope.row.courseMoney + scope.row.bookFee
       }}</template>
     </el-table-column>
-    <el-table-column prop="refundState" label="退费状态" width="100">
+    <el-table-column prop="refundState" label="退费状态">
       <template #default="scope">
         <span v-if="scope.row.refundState == '1'">未退</span>
         <span v-else>已退</span>
@@ -95,9 +97,9 @@ import { ElMessage } from "element-plus";
 export default {
   data() {
     return {
-      totalMoney:0,
-      stateMoney:0,
-      stateMoney2:0,
+      totalMoney: 0,
+      stateMoney: 0,
+      stateMoney2: 0,
       refundDate: [],
       pageInfo: {
         stuname: ref(""),
@@ -125,7 +127,7 @@ export default {
   },
   methods: {
     // 统计所有的金额
-     countMoney() {
+    countMoney() {
       var _this = this;
       this.axios
         .get("http://localhost:8088/TSM/refundVo/countAllMoney")
@@ -138,7 +140,7 @@ export default {
         });
     },
     // 统计已退费的金额
-     countStateMoney() {
+    countStateMoney() {
       var _this = this;
       this.axios
         .get("http://localhost:8088/TSM/refundVo/countByStateMoney")
@@ -152,7 +154,7 @@ export default {
         });
     },
     // 统计未退费的金额
-     countStateMoney2() {
+    countStateMoney2() {
       var _this = this;
       this.axios
         .get("http://localhost:8088/TSM/refundVo/countByStateMoney2")
@@ -261,6 +263,9 @@ export default {
     //刷新方法
     Refresh() {
       var _this = this;
+      this.countMoney();
+      this.countStateMoney();
+      this.countStateMoney2();
       this.axios
         .get("http://localhost:8088/TSM/refundVo/selectRefundVoAll", {
           params: this.pageInfo,
@@ -275,7 +280,7 @@ export default {
         });
     },
   },
-  created() { 
+  created() {
     this.countMoney();
     this.countStateMoney();
     this.countStateMoney2();

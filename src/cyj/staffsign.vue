@@ -14,10 +14,16 @@
 					<el-button :icon="Search" @click="staffsigns()"></el-button>
 				</template>
 		    </el-input>
-			<el-radio-group v-model="radio" style="margin-left: 1rem;">
-			    <el-radio :label="3">打卡</el-radio>
-			    <el-radio :label="6">未打卡</el-radio>
-			</el-radio-group>
+			<span v-for="sg in signlistData">
+				<span v-if="sg.staffId==this.StaffId">
+					<span v-if="sg.signState==0">
+						<el-button type="primary" style="margin-left: 1rem;" @click="updatesigns(sg)">打卡</el-button>
+					</span>
+					<span v-else>
+						<el-button type="danger" disabled style="margin-left: 1rem;">打卡</el-button>
+					</span>
+				</span>
+			</span>
 		</div>
 		<div class="showTableData">
 			<el-table ref="mt" :data="signData" @selection-change="handeselect" style="width: 100%;">
@@ -34,12 +40,13 @@
 				</el-table-column>
 				<el-table-column label="操作">
 					<template #default="scope">
-						<span v-if="scope.row.signState==0">
+						<!-- <span v-if="scope.row.signState==0">
 							<el-button type="primary" size="mini" @click="updatesigns(scope.row)">打卡</el-button>
 						</span>
 						<span v-else>
 							<el-button type="danger" disabled size="mini">打卡</el-button>
-						</span>
+						</span> -->
+						<el-button type="primary" size="mini" @click="attendanceByid(scope.row)">本月考勤</el-button>
 					</template>
 				</el-table-column>
 			</el-table>
@@ -55,13 +62,34 @@
 			    </el-pagination>
 			</div>
 		</div>
+		<el-dialog v-model="kaoqing" title="本月考勤" width="40%" center>
+		    <el-calendar ref="calendar">
+		        <template #header="{ date }">
+					<span>考勤员工：{{xy}}</span>
+					<span>{{ date }}️</span>
+		        </template>
+				<template #dateCell="{ data }">
+				    <p>
+				        {{ data.day.split('-').slice(1).join('-') }}
+				    </p>
+					<span v-for="kq in attendance">
+						<span v-if="kq.attendanceDate==data.day">
+							✔️
+						</span>
+					</span>
+				</template>
+		      </el-calendar>
+		</el-dialog>
 	</div>
 </template>
 
 <script setup lang="ts">
 	import { ref } from 'vue'
 	import { Search } from '@element-plus/icons'
-	const radio = ref(3)
+	const calendar = ref()
+	const selectDate = (val: string) => {
+	  calendar.value.selectDate(val)
+	}
 </script>
 <script lang="ts">
 	import qs from 'qs'
@@ -70,31 +98,44 @@
 		data() {
 			return {
 				signData: [],
+				attendance:[],
+				signlistData: [],
 				pageInfo:{
 					input: '',
 					currentPage:1,
 					pagesize:3,
 					total:0
 				},
+				xy: '',
+				StaffId:sessionStorage.getItem("staffId"),
+				kaoqing:false
 			}
 		},
 		methods:{
-			updatesigns(row){
-				if(row.staffId==sessionStorage.getItem("staffId")){
-					var _this=this
-					console.log("idididiidididi ",row.signId)
-					this.axios.post("http://localhost:8088/TSM/updatestaffsign",{signId:row.signId})
-					.then(function(response){
-						console.log(response.data)
-						_this.staffsigns()
-						ElMessage({message: '打卡成功！',type: 'success',})
-						_this.addAttendance()
-					}).catch(function(error){
-						console.log(error)
-					})
-				}else{
-					ElMessage({message: '不能给别人打卡否则扣工资！',type: 'warning',})
-				}
+			attendanceByid(row){
+				var _this=this
+				this.xy = row.personalName
+				this.axios.get("http://localhost:8088/TSM/attendance/attendancebyid/"+row.staffId)
+				.then(function(response){
+					console.log(response.data)
+					_this.attendance=response.data
+				}).catch(function(error){
+					console.log(error)
+				})
+				this.kaoqing = true
+			},
+			updatesigns(sg){
+				var _this=this
+				console.log("idididiidididi ",sg.signId)
+				this.axios.post("http://localhost:8088/TSM/updatestaffsign",{signId: sg.signId,})
+				.then(function(response){
+					console.log(response.data)
+					ElMessage({message: '打卡成功！',type: 'success',})
+					_this.addAttendance()
+					_this.staffsigns()
+				}).catch(function(error){
+					console.log(error)
+				})
 			},
 			addAttendance(){
 				var _this=this
@@ -118,6 +159,7 @@
 				}).catch(function(error){
 					console.log(error)
 				})
+				this.signList()
 			},
 			handleCurrentChange(page){
 				var _this=this
@@ -148,6 +190,16 @@
 					console.log(error)
 				})
 			},
+			signList(){
+				var _this=this
+				this.axios.get("http://localhost:8088/TSM/staffsignlist")
+				.then(function(response){
+					console.log(response.data)
+					_this.signlistData=response.data
+				}).catch(function(error){
+					console.log(error)
+				})
+			},
 		},
 		created(){
 			var _this=this
@@ -160,6 +212,7 @@
 			}).catch(function(error){
 				console.log(error)
 			})
+			this.signList()
 		}
 	}
 </script>

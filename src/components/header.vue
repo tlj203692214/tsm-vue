@@ -30,7 +30,7 @@ export default {
   methods: {
     loginout() {
       window.sessionStorage.clear();
-      this.$router.push("/outlogin");
+      this.$router.push("/");
     },
   },
   created() {

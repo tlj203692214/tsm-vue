@@ -1,36 +1,163 @@
 <template>
+  <!-- 名称搜索框 -->
   <div class="position_top">
     <span class="paysize">角色名称：</span>
     <el-input
       v-model="pageInfo.posName"
-      placeholder="请输入名字"
+      placeholder="请输入角色名字"
       style="margin-right: 30px; width: 180px; height: 36px"
     />
-    <el-button @click="selectPosName()">查询</el-button>
+    <el-button @click="selectPosName()" style="height: 36px; margin-top: 10px">
+      <search style="width: 1em; height: 1em; margin-right: 8px" />查询</el-button>
+    <el-button @click="insertPopup()" style="height: 36px; margin-top: 10px">
+      <plus style="width: 1em; height: 1em; margin-right: 8px"/>添加角色</el-button>
   </div>
+  <!-- 角色数据显示表格 -->
   <div class="position_content">
     <el-table
       :data="role"
       style="width: 100%"
       @selection-change="handleSelectionChange"
+      border
+      :row-style="{ height: '23px' }"
+      :cell-style="{ padding: '0px' }"
     >
       <el-table-column type="selection" width="50"></el-table-column>
       <el-table-column prop="positionId" label="编号" width="80">
         <template #default="scope">{{ scope.row.positionId }}</template>
       </el-table-column>
-      <el-table-column prop="positionName" label="角色名字" width="120" />
-      <el-table-column prop="positionCode" label="角色编码" width="140" />
-      <el-table-column prop="positionRemark" label="角色描述" width="200" />
-      <el-table-column prop="positionCreated" label="创建时间" width="120" />
-      <el-table-column prop="positionUpdated" label="修改时间" width="120" />
+      <el-table-column prop="positionName" label="角色名字" />
+      <el-table-column prop="positionRemark" label="角色描述" />
+      <el-table-column prop="positionCreated" label="创建时间" />
+      <el-table-column prop="positionUpdated" label="修改时间" />
       <el-table-column prop="positionState" label="角色状态">
         <template #default="scope">
           <span v-if="scope.row.positionState == 0">可用</span>
           <span v-else>不可用</span>
         </template>
       </el-table-column>
+      <el-table-column label="操作">
+        <template #default="scope">
+          <el-button type="text" @click="updatePopup(scope.row)"
+            >修改</el-button
+          >
+          <el-button type="text" @click="toGranPopup(scope.row), selectNav()"
+            >授权</el-button
+          >
+        </template>
+      </el-table-column>
     </el-table>
   </div>
+  <!-- 添加弹窗 -->
+  <el-dialog title="添加角色" center v-model="roleDialogVisible">
+    <el-form
+      :model="roleInfo"
+      ref="roleInfo"
+      :label-position="right"
+      :rules="rules"
+    >
+      <el-row gutter="24">
+        <el-col :span="12">
+          <el-form-item label="角色名称：" prop="positionName">
+            <el-input v-model="roleInfo.positionName"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="角色描述：" prop="positionRemark">
+            <el-input v-model="roleInfo.positionRemark"></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="24">
+        <el-col :span="12">
+          <el-form-item label="角色状态：" prop="positionState">
+            <el-radio-group v-model="roleInfo.positionState">
+              <el-radio :label="0">可用</el-radio>
+              <el-radio :label="1">不可用</el-radio>
+            </el-radio-group>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="部门：" prop="deptId">
+            <el-select v-model="roleInfo.deptId" placeholder="请选择部门">
+              <el-option
+                v-for="item in deptInfo"
+                :key="item.deptId"
+                :label="item.deptName"
+                :value="item.deptId"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-form-item>
+        <div class="foot-button">
+          <el-button @click="rest('roleInfo')">取 消</el-button>
+          <el-button type="primary" @click="insertPosition('roleInfo')"
+            >确 定</el-button
+          >
+        </div>
+      </el-form-item>
+    </el-form>
+  </el-dialog>
+
+  <!-- 修改的弹窗 -->
+  <el-dialog title="权限修改" center v-model="updateroleDialogVisible">
+    <el-form
+      :model="roleInfo"
+      ref="roleInfo"
+      :label-position="right"
+      :rules="rules"
+    >
+      <el-row gutter="24">
+        <el-col :span="12">
+          <el-form-item label="角色名称：" prop="positionName">
+            <el-input v-model="roleInfo.positionName"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="角色描述：" prop="positionRemark">
+            <el-input v-model="roleInfo.positionRemark"></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="24">
+        <el-col :span="12">
+          <el-form-item label="角色状态：" prop="positionState">
+            <el-radio-group v-model="roleInfo.positionState">
+              <el-radio :label="0">可用</el-radio>
+              <el-radio :label="1">不可用</el-radio>
+            </el-radio-group>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-form-item>
+        <div class="foot-button">
+          <el-button @click="updateroleDialogVisible = false">取 消</el-button>
+          <el-button type="primary" @click="updateRoleInfo()">确 定</el-button>
+        </div>
+      </el-form-item>
+    </el-form>
+  </el-dialog>
+
+  <!-- 授权的弹窗 -->
+  <el-dialog title="给角色授权" v-model="toGrantDialogVisible">
+    <div>
+      <el-checkbox-group v-model="checkedMenu">
+        <el-checkbox
+          v-for="menu in AllMenu"
+          :key="menu.navigationId"
+          :label="menu.navigationId"
+          >{{ menu.navigationName }}</el-checkbox
+        ></el-checkbox-group
+      >
+    </div>
+    <div slot="footer">
+      <el-button @click="toGrantDialogVisible = false">取 消</el-button>
+      <el-button type="primary" @click="toGranforposition()">确 定</el-button>
+    </div>
+  </el-dialog>
+
   <div class="block">
     <el-pagination
       @size-change="handleSizeChange"
@@ -44,7 +171,6 @@
     </el-pagination>
   </div>
 </template>
-
 <script>
 import qs from "qs";
 import { ref, defineComponent } from "vue";
@@ -52,16 +178,197 @@ export default {
   data() {
     return {
       role: [],
+      deptInfo: [],
+      // 选中的数据
+      checkedMenu: [],
+      checkedInfo: [],
+      // 所有的数据
+      AllMenu: [],
+      checked: false,
+      roleDialogVisible: false,
+      updateroleDialogVisible: false,
+      toGrantDialogVisible: false,
+      menuId: "",
+      navId: "",
       pageInfo: {
-        stuname: ref(""),
         currentPage: 1,
         pagesize: 3,
         total: 0,
         posName: ref(""),
       },
+      // 角色信息
+      roleInfo: {
+        positionId: "",
+        positionName: "",
+        positionRemark: "",
+        positionState: "",
+        deptId: "",
+      },
+      rules: {
+        positionName: [
+          {
+            required: true,
+            message: "名字不能为空",
+            trigger: "blur",
+          },
+        ],
+        positionRemark: [
+          {
+            required: true,
+            message: "角色描述不能为空",
+            trigger: "blur",
+          },
+        ],
+        positionCreated: [
+          {
+            required: true,
+            message: "创建时间不能为空",
+            trigger: "blur",
+          },
+        ],
+        positionUpdated: [
+          {
+            required: true,
+            message: "修改时间不能为空",
+            trigger: "blur",
+          },
+        ],
+        positionState: [
+          {
+            required: true,
+            message: "角色状态不能为空",
+            trigger: "blur",
+          },
+        ],
+        deptId: [
+          {
+            required: true,
+            message: "部门不能为空",
+            trigger: "blur",
+          },
+        ],
+      },
     };
   },
   methods: {
+    // 添加角色弹窗
+    insertPopup() {
+      this.roleDialogVisible = true;
+      this.selectDept();
+    },
+    // 修改的弹窗
+    updatePopup(row) {
+      this.updateroleDialogVisible = true;
+      this.roleInfo = row;
+      this.menuId = row.positionId;
+    },
+    // 给角色授权弹窗(已选中的)
+    toGranPopup(row) {
+      this.toGrantDialogVisible = true;
+      this.navId = row.positionId;
+      this.axios
+        .post("http://localhost:8088/TSM/positionNav/selectPosById", {
+          positionId: row.positionId,
+        })
+        .then((res) => {
+          this.checkedMenu = res.data;
+          this.checkedInfo = res.data;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    // 查询所有的权限
+    selectNav() {
+      this.axios
+        .get("http://localhost:8088/TSM/navigation/selectNav")
+        .then((res) => {
+          this.AllMenu = res.data;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    // 给角色授权
+    toGranforposition() {
+      console.log(this.checkedMenu !== this.checkedInfo);
+      if (this.checkedMenu !== "" && this.checkedMenu !== this.checkedInfo) {
+        for (let i = 0; i < this.checkedMenu.length; i++) {
+          this.axios
+            .post("http://localhost:8088/TSM/position-nav/insertPosAndNav", {
+              navId: this.checkedMenu[i],
+              positionId: this.navId,
+            })
+            .then(() => {
+              console.log("添加成功");
+              this.toGrantDialogVisible = false;
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        }
+      } else {
+        this.toGrantDialogVisible = false;
+      }
+    },
+    // 添加方法
+    insertPosition(roleInfo) {
+      this.$refs[roleInfo].validate((valid) => {
+        if (valid) {
+          this.axios
+            .post("http://localhost:8088/TSM/position/insertPosition", {
+              positionName: this.roleInfo.positionName,
+              positionRemark: this.roleInfo.positionRemark,
+              positionState: this.roleInfo.positionState,
+              deptId: this.roleInfo.deptId,
+            })
+            .then((res) => {
+              console.log(res);
+              console.log("添加成功");
+              this.flesh();
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        }
+      });
+    },
+    // 取消按钮的清空方法
+    rest(roleInfo) {
+      this.$refs[roleInfo].resetFields();
+      this.roleDialogVisible = false;
+    },
+    // 修改方法
+    updateRoleInfo() {
+      this.axios
+        .post("http://localhost:8088/TSM/position/updatePosition", {
+          positionId: this.roleInfo.positionId,
+          positionName: this.roleInfo.positionName,
+          positionRemark: this.roleInfo.positionRemark,
+          positionState: this.roleInfo.positionState,
+          deptId: this.roleInfo.deptId,
+        })
+        .then(() => {
+          console.log("修改成功");
+          this.flesh();
+          this.updateroleDialogVisible = false;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    // 查询部门所有信息
+    selectDept() {
+      this.axios
+        .get("http://localhost:8088/TSM/dept/listDept")
+        .then((res) => {
+          console.log(res);
+          this.deptInfo = res.data;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
     handleCurrentChange(page) {
       var _this = this;
       this.pageInfo.currentPage = page;
@@ -162,7 +469,7 @@ export default {
 }
 
 .position_top .el-button {
-  width: 100px;
+  width: 110px;
   background: #f60;
   color: white;
   border: 1px solid white;

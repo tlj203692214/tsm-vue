@@ -22,6 +22,7 @@
       ==============================================================================================================================
       第一步填写学员信息      
        -->
+    
           <div v-if="this.active == 0">
             <div style="margin-top: 2%">
               <!-- 基础信息 -->
@@ -51,6 +52,7 @@
                     label-width="100px"
                     class="demo-ruleForm"
                   >
+
                     <!-- 姓名 -->
                     <el-row :gutter="24">
                       <el-col :span="12">
@@ -406,27 +408,30 @@
       <div>
         <el-table
           class="tableOne"
-          :data="tableData1"
+          :data="tablesj"
           stripe="true"
           border
           style="width: 84%; margin-left: 2%; margin-top: 2%; margin: 0 auto"
         >
           <el-table-column
-            prop="courname"
+            prop="courseName"
             style="margin: 0 auto"
             label="课程名称"
             width="200"
           >
           </el-table-column>
-          <el-table-column prop="couramount" label="课程金额" width="180">
+          <el-table-column prop="courseMoney" label="课程金额" width="180">
           </el-table-column>
-          <el-table-column prop="courhours" label="课时数量" width="180">
+          <el-table-column prop="courseHour" label="课时数量" width="180">
           </el-table-column>
-          <el-table-column prop="courprice" label="课时单价" width="180">
+          <el-table-column prop="coursePrice" label="课时单价" width="180">
           </el-table-column>
-          <el-table-column prop="courbook" label="书本费" width="180">
+          <el-table-column prop="bookFee" label="书本费" width="180">
           </el-table-column>
           <el-table-column prop="courpayable" label="应付金额" width="186">
+             <template #default="scope">
+                    {{scope.row.courseMoney+scope.row.bookFee}}
+                  </template>
           </el-table-column>
         </el-table>
       </div>
@@ -463,13 +468,13 @@
           <div style="margin-top: 1.5%; margin-left: 2%; width: 16%">
             <span style="font-size: 14px; color: #606266">学员姓名</span>
             <span style="margin-left: 12%; color: #303133; font-size: 14px"
-              >aaaa</span
+              >{{tableData.name}}</span
             >
           </div>
           <!-- 应付价格 -->
           <div style="margin-left: 19%; margin-top: -2%">
             <span style="font-size: 14px; color: #606266">应付价格</span>
-            <span style="color: red; margin-left: 2%">￥ 4500元</span>
+            <span style="color: red; margin-left: 2%">￥{{tablesj[0].courseMoney+tablesj[0].bookFee}}元</span>
           </div>
           <!-- 经办人 -->
           <el-form-item
@@ -482,9 +487,15 @@
               placeholder="请选择经办人"
               size="small"
               style="width: 26%"
+              @click="banliren()"
             >
-              <el-option label="张三" value="shanghai"></el-option>
-              <el-option label="李四" value="beijing"></el-option>
+              <el-option
+                  v-for="item in options"
+                  :key="item.staffId"
+                  :label="item.staffName"
+                  :value="item.staffId"
+    >
+    </el-option>
             </el-select>
           </el-form-item>
           <!-- 支付方式 -->
@@ -540,6 +551,7 @@
                 margin: 0 15px;
               "
               id="payfull"
+              @click="fq()"
               >全额付款</el-button
             >
           </el-form-item>
@@ -597,9 +609,10 @@
         <el-button
           v-else-if="this.active == 2"
           style="margin-left: 4%"
-          @click="tjopen('ruleForm1')"
+          @click="tjopen('ruleForm1'),xgxszt(),addxs()"
           >确认提交</el-button
         >
+     
       </div>
     </div>
   </div>
@@ -619,6 +632,8 @@ export default {
       routepath: JSON.parse(sessionStorage.getItem("routepath")),
       // 表单验证
       ruleForm: {
+        //编号
+        studentfilesId:'',
         // 姓名
         inforname: "",
         // 性别
@@ -631,6 +646,8 @@ export default {
         infoaddress: "",
         // 毕业学校
         infoschool: "",
+        //状态
+        studentfilesState:'',
       },
       // 新增访客弹框出生日期
       form: {
@@ -703,14 +720,7 @@ export default {
         },
       // 订单信息
       tableData1: [
-        {
-          courname: "java",
-          couramount: "2300",
-          courhours: "23",
-          courprice: "100",
-          courbook: "800",
-          courpayable: "40000",
-        },
+       
       ],
       // 支付信息内容表单
       ruleForm1: {
@@ -741,6 +751,8 @@ export default {
           { required: true, message:"选择支付时间", trigger: "blur"}
         ],
       },
+       //办理人
+    options:[],
     };
   },
 
@@ -754,11 +766,26 @@ export default {
         type: "warning",
       })
         .then(() => {
-          this.$message({
+          this.axios.post("http://localhost:8088/TSM/payMoney/intopatmoney",{
+        paymoneyMoney:this.tablesj[0].courseMoney+this.tablesj[0].bookFee, // 缴费金额
+        paymoneyDate:this.ruleForm1.value3, // 缴费时间
+        paymoneyMode:this.ruleForm1.payment, //缴费方式
+        courseId:this.tablesj[0].courseId,//  课程外键
+        staffId:this.ruleForm1.handler, //员工外键
+        studentfilesId:this.ruleForm.studentfilesId,// 学员外键
+
+          }).then(response=>{
+            console.log(response)
+            this.$message({
             type: "success",
             message: "报名成功!",
           });
           this.nextaa();
+          }).catch(function(error){
+              console.log(error)
+          });
+          
+         
         })
         .catch(() => {
           this.$message({
@@ -776,6 +803,41 @@ export default {
       this.routepath.forEach((item) => {
         this.$router.push(item.path);
       });
+    },
+    //修改学生状态
+    xgxszt(){
+      this.routepath.forEach((item) => {
+        if(item.path=='/studentcenter'){
+
+        }else{
+          this.axios.post("http://localhost:8088/TSM/studentfiles/updatefollow",{
+        studentfilesId:this.ruleForm.studentfilesId,
+      }).then(response=>{
+        console.log(response)
+      }).catch(function(error){
+          console.log(error)
+      });
+        }
+      });
+      
+    },
+    //添加学生
+    addxs(){
+        this.axios.post("http://localhost:8088/TSM/student/addstudent",{
+     studentName:this.ruleForm.inforname,
+      studentSex: this.ruleForm.inforsexs,
+       studentPhone: this.ruleForm.infocontact,
+        parentPhone: this.ruleForm.information,
+          studentLoc:this.ruleForm.infoaddress,
+          studentSchool:this.ruleForm.infoschool,
+          studentBirthday: this.form.date1,
+          studentAge:this.form.age,
+           courseid:this.tablesj[0].courseId,//课程外键
+        }).then(response=>{
+               console.log(response)
+        }).catch(function(err){
+            console.log(err)
+        });
     },
     // 下一步
     next(ruleForm) {
@@ -817,26 +879,27 @@ export default {
             type: 'warning',
           })
       }else{
-         console.log(this.multipleSelection.courseMoney+"json数据name");
+        //  console.log(this.tablesj.courseMoney+"json数据name");
           this.active++;
-            var cour = {
-              courseId:this.tablesj.courseId,
-              courseMoney:this.tablesj.courseMoney,
-              courseName:this.tablesj.courseName,
-              courseHour:this.tablesj.courseHour,
-              coursePrice:this.tablesj.coursePrice,
-              courPayable:this.tablesj.courPayable,
-              bookFee:this.tablesj.bookFee,
+        //     var kccour = {
+        //       courseId:this.tablesj.courseId,
+        //       courseMoney:this.tablesj.courseMoney,
+        //       courseName:this.tablesj.courseName,
+        //       courseHour:this.tablesj.courseHour,
+        //       coursePrice:this.tablesj.coursePrice,
+        //       courPayable:this.tablesj.courPayable,
+        //       bookFee:this.tablesj.bookFee,
              
-            };
-         sessionStorage.setItem('cour', JSON.stringify(cour));
-          var courJson = sessionStorage.getItem('cour');
-          cour = JSON.parse(courJson);
-          this.tablesess=cour
-          console.log(cour.courseId+"json数据ID"); // => tom
+        //     };
+        //  sessionStorage.setItem('cour', JSON.stringify(kccour));
+        //   var courJson = sessionStorage.getItem('cour');
+        //   kccour = JSON.parse(courJson);
+        //   this.tableData1=kccour
+        //   console.log(kccour.courseId+"json数据ID"); // => tom
           if (this.active > 2) {
             this.active = 0;
           }
+         
           }
     },
     // 上一步
@@ -1038,9 +1101,36 @@ rowClick(row, column) {
        console.log(error);
     })
   },
+  //第三步方法
+  //=============================================================================================================================
+  banliren(){
+    this.axios.get("http://localhost:8088/TSM/selectstall",{
+
+    }).then(response=>{
+      console.log(response.data)
+      this.options=response.data
+    }).catch(function(error){
+  console.log(error);
+    });
+
+  },
+  //全额付款
+  fq(){
+   this.ruleForm1.pamount=this.tablesj[0].courseMoney+this.tablesj[0].bookFee
+  }
   },
     //直接查询
   created() {
+    this.ruleForm.studentfilesId=sessionStorage.getItem('studentfilesId');
+      this.ruleForm.inforname=sessionStorage.getItem('studentfilesName');
+       this.ruleForm.inforsexs=sessionStorage.getItem('studentfilesSex');
+        this.ruleForm.infocontact=sessionStorage.getItem('studentfilesPhone');
+         this.ruleForm.information=sessionStorage.getItem('parentPhone');
+          this.ruleForm.infoaddress=sessionStorage.getItem('studentfilesLoc');
+           this.ruleForm.infoschool=sessionStorage.getItem('studentfilesSchool');
+           this.form.date1=sessionStorage.getItem('studentfilesBirthday');
+           this.form.age=sessionStorage.getItem('studentfilesAge');
+            this.ruleForm.studentfilesState=sessionStorage.getItem('studentfilesState');
     let _this=this;
     this.axios.get("http://localhost:8088/TSM/course/fyselectcourse",{
       params: _this.pageInfo

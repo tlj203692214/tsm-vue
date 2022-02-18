@@ -3,8 +3,7 @@
     <span class="paysize">学员名称：</span>
     <el-input v-model="input" placeholder="请输入名字" />
     <span class="kong"></span>
-    <el-button> 查询</el-button
-    >
+    <el-button> 查询</el-button>
     <el-button>删除</el-button>
   </div>
 
@@ -14,14 +13,17 @@
     :data="expenditureDate"
     style="width: 100%"
     @row-click="ddd"
+     border
+    :row-style="{ height: '23px' }"
+    :cell-style="{ padding: '0px' }"
   >
     <el-table-column type="selection" width="50"></el-table-column>
-    <el-table-column prop="expenditureId" label="编号" width="120">
+    <el-table-column prop="expenditureId" label="编号">
       <template #default="scope">{{ scope.row.expenditureId }}</template>
     </el-table-column>
-    <el-table-column prop="expenditureMoney" label="校务支出金额" width="180">
+    <el-table-column prop="expenditureMoney" label="校务支出金额">
       <template #default="scope">
-        <span v-if="scope.row.purchaseId == null">{{
+        <span v-if="scope.row.purchaseId == 0">{{
           scope.row.courseMoney + scope.row.bookFee
         }}</span>
         <span v-else-if="scope.row.refundId == 0">{{
@@ -29,11 +31,11 @@
         }}</span>
       </template>
     </el-table-column>
-    <el-table-column prop="expenditureDate" label="校务支出时间" width="180" />
+    <el-table-column prop="expenditureDate" label="校务支出时间" />
     <el-table-column label="支出类型">
       <template #default="scope">
         <span
-          v-if="scope.row.purchaseId == null"
+          v-if="scope.row.purchaseId == 0"
           @click="refundEdit(scope.row)"
           style="cursor: pointer; color: rgb(9, 130, 211)"
           >退费支出</span
@@ -56,22 +58,28 @@
     center
     :show-close="false"
   >
-    <el-table :data="refundData" border style="width: 100%">
-      <el-table-column prop="refundDate" label="退费时间" width="180" />
-      <el-table-column prop="refundMoney" label="退费金额" width="180">
+    <el-table
+      :data="refundData"
+      border
+      style="width: 100%"
+      :row-style="{ height: '30px' }"
+      :cell-style="{ padding: '0px' }"
+    >
+      <el-table-column prop="refundDate" label="退费时间"  />
+      <el-table-column prop="refundMoney" label="退费金额" >
         <template #default="scope">
           {{ scope.row.courseMoney + scope.row.bookFee }}
         </template>
       </el-table-column>
       <el-table-column prop="courseMoney" v-if="hidden"></el-table-column>
       <el-table-column prop="bookFee" v-if="hidden"></el-table-column>
-      <el-table-column prop="refundState" label="退费状态" width="180">
+      <el-table-column prop="refundState" label="退费状态">
         <template #default="scope">
           <span v-if="scope.row.refundState == 1">未退</span>
           <span v-else>已退</span>
         </template>
       </el-table-column>
-      <el-table-column prop="studentName" label="退费学员" width="180" />
+      <el-table-column prop="studentName" label="退费学员" />
       <el-table-column prop="staffName" label="财务名字" />
     </el-table>
     <template #footer>
@@ -91,11 +99,13 @@
     center
     :show-close="false"
   >
-    <el-table :data="purchaseData" border style="width: 100%">
-      <el-table-column prop="purchaseName" label="教材采购名字" width="180" />
-      <el-table-column prop="purchaseNumber" label="教材采购数量" width="180" />
-      <el-table-column prop="purchasePrice" label="教材采购价格" width="180" />
-      <el-table-column prop="purchaseAount" label="教材采购总价" width="180">
+    <el-table :data="purchaseData" border style="width: 100%"
+    :row-style="{ height: '30px' }"
+    :cell-style="{ padding: '0px' }">
+      <el-table-column prop="purchaseName" label="教材采购名字" />
+      <el-table-column prop="purchaseNumber" label="教材采购数量" />
+      <el-table-column prop="purchasePrice" label="教材采购价格"/>
+      <el-table-column prop="purchaseAount" label="教材采购总价">
         <template #defalut="scope">{{
           scope.row.purchaseNumber * scope.row.purchasePrice
         }}</template>
@@ -104,9 +114,7 @@
     </el-table>
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="(dialogVisible = false), (this.purchaseData = [])"
-          >取消</el-button
-        >
+        <el-button @click="(dialogVisible = false), (this.purchaseData = [])">取消</el-button>
       </span>
     </template>
   </el-dialog>

@@ -9,7 +9,7 @@
    	<div class="b">
    	快速检索:<select v-model="pageInfo.js" class="c">
    		<option value="公告主题"><el-icon><delete-filled /></el-icon>公告主题</option>
-   		<option value="公告内容"><el-icon><delete-filled /></el-icon>公告内容</option>
+   		<option value="部门范围"><el-icon><delete-filled /></el-icon>部门范围</option>
    	</select>
 	</div>
 	<el-input style="width:200px;" v-model="pageInfo.input" :placeholder="'根据'+this.pageInfo.js+'查询'" clearable />
@@ -25,7 +25,7 @@
 	<el-table border ref="mt" :data="bulletinboxData" style="width: 100%"  @selection-change="ggxszchange" :row-class-name="tableRowClassName">
 		<el-table-column type="selection" width="55" ></el-table-column>                                                                 
 		
-		<el-table-column    prop="noticeState"  label="状态" width="120">
+		<el-table-column    prop="noticeState"  label="状态" width="70">
 					<template #default="scope">
 					<span v-if="scope.row.noticeState===0">录入</span>
 					<span v-else-if="scope.row.noticeState===1" >发布</span>
@@ -39,13 +39,13 @@
 			
 		<!-- </el-table-column> -->
 		
-		<el-table-column label="公告主题" width="300" >
+		<el-table-column label="公告主题" width="200" >
 			<template #default="scope">
 				<span class="a" @click="cknr(scope.row),xgjm=true">{{scope.row.noticeTheme}}</span>
 			</template>
 		</el-table-column>
 
-		<el-table-column prop="noticeType" label="公告类型"  width="160">
+		<el-table-column prop="noticeType" label="公告类型"  width="100">
 			<template #default="scope">
 			<span v-if="scope.row.noticeType===1">活动安排</span>
 			<span v-else-if="scope.row.noticeType===2" >值班公告</span>
@@ -55,7 +55,23 @@
 			<span v-else>其他公告</span>
 			</template>
 		</el-table-column>
-		<el-table-column prop="staffId" label="录入人"  width="200">
+		<el-table-column prop="deptName" label="部门范围"  width="510">
+			<template #default="scope">
+					<span v-for="deptName in scope.row.deptName">
+						
+						
+						<span v-if="deptName==='0'">所有部门，</span>
+							<span v-else>
+								<span v-for="DeptData in DeptData">
+									<span v-if="deptName==DeptData.deptId">
+										{{DeptData.deptName}}，
+									</span>
+								</span>
+							</span>
+					</span>
+			</template>
+		</el-table-column>
+		<el-table-column prop="staffId" label="录入人"  width="100">
 			<template #default="scope">
 				<span v-for="staffData in staffData">
 					<span v-if="scope.row.staffId==staffData.staffId">{{staffData.staffName}}</span>
@@ -63,7 +79,7 @@
 			</template>
 			
 		</el-table-column>
-		<el-table-column prop="noticeDate" label="录入时间" show-overflow-tooltip ></el-table-column>
+		<el-table-column prop="noticeDate" label="日期" show-overflow-tooltip ></el-table-column>
 	
 	</el-table>
 	
@@ -93,7 +109,14 @@
 						<option value="6">其他公告</option>
 	  				</select>
 	  			</el-form-item>
-	  
+		
+	 <el-form-item label="选择部门:" prop="deptName">
+	 	
+	 		 <el-cascader  :props="props"  v-model="ruleForm.deptName"/>
+	 		
+	 	
+	 </el-form-item>
+
 	  			<el-form-item label="公告主题:" prop="noticeTheme">
 	  				<el-input v-model="ruleForm.noticeTheme"></el-input>
 	  			</el-form-item>
@@ -116,6 +139,7 @@
 						关闭</el-button>
 				</span>
 	  		</template>
+		<!-- 	{{sss[sss.length-1][sss[sss.length-1].length-1]}} -->
 	  	</el-dialog>
 		<!-- 修改界面-->
 			<el-dialog v-model="xgjm" title="修改信息" width="50%" center :show-close="false">
@@ -131,7 +155,12 @@
 								<option value="6">其他公告</option>
 						</select>
 					</el-form-item>
-		
+		            <el-form-item label="选择部门:" prop="deptName">
+		            	
+		            		 <el-cascader  :props="props"  v-model="ruleForm.deptName"/>
+		            		
+		            	
+		            </el-form-item>
 					<el-form-item label="公告主题:" prop="noticeTheme">
 						<el-input v-model="ruleForm.noticeTheme"></el-input>
 					</el-form-item>
@@ -150,6 +179,7 @@
 								关闭</el-button>
 						</span>
 				</template>
+				
 			</el-dialog>
 </template>
 
@@ -163,8 +193,19 @@
     export default{
 		data(){
 			return{
+				props:{
+						multiple: true,
+						  checkStrictly: true,
+						lazy: true,
+						lazyLoad: this.getCheckedNodes,
+					},
+				  deptNames:"", //部门范围（字符串）
+				
+				a:"",
+				
 				staffData:[],
 				ggxsz:[],
+				DeptData:[],
 				staffId:sessionStorage.getItem("staffId"),
 				xzjm:ref(false),
 				xgjm:ref(false),
@@ -182,12 +223,18 @@
 					noticeType:"",
 					noticeTheme: "",
 					noticeContent: "",
+					deptName:[["0"]],   //部门范围（数组）
 					noticeState:"",
 				},
 				rules: {
 					noticeType: [{
 						required: true,
 						message: '公告类别不能为空！',
+						trigger: 'blur',
+					}],
+					deptName: [{
+						required: true,
+						message: '部门范围不能为空！',
 						trigger: 'blur',
 					}],
 					noticeTheme: [{
@@ -200,15 +247,73 @@
 						message: '公告内容不能为空！',
 						trigger: 'blur',
 					}]
+					
 				},
 			}
 		},
 		methods:{
+			getCheckedNodes(node,resolve){
+				
+					const {data,level} = node;
+			
+			if(level===0){
+				
+						  
+						const nodes =  Array.from({ length: 1 }).map((item) =>{
+							return{
+								value:"0",
+								label:"所有部门",
+								leaf:false,
+								
+							};
+							
+						});
+							resolve(nodes);
+							
+							
+					
+			}else{
+				this.axios.post("http://localhost:8088/TSM/dept/selectDept",{
+				
+							
+				  })
+					  .then(response=>{
+						  
+						
+					this.axios.post("http://localhost:8088/TSM/dept/selectDeptjl/"+node.value)
+						  .then(res=>{
+							const nodes = (res.data).map((item) =>{	
+								
+									for(var a=0;a<response.data.length;a++){
+										if(item.deptId==response.data[a].deptDid){
+											var c=false
+											break;
+										}else{
+											var c=true
+										}
+									}
+							
+						
+								return{
+									value:item.deptId,
+									label:item.deptName,
+									leaf:c,
+									
+								};
+								
+							});
+							     
+								resolve(nodes);
+								
+								
+						});
+						
+					});
+					}
+				},
+				
 			gbjm(formName){
 				this.$refs[formName].resetFields()
-				this.ruleForm.noticeType=""
-				this.ruleForm.noticeTheme=""
-				this.ruleForm.noticeContent=""
 				this.xzjm=false
 				this.xgjm=false
 			},
@@ -216,6 +321,14 @@
 							let _this=this
 							this.$refs[formName].validate((valid) => {
 								if (valid) {
+									for (var i = 0; i < this.ruleForm.deptName.length; i++) {
+									  this.deptNames += this.ruleForm.deptName[i][this.ruleForm.deptName[i].length-1] + ",";
+									} //将数组转化为字符串
+									
+									//去掉最后一个逗号
+									if (this.deptNames.length > 0) {
+									  this.deptNames = this.deptNames.substr(0,this.deptNames.length - 1);
+									}
 			this.axios.post('http://localhost:8088/TSM/notice/updateNotice', {
 				noticeId:this.ruleForm.noticeId,
 				noticeType:this.ruleForm.noticeType,
@@ -226,9 +339,7 @@
 				})
 				.then((response) => {
 	this.$refs[formName].resetFields();
-	this.ruleForm.noticeType="";
-	this.ruleForm.noticeTheme="";
-	this.ruleForm.noticeContent="";
+	this.deptNames="";
 					console.log(response.data)
 				_this.creat();
 				_this.xgjm=false;
@@ -250,6 +361,7 @@
 				this.ruleForm.noticeTheme=row.noticeTheme;
 				this.ruleForm.noticeContent=row.noticeContent;
 				this.ruleForm.noticeState=row.noticeState;
+				
 			},
 			DeactivateNotice(row){   //暂停公告方法
 				let _this=this
@@ -333,19 +445,26 @@
 		       				let _this=this
 		       				this.$refs[formName].validate((valid) => {
 		       					if (valid) {
+		       for (var i = 0; i < this.ruleForm.deptName.length; i++) {
+		         this.deptNames += this.ruleForm.deptName[i][this.ruleForm.deptName[i].length-1] + ",";
+		       } //将数组转化为字符串
 		       
+		       //去掉最后一个逗号
+		       if (this.deptNames.length > 0) {
+		         this.deptNames = this.deptNames.substr(0,this.deptNames.length - 1);
+		       }
+		
 		       this.axios.post('http://localhost:8088/TSM/notice/addNotice', {
 		       	noticeType:this.ruleForm.noticeType,
 		       	noticeTheme:this.ruleForm.noticeTheme,
 		       	noticeContent:this.ruleForm.noticeContent,
 		       	staffId:this.staffId,
+				deptName:this.deptNames,
 		       	})
 		       	.then((response) => {
 		       
 		       		this.$refs[formName].resetFields();
-					this.ruleForm.noticeType="";
-					this.ruleForm.noticeTheme="";
-					this.ruleForm.noticeContent="";
+					this.deptNames="";
 		       	_this.creat();
 		       	ElMessage({message: '新增成功！',type: 'success',})
 		       		this.xzjm=false
@@ -359,23 +478,30 @@
 		       					}
 		       				})
 		       			},   
-					addNotice(formName) {    //新增公告
+					addNotice(formName) {    //新增公告并新建
 						let _this=this
 						this.$refs[formName].validate((valid) => {
 							if (valid) {
+		for (var i = 0; i < this.ruleForm.deptName.length; i++) {
+		  this.deptNames += this.ruleForm.deptName[i][this.ruleForm.deptName[i].length-1] + ",";
+		} //将数组转化为字符串
 		
+		//去掉最后一个逗号
+		if (this.deptNames.length > 0) {
+		  this.deptNames = this.deptNames.substr(0,this.deptNames.length - 1);
+		}
 		this.axios.post('http://localhost:8088/TSM/notice/addNotice', {
 			noticeType:this.ruleForm.noticeType,
 			noticeTheme:this.ruleForm.noticeTheme,
 			noticeContent:this.ruleForm.noticeContent,
 			staffId:this.staffId,
+			deptName:this.deptNames,
 			})
 			.then((response) => {
 		
 				this.$refs[formName].resetFields();
-				this.ruleForm.noticeType="";
-				this.ruleForm.noticeTheme="";
-				this.ruleForm.noticeContent="";
+			this.deptNames="";
+				
 			_this.creat();
 			ElMessage({message: '新增成功！',type: 'success',})
 				
@@ -396,6 +522,10 @@
 						                ,{params:this.pageInfo})
 						.then(function(response){
 						console.log(response.data)
+						for(var a=0;a < response.data.records.length;a++){
+							response.data.records[a].deptName=response.data.records[a].deptName.split(",")
+							
+						}
 							_this.bulletinboxData=response.data.records
 							_this.pageInfo.total=response.data.total
 							
@@ -414,6 +544,9 @@
 						.then(function(response){
 							console.log("1-------------------------------------------")
 							console.log(response.data)
+							for(var a=0;a < response.data.records.length;a++){
+								response.data.records[a].deptName=response.data.records[a].deptName.split(",")
+							}
 							_this.bulletinboxData=response.data.records
 						}).catch(function(error){
 							console.log(error)
@@ -428,6 +561,9 @@
 						.then(function(response){
 							console.log("2-------------------------------------------")
 							console.log(response.data)
+							for(var a=0;a < response.data.records.length;a++){
+								response.data.records[a].deptName=response.data.records[a].deptName.split(",")
+							}
 							_this.bulletinboxData=response.data.records
 							_this.pageInfo.total=response.data.total
 						}).catch(function(error){
@@ -449,16 +585,39 @@
 							
 						})
 					},
+					selectDept(){   //查询部门
+							let _this=this
+										
+							this.axios.post("http://localhost:8088/TSM/dept/selectDept",{
+							
+										
+							  })
+							  .then(res=>{
+									console.log(res)
+								console.log(res.data)
+								_this.DeptData=res.data
+								
+								
+							})
+						} ,
+						
 				},
 				created(){
 					this.cxyh()  //查询所有用户
+					this.selectDept() // 查询所有部门
 					console.log(this.pageInfo.StaffNames)
 					console.log("aaaaaaaaaa")
 					var _this=this
 					this.axios.get("http://localhost:8088/TSM/notice/bulletinbox"
 					                ,{params:this.pageInfo})
 					.then(function(response){
-					console.log(response.data)
+			
+				
+					for(var a=0;a < response.data.records.length;a++){
+						response.data.records[a].deptName=response.data.records[a].deptName.split(",")
+						
+					}
+						
 						_this.bulletinboxData=response.data.records
 						_this.pageInfo.total=response.data.total
 						
@@ -472,8 +631,8 @@
 </script>
 
 <style>
-	.d{
-		width:50%;
+ .d{
+		width:30%;
 		height:30px;
 	}
 </style>

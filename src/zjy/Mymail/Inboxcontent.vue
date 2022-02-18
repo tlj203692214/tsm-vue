@@ -24,7 +24,7 @@
 			ref
 		} from 'vue'
 		import qs from 'qs'
-	
+	import { ElMessage } from 'element-plus'
 	
 	export default{
 	
@@ -63,6 +63,7 @@
 					
 			sessionStorage.setItem("activeName",'0')
 			_this.$router.replace("/mymail");
+			 ElMessage({message: '删除成功！',type: 'success',})
 					}).catch(function(error){
 						console.log(error)
 					})
