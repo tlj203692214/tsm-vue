@@ -36,9 +36,9 @@
             />
           </template>
         </el-table-column> -->
-        <el-table-column prop="personalName" label="用户名字"/>
-        <el-table-column prop="deptName" label="部门名字"/>
-        <el-table-column prop="positionName" label="角色名字"/>
+        <el-table-column prop="personalName" label="用户名字" />
+        <el-table-column prop="deptName" label="部门名字" />
+        <el-table-column prop="positionName" label="角色名字" />
         <el-table-column prop="entryTime" label="入职时间" />
         <el-table-column prop="personalState" label="用户状态">
           <template #default="scope">
@@ -48,19 +48,21 @@
         </el-table-column>
         <el-table-column label="操作">
           <template #default="scope">
-            <el-button
-              type="text"
-              @click="detailsUp(scope.row)"
+            <el-button type="text" @click="detailsUp(scope.row)"
               >详情</el-button
             >
-            <el-button type="text" @click="toUserPopup(scope.row),selectPosition()">分配角色</el-button>
+            <el-button
+              type="text"
+              @click="toUserPopup(scope.row), selectPosition()"
+              >分配角色</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
     </div>
   </div>
 
-<!-- 给用户分配角色 -->
+  <!-- 给用户分配角色 -->
   <el-dialog title="给用户分配角色" v-model="toUserDialogVisible">
     <div>
       <el-checkbox-group v-model="checkedRole">
@@ -128,7 +130,7 @@
               <el-date-picker
                 v-model="personal.personalBirthday"
                 type="date"
-                placeholder="Pick a day"
+                placeholder="Pick a date"
               >
               </el-date-picker>
             </el-form-item>
@@ -199,13 +201,13 @@ export default {
     return {
       editcontent: false,
       centerDialogVisible: false,
-      toUserDialogVisible:false,
+      toUserDialogVisible: false,
       // 选中的角色
-      checkedRole:[],
-      checkedInfo:[],
+      checkedRole: [],
+      checkedInfo: [],
       // 所有角色集合
       roleList: [],
-      userId:"",
+      userId: "",
       imageUrl: "",
       usertable: [],
       pageInfo: {
@@ -226,7 +228,7 @@ export default {
         personalState: 1,
         personalId: "",
         portraitId: "",
-        staffId:''
+        staffId: "",
       },
     };
   },
@@ -237,8 +239,8 @@ export default {
   },
   methods: {
     // 给用户分配权限弹窗(该用户下的角色，选中)
-    toUserPopup(row){
-      this.toUserDialogVisible =  true;
+    toUserPopup(row) {
+      this.toUserDialogVisible = true;
       this.userId = row.staffId;
       this.axios
         .post("http://localhost:8088/TSM/staff-position/selectPosById", {
@@ -251,7 +253,6 @@ export default {
         .catch(function (error) {
           console.log(error);
         });
-
     },
     handleAvatarSuccess(res, file) {
       console.log(res);
@@ -279,19 +280,22 @@ export default {
       this.personal.staffId = row.staffId;
     },
     // 给角色授权
-    toGranforposition(){
-        console.log(this.checkedRole !== this.checkedInfo);
+    toGranforposition() {
+      console.log(this.checkedRole !== this.checkedInfo);
       if (this.checkedRole !== "" && this.checkedRole !== this.checkedInfo) {
         for (let i = 0; i < this.checkedRole.length; i++) {
           this.axios
-            .post("http://localhost:8088/TSM/staff-position/insertStaffPosition", {
-              positionId: this.checkedRole[i],
-              staffId: this.userId,
-            })
+            .post(
+              "http://localhost:8088/TSM/staff-position/insertStaffPosition",
+              {
+                positionId: this.checkedRole[i],
+                staffId: this.userId,
+              }
+            )
             .then(() => {
               console.log("添加成功");
               this.toUserDialogVisible = false;
-               this.flesh();
+              this.flesh();
             })
             .catch(function (error) {
               console.log(error);
@@ -314,13 +318,13 @@ export default {
           personalPhone: this.personal.personalPhone,
           entryTime: this.personal.entryTime,
           personalState: this.personal.personalState,
-          staffId:this.personal.staffId,
+          staffId: this.personal.staffId,
           portraitId: this.personal.portraitId,
         })
         .then((res) => {
           console.log(res);
           console.log("修改成功");
-          //   _this.centerDialogVisible = false;
+          _this.centerDialogVisible = false;
           this.flesh();
         })
         .catch(function (error) {

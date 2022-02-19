@@ -222,7 +222,6 @@
           </div>
         </el-tab-pane>
 
-
         <!-- 
       ===========================================================================================================================    
         历史学员
@@ -230,116 +229,124 @@
         <el-tab-pane label="历史学员" name="second">
           <div>
             <div>
-                 <el-form
-              ref="formData1"
-              :model="formData1"
-              :rules="rules"
-              size="medium"
-              label-width="100px"
-             >
-              <div style="background-color: white; height: 50%; margin-top: 1%">
-                &nbsp;&nbsp;&nbsp;请选择：
-                <!--历史学员：  搜索下拉框 -->
-              
-                <el-select
-                  v-model="formData1.valueone"
-                  placeholder="请选择"
-                  style="width: 100px; margin-top: 14px"
+              <el-form
+                ref="formData1"
+                :model="formData1"
+                :rules="rules"
+                size="medium"
+                label-width="100px"
+              >
+                <div
+                  style="background-color: white; height: 50%; margin-top: 1%"
                 >
-                  <el-option
-                    v-for="item in optionsone"
-                    :key="item.valueone"
-                    :label="item.labeone"
-                    :value="item.valueone"
+                  &nbsp;&nbsp;&nbsp;请选择：
+                  <!--历史学员：  搜索下拉框 -->
+
+                  <el-select
+                    v-model="formData1.valueone"
+                    placeholder="请选择"
+                    style="width: 100px; margin-top: 14px"
                   >
-                  </el-option>
-                </el-select>
-                <span v-if="formData1.valueone=='学生姓名'">
+                    <el-option
+                      v-for="item in optionsone"
+                      :key="item.valueone"
+                      :label="item.labeone"
+                      :value="item.valueone"
+                    >
+                    </el-option>
+                  </el-select>
+                  <span v-if="formData1.valueone == '学生姓名'">
                     <!--历史学员：  搜索文本框 -->
-                <el-form-item
-                 style="margin-left: 170px; margin-top: -37px"
-                    label-width="0"
-                    prop="inputone"
-                  >
-                <el-input
-                  style="width: 150px"
-                  placeholder="请输入学生姓名"
-                  v-model="formData1.inputone"
-                  clearable
-                >
-                </el-input>
-                </el-form-item>
-                </span>
-                <span v-else>
-                  <!--历史学员：  搜索文本框 -->
-                <el-form-item
-                 style="margin-left: 170px; margin-top: -37px"
-                    label-width="0"
-                    prop="inputone"
-                  >
-                <el-input
-                  style="width: 150px"
-                  placeholder="请输入班级名称"
-                  v-model="formData1.inputone"
-                  clearable
-                >
-                
-                </el-input>
-                </el-form-item>
-                </span>
-                <!--历史学员:  搜索按钮 -->
-                 <el-form-item
+                    <el-form-item
+                      style="margin-left: 170px; margin-top: -37px"
+                      label-width="0"
+                      prop="inputone"
+                    >
+                      <el-input
+                        style="width: 150px"
+                        placeholder="请输入学生姓名"
+                        v-model="formData1.inputone"
+                        clearable
+                      >
+                      </el-input>
+                    </el-form-item>
+                  </span>
+                  <span v-else>
+                    <!--历史学员：  搜索文本框 -->
+                    <el-form-item
+                      style="margin-left: 170px; margin-top: -37px"
+                      label-width="0"
+                      prop="inputone"
+                    >
+                      <el-input
+                        style="width: 150px"
+                        placeholder="请输入班级名称"
+                        v-model="formData1.inputone"
+                        clearable
+                      >
+                      </el-input>
+                    </el-form-item>
+                  </span>
+                  <!--历史学员:  搜索按钮 -->
+                  <el-form-item
                     size="large"
                     style="margin-top: -62px; margin-left: 220px"
                   >
-                <el-button type="primary" style="height: 8px; background: #f60" @click="lishiss()">
-                  <el-icon><search /></el-icon
-                ></el-button>
-                </el-form-item>
-                <!--历史学员： 文字链接     重置 -->
-                &nbsp;&nbsp;&nbsp;
-                 <el-form-item
+                    <el-button
+                      type="primary"
+                      style="height: 8px; background: #f60"
+                      @click="lishiss()"
+                    >
+                      <el-icon><search /></el-icon
+                    ></el-button>
+                  </el-form-item>
+                  <!--历史学员： 文字链接     重置 -->
+                  &nbsp;&nbsp;&nbsp;
+                  <el-form-item
                     size="large"
                     style="margin-top: -84px; margin-left: 325px"
                   >
-                <el-link   @click="resetForm2('formData1')" :underline="false" style="color: #000000"
-                  >重&nbsp;置</el-link
-                >
-                </el-form-item>
-                <!--历史学员：  新生报名按钮 -->
-                <!-- <el-button
+                    <el-link
+                      @click="resetForm2('formData1')"
+                      :underline="false"
+                      style="color: #000000"
+                      >重&nbsp;置</el-link
+                    >
+                  </el-form-item>
+                  <!--历史学员：  新生报名按钮 -->
+                  <!-- <el-button
                   type="primary"
                   style="margin-left: 55%; background: #f60"
                   @click="routepath()"
                   >新生报名</el-button
                 > -->
-              </div>
-              <div style="background-color: white">
-                <!--历史学员：  所在班级  下拉框搜索 -->
-                <el-form-item
-                    style="margin-left: -4px;margin-top: -10px;"
+                </div>
+                <div style="background-color: white">
+                  <!--历史学员：  所在班级  下拉框搜索 -->
+                  <el-form-item
+                    style="margin-left: -4px; margin-top: -10px"
                     label-width="0"
                     prop="downTwo"
                   >
-                <el-select
-                  v-model="formData1.downTwo"
-                  clearable
-                  placeholder="毕业班级"
-                  class="dowtwo"
-                  id="dowtwo"
-                  @click="dowtwo()"
-                  @change="lishiss()"
-                >
-                  <el-option
-                    v-for="item in selectiontwo"
-                     :key="item.classesId"
+                    <el-select
+                      v-model="formData1.downTwo"
+                      clearable
+                      placeholder="毕业班级"
+                      class="dowtwo"
+                      id="dowtwo"
+                      @click="dowtwo()"
+                      @change="lishiss()"
+                    >
+                      <el-option
+                        v-for="item in selectiontwo"
+                        :key="item.classesId"
                         :label="item.classesName"
                         :value="item.classesId"
-                  >
-                  </el-option>
-                </el-select>
-                </el-form-item>
-              </div>
+                      >
+                      </el-option>
+                    </el-select>
+                  </el-form-item>
+                </div>
               </el-form>
             </div>
             <!-- 
@@ -373,11 +380,18 @@
                   </el-table-column>
                   <el-table-column prop="classesName" label="班级" width="155">
                   </el-table-column>
-                  <el-table-column prop="graduationDate" label="毕业时间" width="160">
+                  <el-table-column
+                    prop="graduationDate"
+                    label="毕业时间"
+                    width="160"
+                  >
                   </el-table-column>
                   <el-table-column label="操作" width="130">
-                    <template  #default="scope">
-                      <el-button type="text" size="small" @click="routepath(scope.row)"
+                    <template #default="scope">
+                      <el-button
+                        type="text"
+                        size="small"
+                        @click="routepath(scope.row)"
                         >续报</el-button
                       >
                       <el-button type="text" size="small" @click="opendelect"
@@ -388,10 +402,10 @@
                 </el-table>
                 <div class="block">
                   <el-pagination
-                     @size-change="handleSizeChangeOne"
+                    @size-change="handleSizeChangeOne"
                     @current-change="handleCurrentChangeOne"
                     :current-page="pageInfo1.currentPageOne"
-                    :page-sizes=[2,4,6,8]
+                    :page-sizes="[2, 4, 6, 8]"
                     :page-size="pageInfo1.sizeOne"
                     layout="total, sizes, prev, pager, next, jumper"
                     :total="pageInfo1.total"
@@ -406,8 +420,8 @@
           退学学员信息
     ============================================================================================================================      
          -->
-          <el-tab-pane label="退学学员信息" name="third">
-              <div>
+        <el-tab-pane label="退学学员信息" name="third">
+          <div>
             <el-form
               ref="formData"
               :model="formData"
@@ -415,109 +429,98 @@
               size="medium"
               label-width="100px"
             >
-            <el-form-item
-                
-                    label-width="0"
-                    prop="input"
-                  >
-                 
-                      <el-input
-                        style="width: 150px"
-                        placeholder="请输入学生姓名"
-                        v-model="formData.input"
-                        clearable
-                      >
-                      </el-input>
-                  </el-form-item>
-            <el-form-item
-                    size="large"
-                    style="margin-top: -62px; margin-left: 50px"
-                  >
-                    <el-button
-                      type="primary"
-                      style="background: #f60; border: 10px white"
-                      @click="mohuchaxun()"
-                    >
-                      <el-icon><search /></el-icon>
-                    </el-button>
-                  </el-form-item>
-                  <!-- 文字链接     重置 -->
-                  &nbsp;&nbsp;&nbsp;
-                  <el-form-item
-                    size="large"
-                    style="margin-top: -84px; margin-left: 150px"
-                  >
-                    <el-link
-                      @click="resetForm1('formData')"
-                      :underline="false"
-                      style="color: #000000"
-                      >重&nbsp;置</el-link
-                    >
-                  </el-form-item>
-                  </el-form>
-                  </div>
-      <!-- 
+              <el-form-item label-width="0" prop="input">
+                <el-input
+                  style="width: 150px"
+                  placeholder="请输入学生姓名"
+                  v-model="formData.input"
+                  clearable
+                >
+                </el-input>
+              </el-form-item>
+              <el-form-item
+                size="large"
+                style="margin-top: -62px; margin-left: 50px"
+              >
+                <el-button
+                  type="primary"
+                  style="background: #f60; border: 10px white"
+                  @click="mohuchaxun()"
+                >
+                  <el-icon><search /></el-icon>
+                </el-button>
+              </el-form-item>
+              <!-- 文字链接     重置 -->
+              &nbsp;&nbsp;&nbsp;
+              <el-form-item
+                size="large"
+                style="margin-top: -84px; margin-left: 150px"
+              >
+                <el-link
+                  @click="resetForm1('formData')"
+                  :underline="false"
+                  style="color: #000000"
+                  >重&nbsp;置</el-link
+                >
+              </el-form-item>
+            </el-form>
+          </div>
+          <!-- 
         学员学退信息表格
        -->
-                   <el-table
-                  :data="tableDataOne1"
-                  style="width: 100%"
-                  max-height="300"
+          <el-table :data="tableDataOne1" style="width: 100%" max-height="300">
+            <el-table-column prop="nameone" label="姓名" width="125">
+            </el-table-column>
+            <el-table-column prop="ageone" label="年龄" width="125">
+            </el-table-column>
+            <el-table-column prop="sexssone" label="性别" width="125">
+            </el-table-column>
+            <el-table-column prop="phonesone" label="联系电话" width="205">
+            </el-table-column>
+            <el-table-column prop="addressone" label="学生住址" width="225">
+            </el-table-column>
+            <el-table-column prop="classsone" label="所学专业" width="155">
+            </el-table-column>
+            <el-table-column prop="timeone" label="退学时间" width="155">
+            </el-table-column>
+            <el-table-column
+              prop="timeone"
+              label="退学原因"
+              width="160"
+            ></el-table-column>
+            <el-table-column prop="classsone" label="退费金额" width="155">
+            </el-table-column>
+            <el-table-column label="操作" width="130">
+              <template #default="scope">
+                <el-button
+                  type="text"
+                  size="small"
+                  @click="routepath(scope.row)"
+                  >重新报读</el-button
                 >
-                  <el-table-column prop="nameone" label="姓名" width="125">
-                  </el-table-column>
-                  <el-table-column prop="ageone" label="年龄" width="125">
-                  </el-table-column>
-                  <el-table-column prop="sexssone" label="性别" width="125">
-                  </el-table-column>
-                  <el-table-column
-                    prop="phonesone"
-                    label="联系电话"
-                    width="205"
-                  >
-                  </el-table-column>
-                  <el-table-column
-                    prop="addressone"
-                    label="学生住址"
-                    width="225"
-                  >
-                  </el-table-column>
-                  <el-table-column prop="classsone" label="所学专业" width="155">
-                  </el-table-column>
-                  <el-table-column prop="timeone" label="退学时间" width="155">
-                     </el-table-column>
-                      <el-table-column prop="timeone" label="退学原因" width="160"></el-table-column>
-                      <el-table-column prop="classsone" label="退费金额" width="155">
-                  </el-table-column>
-                  <el-table-column label="操作" width="130">
-                    <template  #default="scope">
-                      <el-button type="text" size="small" @click="routepath(scope.row)"
-                        >重新报读</el-button
-                      >
-                      <el-button type="text" size="small" @click="opendelect"
-                        >删除</el-button
-                      >
-                    </template>
-                  </el-table-column>
-                </el-table>
-                <!-- 
+                <el-button type="text" size="small" @click="opendelect"
+                  >删除</el-button
+                >
+              </template>
+            </el-table-column>
+          </el-table>
+          <!-- 
                   分页
                  -->
-                <div class="block">
-                  <el-pagination
-                    @size-change="handleSizeChangeOne"
-                    @current-change="handleCurrentChangeOne"
-                    :current-page="pageInfo1.currentPageOne"
-                    :page-sizes=[2,4,6,8]
-                    :page-size="pageInfo1.sizeOne"
-                    layout="total, sizes, prev, pager, next, jumper"
-                    :total="pageInfo1.total"
-                  >
-                  </el-pagination>
-                </div>
-          </el-tab-pane>
+          <div class="block">
+            <el-pagination
+              @size-change="handleSizeChangeOne"
+              @current-change="handleCurrentChangeOne"
+              :current-page="pageInfo1.currentPageOne"
+              :page-sizes="[2, 4, 6, 8]"
+              :page-size="pageInfo1.sizeOne"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="pageInfo1.total"
+            >
+            </el-pagination>
+          </div>
+        </el-tab-pane>
       </el-tabs>
-
 
       <!-- 
        ============================================================================================================ 
@@ -657,23 +660,25 @@
                 "
               >
                 <!-- 转班 -->
-              
-                <span v-if="studentxiangq.classesName==null||studentxiangq.classesName==''">
+
+                <span
+                  v-if="
+                    studentxiangq.classesName == null ||
+                    studentxiangq.classesName == ''
+                  "
+                >
+                  <el-button type="info" plain size="small" disabled
+                    >转班</el-button
+                  >
+                </span>
+                <span v-else>
                   <el-button
-                   type="info" plain
-                  size="small"
-                  disabled
-                  >转班</el-button
-                >
-               </span>
-               <span v-else>
-                 <el-button
-                  type="primary"
-                  style="background-color: #f60"
-                  size="small"
-                  @click="zb()"
-                  >转班</el-button
-                >
+                    type="primary"
+                    style="background-color: #f60"
+                    size="small"
+                    @click="zb()"
+                    >转班</el-button
+                  >
                 </span>
                 <!-- <el-button
                   type="primary"
@@ -758,7 +763,11 @@
                 style="width: 100%"
                 max-height="300"
               >
-                <el-table-column prop="studentName" label="学员姓名" width="180">
+                <el-table-column
+                  prop="studentName"
+                  label="学员姓名"
+                  width="180"
+                >
                 </el-table-column>
                 <el-table-column
                   prop="classesName"
@@ -877,7 +886,10 @@
                   </el-table-column>
                   <el-table-column fixed="right" label="操作" width="100">
                     <template #default="scope">
-                      <el-button type="text" size="small" @click="openhonor1(scope.row)"
+                      <el-button
+                        type="text"
+                        size="small"
+                        @click="openhonor1(scope.row)"
                         >删除</el-button
                       >
                     </template>
@@ -893,7 +905,7 @@
                   @size-change="honorhandleSizeChange"
                   @current-change="honorhandleCurrentChange"
                   :current-page="pageInfo2.honorcurrentPage"
-                  :page-sizes="[2,4,6,8]"
+                  :page-sizes="[2, 4, 6, 8]"
                   :page-size="pageInfo2.honorcurrentsize"
                   layout="total, sizes, prev, pager, next, jumper"
                   :total="pageInfo2.total"
@@ -946,7 +958,10 @@
                   </el-table-column>
                   <el-table-column fixed="right" label="操作" width="100">
                     <template #default="scope">
-                      <el-button type="text" size="small" @click="openhonor2(scope.row)"
+                      <el-button
+                        type="text"
+                        size="small"
+                        @click="openhonor2(scope.row)"
                         >删除</el-button
                       >
                     </template>
@@ -959,7 +974,7 @@
                   @size-change="converhandleSizeChange"
                   @current-change="converhandleCurrentChange"
                   :current-page="pageInfo3.convercurrentPage"
-                  :page-sizes="[2,4,6,8]"
+                  :page-sizes="[2, 4, 6, 8]"
                   :page-size="pageInfo3.conversize"
                   layout="total, sizes, prev, pager, next, jumper"
                   :total="pageInfo3.total"
@@ -1001,18 +1016,18 @@
                   </el-table-column>
                   <el-table-column label="处罚等级">
                     <template #default="scope">
-                        <span v-if="scope.row.stundentpunishGrade==0">
-                            警告
-                        </span>
-                        <span v-else-if="scope.row.stundentpunishGrade==1">
-                            记过
-                        </span>
-                        <span v-else-if="scope.row.stundentpunishGrade==2">
-                           记大过
-                        </span>
-                        <span v-else-if="scope.row.stundentpunishGrade==3">
-                           开除
-                        </span>
+                      <span v-if="scope.row.stundentpunishGrade == 0">
+                        警告
+                      </span>
+                      <span v-else-if="scope.row.stundentpunishGrade == 1">
+                        记过
+                      </span>
+                      <span v-else-if="scope.row.stundentpunishGrade == 2">
+                        记大过
+                      </span>
+                      <span v-else-if="scope.row.stundentpunishGrade == 3">
+                        开除
+                      </span>
                     </template>
                   </el-table-column>
                   <el-table-column prop="stundentpunishReason" label="处罚理由">
@@ -1021,7 +1036,10 @@
                   </el-table-column>
                   <el-table-column fixed="right" label="操作" width="100">
                     <template #default="scope">
-                      <el-button type="text" size="small" @click="openhonor(scope.row)"
+                      <el-button
+                        type="text"
+                        size="small"
+                        @click="openhonor(scope.row)"
                         >删除</el-button
                       >
                     </template>
@@ -1037,13 +1055,12 @@
                   @size-change="honorhandleSizeChange1"
                   @current-change="honorhandleCurrentChange1"
                   :current-page="pageInfo4.honorcurrentPage"
-                  :page-sizes="[2,4,6,8]"
+                  :page-sizes="[2, 4, 6, 8]"
                   :page-size="pageInfo4.honorcurrentsize"
                   layout="total, sizes, prev, pager, next, jumper"
                   :total="pageInfo4.total"
                 >
                 </el-pagination>
-                
               </div>
             </div>
           </el-tab-pane>
@@ -1075,7 +1092,7 @@
             <el-form-item label="学员姓名" prop="shifname">
               <el-input
                 v-model="shiftruleForm.shifname"
-                disabled 
+                disabled
                 readonly="readonly"
                 size="small"
                 style="width: 74%"
@@ -1083,8 +1100,8 @@
             </el-form-item>
           </el-col>
           <!-- <el-col :span="12"> -->
-            <!-- 状态 -->
-            <!-- <el-form-item label="状态" prop="shifstate">
+          <!-- 状态 -->
+          <!-- <el-form-item label="状态" prop="shifstate">
               <el-input
                 v-model="shiftruleForm.shifstate"
                 readonly="readonly"
@@ -1100,7 +1117,7 @@
             <el-form-item label="原来班级" prop="shiforiginal">
               <el-input
                 v-model="shiftruleForm.shiforiginal"
-                disabled 
+                disabled
                 readonly="readonly"
                 size="small"
                 style="width: 74%"
@@ -1109,21 +1126,25 @@
           </el-col>
           <el-col :span="12">
             <!-- 转班班级 -->
-            
-            <el-form-item style="margin-top: -64px;" label="转班班级" prop="shiforiginalclass">
+
+            <el-form-item
+              style="margin-top: -64px"
+              label="转班班级"
+              prop="shiforiginalclass"
+            >
               <el-select
                 v-model="shiftruleForm.shiforiginalclass"
                 placeholder="请选择转班班级"
                 size="small"
                 @click="dowone()"
               >
-               <el-option
-                        v-for="item in selectionone"
-                        :key="item.classesId"
-                        :label="item.classesName"
-                        :value="item.classesId"
-                      >
-                      </el-option>
+                <el-option
+                  v-for="item in selectionone"
+                  :key="item.classesId"
+                  :label="item.classesName"
+                  :value="item.classesId"
+                >
+                </el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -1144,20 +1165,23 @@
           </el-col>
           <el-col :span="12">
             <!-- 审核人 -->
-            <el-form-item style="margin-top: -64px;" label="审核人" prop="shifreviewer">
+            <el-form-item
+              style="margin-top: -64px"
+              label="审核人"
+              prop="shifreviewer"
+            >
               <el-select
                 v-model="shiftruleForm.shifreviewer"
                 placeholder="请选择审核人"
                 size="small"
                 @click="shr()"
               >
-                <el-option 
-                v-for="item in selectshr"
-                :key="item.staffId"
-                :label="item.staffName"
-                :value="item.staffId"
+                <el-option
+                  v-for="item in selectshr"
+                  :key="item.staffId"
+                  :label="item.staffName"
+                  :value="item.staffId"
                 ></el-option>
-              
               </el-select>
             </el-form-item>
           </el-col>
@@ -1314,7 +1338,6 @@
         ref="addhonorruleForm"
         label-width="100px"
         class="demo-addhonorruleForm"
-        
       >
         <el-row :span="24">
           <el-col :span="12">
@@ -1323,7 +1346,7 @@
               <el-input
                 v-model="addhonorruleForm.addhonorname"
                 size="small"
-                 disabled 
+                disabled
                 readonly="readonly"
                 style="width: 70%"
               ></el-input>
@@ -1335,7 +1358,7 @@
               <el-input
                 v-model="addhonorruleForm.addhonorclass"
                 size="small"
-                 disabled 
+                disabled
                 readonly="readonly"
                 style="width: 70%"
               ></el-input>
@@ -1414,15 +1437,19 @@
           <el-col :span="12">
             <!-- 班级名称 -->
             <el-form-item label="谈话老师" prop="addconverclass">
-              <el-select v-model="addconverruleForm.addconverclass" placeholder="请选择" @click="cxls()">
-                  <el-option
-                      v-for="item in optionsthree"
-                      :key="item.staffId"
-                      :label="item.staffName"
-                      :value="item.staffId"
-                    >
-                    </el-option>
-                </el-select>
+              <el-select
+                v-model="addconverruleForm.addconverclass"
+                placeholder="请选择"
+                @click="cxls()"
+              >
+                <el-option
+                  v-for="item in optionsthree"
+                  :key="item.staffId"
+                  :label="item.staffName"
+                  :value="item.staffId"
+                >
+                </el-option>
+              </el-select>
             </el-form-item>
           </el-col>
         </el-row>
@@ -1498,7 +1525,11 @@
           <el-col :span="12">
             <!-- 处罚等级 -->
             <el-form-item label="处罚等级" prop="addhonorclass">
-              <el-select v-model="addhonorruleForm1.addhonorclass" clearable placeholder="请选择">
+              <el-select
+                v-model="addhonorruleForm1.addhonorclass"
+                clearable
+                placeholder="请选择"
+              >
                 <el-option
                   v-for="item in optionstwo"
                   :key="item.value"
@@ -1613,7 +1644,8 @@ export default {
           label: "",
         },
       ],
-      optionstwo:[{
+      optionstwo: [
+        {
           value: "0",
           label: "警告",
         },
@@ -1629,9 +1661,9 @@ export default {
           value: "3",
           label: "开除",
         },
-        ],
+      ],
       //在读学员：谈话老师下拉框
-      optionsthree:[],
+      optionsthree: [],
       //在读学员：    下拉框默认值
       formData: {
         value: "学生姓名",
@@ -1646,7 +1678,7 @@ export default {
       // 在读学员：   访客状态下拉框
       selectionone: [],
       //在读学员：转班审核人
-      selectshr:[],
+      selectshr: [],
       //在读学员：     表格
       tableData: [],
       //在读学员：      分页
@@ -1667,23 +1699,23 @@ export default {
           labeone: "班级",
         },
       ],
-      formData1:{
-          //历史学员：    下拉框默认值
-      valueone: "学生姓名",
-      //历史学员：     搜索文本框
-      inputone: "",
-       //历史学员：    下拉框默认值
-      downTwo:"",
+      formData1: {
+        //历史学员：    下拉框默认值
+        valueone: "学生姓名",
+        //历史学员：     搜索文本框
+        inputone: "",
+        //历史学员：    下拉框默认值
+        downTwo: "",
       },
-      
+
       // 历史学员：   访客状态下拉框
       selectiontwo: [],
-     
+
       // 历史学员：  分页
       pageInfo1: {
         total: 0,
         sizeOne: 2,
-         currentPageOne: 1,
+        currentPageOne: 1,
       },
       //历史学员：    表格
       tableDataOne: [],
@@ -1694,8 +1726,8 @@ export default {
         name: "", // 姓名
         stusexs: "男", //性别
         stuphone: "", //学员联系方式
-        date1: "", //日期
-        age: 0, //年龄
+        studentBirthday: "", //日期
+        studentAge: 0, //年龄
         stufatherphone: "", //家长联系方式
         stuclassrom: "", //班级
         stuaddress: "", //学员家庭地址
@@ -1742,7 +1774,7 @@ export default {
         },
       ],
       //转班记录表格
-        recordtable1: [],
+      recordtable1: [],
       // 在读学员： 详情弹框 上课记录表格分页
       recordsizes: [1, 2, 3, 4],
       recordsize: 1,
@@ -1751,8 +1783,8 @@ export default {
       shiftDialogVisible: ref(false),
       // 在读学员： 详情弹框 转班按钮弹框表单
       shiftruleForm: {
-        classesId:'',//班级编号
-        shifid:'',//编号
+        classesId: "", //班级编号
+        shifid: "", //编号
         shifname: "", //姓名
         shiforiginal: "", //原来班级
         shiforiginalclass: "", //转班班级
@@ -1810,15 +1842,15 @@ export default {
       // 在读学员： 荣誉表格分页
       pageInfo2: {
         total: 0,
-          honorcurrentPage: 1,
+        honorcurrentPage: 1,
         honorcurrentsize: 2,
       },
-       // 在读学员： 处罚表格
+      // 在读学员： 处罚表格
       honortable1: [],
       // 在读学员： 处罚表格分页
       pageInfo4: {
         total: 0,
-          honorcurrentPage: 1,
+        honorcurrentPage: 1,
         honorcurrentsize: 2,
       },
       // 在读学员： 添加荣誉弹框
@@ -1827,7 +1859,7 @@ export default {
       addpunish: ref(false),
       // 在读学员： 添加荣誉弹框表单
       addhonorruleForm: {
-        addhonorid:"",//编号
+        addhonorid: "", //编号
         addhonorname: "", //学员名称
         addhonorclass: "", //班级
         addhonortext: "", //荣誉内容
@@ -1835,7 +1867,7 @@ export default {
       },
       // 在读学员： 添加处罚弹框表单
       addhonorruleForm1: {
-        addhonorid:"",//编号
+        addhonorid: "", //编号
         addhonorname: "", //学员名称
         addhonorclass: "", //处罚等级
         addhonortext: "", //处罚内容
@@ -1872,16 +1904,16 @@ export default {
       //  在读学员： 详情弹框    谈话记录表格
       conversationtable: [],
       // 在读学员：详情弹框   学员谈话记录表格分页
-      pageInfo3:{
-        total:0,
-      conversize: 2,
-      convercurrentPage: 1,
+      pageInfo3: {
+        total: 0,
+        conversize: 2,
+        convercurrentPage: 1,
       },
       // 在读学员： 添加谈话弹框
       addconverDialogVisible: ref(false),
       // 在读学员： 添加谈话弹框表单
       addconverruleForm: {
-        addconverid:"",//学生编号
+        addconverid: "", //学生编号
         addconvername: "", //学员名称
         addconverclass: "", //班级
         addconvertext: "", //荣誉内容
@@ -1977,7 +2009,7 @@ export default {
           params: {
             currentPage: _this.pageInfo.currentPage,
             size: _this.pageInfo.size,
-            values: _this.formData.value,//下拉框学生姓名
+            values: _this.formData.value, //下拉框学生姓名
             xsname: _this.formData.input, //学生姓名
             bj: _this.formData.downOne, //学生所在班级
             sffb: _this.formData.checked, //是否分班
@@ -1993,79 +2025,83 @@ export default {
         });
     },
     //添加荣誉弹窗
-    tjry(){
-      this.addhonorruleForm.addhonorname=this.studentxiangq.studentName
-       this.addhonorruleForm.addhonorid=this.studentxiangq.studentId
-        this.addhonorruleForm.addhonorclass=this.studentxiangq.classesName
-      this.addcenterDialogVisible = true
+    tjry() {
+      this.addhonorruleForm.addhonorname = this.studentxiangq.studentName;
+      this.addhonorruleForm.addhonorid = this.studentxiangq.studentId;
+      this.addhonorruleForm.addhonorclass = this.studentxiangq.classesName;
+      this.addcenterDialogVisible = true;
     },
     //添加谈话弹窗
-    tjth(){
-       this.addconverruleForm.addconvername=this.studentxiangq.studentName
-       this.addconverruleForm.addconverid=this.studentxiangq.studentId
-      this.addconverDialogVisible = true
+    tjth() {
+      this.addconverruleForm.addconvername = this.studentxiangq.studentName;
+      this.addconverruleForm.addconverid = this.studentxiangq.studentId;
+      this.addconverDialogVisible = true;
     },
     //添加处分弹窗
-    tjcf(){
-       this.addhonorruleForm1.addhonorname=this.studentxiangq.studentName
-       this.addhonorruleForm1.addhonorid=this.studentxiangq.studentId
-        this.addpunish = true
+    tjcf() {
+      this.addhonorruleForm1.addhonorname = this.studentxiangq.studentName;
+      this.addhonorruleForm1.addhonorid = this.studentxiangq.studentId;
+      this.addpunish = true;
     },
-    lishiss(){
-       var _this = this;
-       if(this.formData1.valueone=="学生姓名"){
-      this.axios.get("http://localhost:8088/TSM/mohuselect",{
-      params: {
-            currentPageOne: _this.pageInfo1.currentPageOne,
-            sizeOne: _this.pageInfo1.sizeOne,
-            xsname:_this.formData1.inputone, //学生姓名
-            bj: _this.formData1.downTwo, //学生所在班级
-         
-          },
-      }).then(response=>{
+    lishiss() {
+      var _this = this;
+      if (this.formData1.valueone == "学生姓名") {
+        this.axios
+          .get("http://localhost:8088/TSM/mohuselect", {
+            params: {
+              currentPageOne: _this.pageInfo1.currentPageOne,
+              sizeOne: _this.pageInfo1.sizeOne,
+              xsname: _this.formData1.inputone, //学生姓名
+              bj: _this.formData1.downTwo, //学生所在班级
+            },
+          })
+          .then((response) => {
             console.log(response);
-          this.tableDataOne = response.data.records;
-          this.pageInfo1.total = response.data.total;
-      }).catch(function(err){
-        console.log(err)
-      });
-
-     }else{
-        this.axios.get("http://localhost:8088/TSM/moselect",{
-      params: {
-            currentPageOne: _this.pageInfo1.currentPageOne,
-            sizeOne: _this.pageInfo1.sizeOne,
-            xsname:_this.formData1.inputone, //学生姓名
-            bj: _this.formData1.downTwo, //学生所在班级
-         
-          },
-      }).then(response=>{
+            this.tableDataOne = response.data.records;
+            this.pageInfo1.total = response.data.total;
+          })
+          .catch(function (err) {
+            console.log(err);
+          });
+      } else {
+        this.axios
+          .get("http://localhost:8088/TSM/moselect", {
+            params: {
+              currentPageOne: _this.pageInfo1.currentPageOne,
+              sizeOne: _this.pageInfo1.sizeOne,
+              xsname: _this.formData1.inputone, //学生姓名
+              bj: _this.formData1.downTwo, //学生所在班级
+            },
+          })
+          .then((response) => {
             console.log(response);
-          this.tableDataOne = response.data.records;
-          this.pageInfo1.total = response.data.total;
-      }).catch(function(err){
-        console.log(err)
-      });
-       }
+            this.tableDataOne = response.data.records;
+            this.pageInfo1.total = response.data.total;
+          })
+          .catch(function (err) {
+            console.log(err);
+          });
+      }
     },
     //谈话老师下拉框查询
-    cxls(){
-      this.axios.get("http://localhost:8088/TSM/staff/selectstaffqudao",{
-
-      }).then(response=>{
-            console.log(response.data);
-            this.optionsthree=response.data
-      }).catch(function(err){
-         console.log(err)
-      })
+    cxls() {
+      this.axios
+        .get("http://localhost:8088/TSM/staff/selectstaffqudao", {})
+        .then((response) => {
+          console.log(response.data);
+          this.optionsthree = response.data;
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
     },
     //转班
-    zb(){
-       this.shiftruleForm.shifid= this.studentxiangq.studentId
-      this.shiftruleForm.shifname= this.studentxiangq.studentName
-       this.shiftruleForm.shiforiginal= this.studentxiangq.classesName
-       this.shiftruleForm.classesId=this.studentxiangq.classesId
-      this.shiftDialogVisible = true
+    zb() {
+      this.shiftruleForm.shifid = this.studentxiangq.studentId;
+      this.shiftruleForm.shifname = this.studentxiangq.studentName;
+      this.shiftruleForm.shiforiginal = this.studentxiangq.classesName;
+      this.shiftruleForm.classesId = this.studentxiangq.classesId;
+      this.shiftDialogVisible = true;
     },
     // 在读学员: 删除弹出框
     openschool() {
@@ -2082,7 +2118,7 @@ export default {
           type: "success",
           message: "删除成功!",
         });
-        this.nextaa();
+        //this.nextaa();
       });
     },
     // 历史学员:  删除弹出框
@@ -2113,70 +2149,85 @@ export default {
     handleClick1(row) {
       (this.centerDetailDialogVisible = true), console.log("tab:", row);
       this.studentxiangq = row;
-      this.axios.get("http://localhost:8088/TSM/transferrecordVo/selecttransferrecordlist/"+row.studentId,{
-
-      }).then(response=>{
-           console.log(response)
-            this.recordtable1=response.data
-      }).catch(function(err){
-        console.log(err)
-      })
-      //查询荣誉
-      var _this=this;
-      this.axios.get("http://localhost:8088/TSM/selectStudentHonorVo",{
-        params:{
-        currentPage:_this.pageInfo2.honorcurrentPage,
-         size:_this.pageInfo2.honorcurrentsize,
-         studnetid:row.studentId,
-        }
-      }).then(response=>{
-        console.log(response.data)
-        this.honortable=response.data.records
-        this.pageInfo2.total=response.data.total
-      }).catch(function(err){
-        console.log(err)
-      });
-      //查询谈话
-      this.axios.get("http://localhost:8088/TSM/selectStudentTalk",{
-        params:{
-            currentPage:_this.pageInfo3.convercurrentPage,
-         size:_this.pageInfo3.conversize,
-           studnetid:row.studentId,
-        }
-      }).then(response=>{
-          console.log(response.data)
-          this.conversationtable=response.data.records
-            this.pageInfo3.total=response.data.total
-      }).catch(err=>{
-        console.log(err)
-      });
-
-    //查询处罚
-    this.axios.get("http://localhost:8088/TSM/selectStudentPun",{
-       params:{
-        currentPage:_this.pageInfo4.honorcurrentPage,
-         size:_this.pageInfo4.honorcurrentsize,
-         studnetid:row.studentId,
-        }
-    }).then(response=>{
-      console.log(response.data)
-        this.honortable1=response.data.records
-        this.pageInfo4.total=response.data.total
-    }).catch(err=>{
-      console.log(err)
-    })
-    },
-      //在读学员：转班审核人下拉框
-      shr(){
-        this.axios.get("http://localhost:8088/TSM/selectjwk",{
-
-        }).then(respon=>{
-            console.log(respon.data);
-            this.selectshr=respon.data
-        }).catch(function(err){
-            console.log(err);
+      this.axios
+        .get(
+          "http://localhost:8088/TSM/transferrecordVo/selecttransferrecordlist/" +
+            row.studentId,
+          {}
+        )
+        .then((response) => {
+          console.log(response);
+          this.recordtable1 = response.data;
         })
-      },
+        .catch(function (err) {
+          console.log(err);
+        });
+      //查询荣誉
+      var _this = this;
+      this.axios
+        .get("http://localhost:8088/TSM/selectStudentHonorVo", {
+          params: {
+            currentPage: _this.pageInfo2.honorcurrentPage,
+            size: _this.pageInfo2.honorcurrentsize,
+            studnetid: row.studentId,
+          },
+        })
+        .then((response) => {
+          console.log(response.data);
+          this.honortable = response.data.records;
+          this.pageInfo2.total = response.data.total;
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
+      //查询谈话
+      this.axios
+        .get("http://localhost:8088/TSM/selectStudentTalk", {
+          params: {
+            currentPage: _this.pageInfo3.convercurrentPage,
+            size: _this.pageInfo3.conversize,
+            studnetid: row.studentId,
+          },
+        })
+        .then((response) => {
+          console.log(response.data);
+          this.conversationtable = response.data.records;
+          this.pageInfo3.total = response.data.total;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+      //查询处罚
+      this.axios
+        .get("http://localhost:8088/TSM/selectStudentPun", {
+          params: {
+            currentPage: _this.pageInfo4.honorcurrentPage,
+            size: _this.pageInfo4.honorcurrentsize,
+            studnetid: row.studentId,
+          },
+        })
+        .then((response) => {
+          console.log(response.data);
+          this.honortable1 = response.data.records;
+          this.pageInfo4.total = response.data.total;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    //在读学员：转班审核人下拉框
+    shr() {
+      this.axios
+        .get("http://localhost:8088/TSM/selectjwk", {})
+        .then((respon) => {
+          console.log(respon.data);
+          this.selectshr = respon.data;
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
+    },
     //在读学员：    访客状态下拉框样式：使点击的字体变蓝色
     dowone() {
       document.getElementById("dowone").style.color = "#409eff";
@@ -2194,101 +2245,106 @@ export default {
     //历史学员：    访客状态下拉框样式：使点击的字体变蓝色
     dowtwo() {
       document.getElementById("dowtwo").style.color = "#409eff";
-       this.axios.post("http://localhost:8088/TSM/classes/cxclasscount", {
-
-       }).then(response=>{
-        console.log(response);
-            this.selectiontwo = response.data;
-      }).catch(function(err){
-        console.log(err)
-      })
+      this.axios
+        .post("http://localhost:8088/TSM/classes/cxclasscount", {})
+        .then((response) => {
+          console.log(response);
+          this.selectiontwo = response.data;
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
     },
     // 历史学员：   表格
     handleCurrentChangeOne(currentPageOne) {
-     var _this = this;
-     this.pageInfo1.currentPageOne=currentPageOne;
-       if(this.formData1.valueone=="学生姓名"){
-      this.axios.get("http://localhost:8088/TSM/mohuselect",{
-      params: {
-            currentPageOne: _this.pageInfo1.currentPageOne,
-            sizeOne: _this.pageInfo1.sizeOne,
-            xsname:_this.formData1.inputone, //学生姓名
-            bj: _this.formData1.downTwo, //学生所在班级
-         
-          },
-      }).then(response=>{
+      var _this = this;
+      this.pageInfo1.currentPageOne = currentPageOne;
+      if (this.formData1.valueone == "学生姓名") {
+        this.axios
+          .get("http://localhost:8088/TSM/mohuselect", {
+            params: {
+              currentPageOne: _this.pageInfo1.currentPageOne,
+              sizeOne: _this.pageInfo1.sizeOne,
+              xsname: _this.formData1.inputone, //学生姓名
+              bj: _this.formData1.downTwo, //学生所在班级
+            },
+          })
+          .then((response) => {
             console.log(response);
-          this.tableDataOne = response.data.records;
-          
-      }).catch(function(err){
-        console.log(err)
-      });
-
-     }else{
-        this.axios.get("http://localhost:8088/TSM/moselect",{
-      params: {
-            currentPageOne: _this.pageInfo1.currentPageOne,
-            sizeOne: _this.pageInfo1.sizeOne,
-            xsname:_this.formData1.inputone, //学生姓名
-            bj: _this.formData1.downTwo, //学生所在班级
-         
-          },
-      }).then(response=>{
+            this.tableDataOne = response.data.records;
+          })
+          .catch(function (err) {
+            console.log(err);
+          });
+      } else {
+        this.axios
+          .get("http://localhost:8088/TSM/moselect", {
+            params: {
+              currentPageOne: _this.pageInfo1.currentPageOne,
+              sizeOne: _this.pageInfo1.sizeOne,
+              xsname: _this.formData1.inputone, //学生姓名
+              bj: _this.formData1.downTwo, //学生所在班级
+            },
+          })
+          .then((response) => {
             console.log(response);
-          this.tableDataOne = response.data.records;
-          this.pageInfo1.total = response.data.total;
-      }).catch(function(err){
-        console.log(err)
-      });
-       }
-      
+            this.tableDataOne = response.data.records;
+            this.pageInfo1.total = response.data.total;
+          })
+          .catch(function (err) {
+            console.log(err);
+          });
+      }
     },
     // 历史学员：  分页
     handleSizeChangeOne(size) {
-     var _this = this;
-     this.pageInfo1.sizeOne=size;
+      var _this = this;
+      this.pageInfo1.sizeOne = size;
       var ps = qs.stringify(this.pageInfo1);
       console.log(ps);
-       if(this.formData1.valueone=="学生姓名"){
-      this.axios.get("http://localhost:8088/TSM/mohuselect",{
-      params: {
-            currentPage: _this.pageInfo1.currentPageOne,
-            size: _this.pageInfo1.sizeOne,
-            xsname:_this.formData1.inputone, //学生姓名
-            bj: _this.formData1.downTwo, //学生所在班级
-         
-          },
-      }).then(response=>{
+      if (this.formData1.valueone == "学生姓名") {
+        this.axios
+          .get("http://localhost:8088/TSM/mohuselect", {
+            params: {
+              currentPage: _this.pageInfo1.currentPageOne,
+              size: _this.pageInfo1.sizeOne,
+              xsname: _this.formData1.inputone, //学生姓名
+              bj: _this.formData1.downTwo, //学生所在班级
+            },
+          })
+          .then((response) => {
             console.log(response);
-          this.tableDataOne = response.data.records;
-          this.pageInfo1.total = response.data.total;
-      }).catch(function(err){
-        console.log(err)
-      });
-
-     }else{
-        this.axios.get("http://localhost:8088/TSM/moselect",{
-      params: {
-            currentPage: _this.pageInfo1.currentPageOne,
-            size: _this.pageInfo1.sizeOne,
-            xsname:_this.formData1.inputone, //学生姓名
-            bj: _this.formData1.downTwo, //学生所在班级
-         
-          },
-      }).then(response=>{
+            this.tableDataOne = response.data.records;
+            this.pageInfo1.total = response.data.total;
+          })
+          .catch(function (err) {
+            console.log(err);
+          });
+      } else {
+        this.axios
+          .get("http://localhost:8088/TSM/moselect", {
+            params: {
+              currentPage: _this.pageInfo1.currentPageOne,
+              size: _this.pageInfo1.sizeOne,
+              xsname: _this.formData1.inputone, //学生姓名
+              bj: _this.formData1.downTwo, //学生所在班级
+            },
+          })
+          .then((response) => {
             console.log(response);
-          this.tableDataOne = response.data.records;
-          this.pageInfo1.total = response.data.total;
-      }).catch(function(err){
-        console.log(err)
-      });
-       }
+            this.tableDataOne = response.data.records;
+            this.pageInfo1.total = response.data.total;
+          })
+          .catch(function (err) {
+            console.log(err);
+          });
+      }
     },
     // handleCurrentChangeOne(val) {
     //   this.currentPageOne = val;
     //   console.log(`当前页: ${val}`);
     // },
-     //历史学生重置按钮
+    //历史学生重置按钮
     resetForm2(formData1) {
       this.lsxscrea();
       this.$refs[formData1].resetFields();
@@ -2305,16 +2361,16 @@ export default {
       ];
 
       sessionStorage.setItem("routepath", JSON.stringify(routepath));
-      sessionStorage.setItem('studentfilesId',row.studentId);//存一个学生编号
-      sessionStorage.setItem('parentPhone',row.parentPhone); // 存入一个家长电话值
-       sessionStorage.setItem('studentfilesAge',row.studentAge); // 存入年龄值
-        sessionStorage.setItem('studentfilesBirthday',row.studentBirthday); // 存入一个出生日期值
-         sessionStorage.setItem('studentfilesLoc',row.studentLoc); // 存入一个地址值
-          sessionStorage.setItem('studentfilesName',row.studentName); // 存入一个名称值
-           sessionStorage.setItem('studentfilesPhone',row.studentPhone); // 存入一个学生电话值
-            sessionStorage.setItem('studentfilesSchool',row.studentSchool); // 存入一个毕业学校值
-             sessionStorage.setItem('studentfilesSex',row.studentSex); // 存入一个性别值
-            //  sessionStorage.setItem('studentfilesState',row.studentfilesState)//存一个学生状态
+      sessionStorage.setItem("studentfilesId", row.studentId); //存一个学生编号
+      sessionStorage.setItem("parentPhone", row.parentPhone); // 存入一个家长电话值
+      sessionStorage.setItem("studentfilesAge", row.studentAge); // 存入年龄值
+      sessionStorage.setItem("studentfilesBirthday", row.studentBirthday); // 存入一个出生日期值
+      sessionStorage.setItem("studentfilesLoc", row.studentLoc); // 存入一个地址值
+      sessionStorage.setItem("studentfilesName", row.studentName); // 存入一个名称值
+      sessionStorage.setItem("studentfilesPhone", row.studentPhone); // 存入一个学生电话值
+      sessionStorage.setItem("studentfilesSchool", row.studentSchool); // 存入一个毕业学校值
+      sessionStorage.setItem("studentfilesSex", row.studentSex); // 存入一个性别值
+      //  sessionStorage.setItem('studentfilesState',row.studentfilesState)//存一个学生状态
       this.$router.push("/freshman");
     },
     // 在读学员： 编辑弹框  确认按钮和取消按钮
@@ -2360,7 +2416,7 @@ export default {
     //日期转换成年龄
     suan() {
       console.log("ssssss");
-      const birthStr = this.studEditFrom.date1;
+      const birthStr = this.studEditFrom.studentBirthday;
       console.log(birthStr);
       let d = new Date();
       let age =
@@ -2371,7 +2427,7 @@ export default {
           d.getDate() < birthStr.getDate())
           ? 1
           : 0);
-      this.studEditFrom.age = age;
+      this.studEditFrom.studentAge = age;
       console.log("年龄", age);
     },
     // 在读学员： 详情弹框： 标签页
@@ -2389,24 +2445,29 @@ export default {
     },
     // 在读学员： 详情弹框  转班按钮弹框  表单确认、取消按钮
     shifsubmitForm(formName) {
-      console.log(this.shiftruleForm.shifreviewer)
+      console.log(this.shiftruleForm.shifreviewer);
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.axios.post("http://localhost:8088/TSM/transferrecord/addtransferrecord",{
-             studentId:this.shiftruleForm.shifid,
-    classesOne:this.shiftruleForm.classesId,
-     classesTwo:this.shiftruleForm.shiforiginalclass,
-     transferrecordDate:this.shiftruleForm.shiftime,
-     transferrecordReason:this.shiftruleForm.shifreasons,
-      staffId:this.shiftruleForm.shifreviewer
-          }).then(response=>{
-            console.log(response.data)
+          this.axios
+            .post(
+              "http://localhost:8088/TSM/transferrecord/addtransferrecord",
+              {
+                studentId: this.shiftruleForm.shifid,
+                classesOne: this.shiftruleForm.classesId,
+                classesTwo: this.shiftruleForm.shiforiginalclass,
+                transferrecordDate: this.shiftruleForm.shiftime,
+                transferrecordReason: this.shiftruleForm.shifreasons,
+                staffId: this.shiftruleForm.shifreviewer,
+              }
+            )
+            .then((response) => {
+              console.log(response.data);
               this.xgbj();
-            this.crea();
-          }).catch(function(err){
-              console.log(err)
-          })
-         
+              this.crea();
+            })
+            .catch(function (err) {
+              console.log(err);
+            });
         } else {
           console.log("error submit!!");
           return false;
@@ -2414,18 +2475,21 @@ export default {
       });
     },
     //修改班级
-    xgbj(){
-      this.axios.post("http://localhost:8088/TSM/student/updatastudentzb",{
- studentId:this.shiftruleForm.shifid,
-  classesId:this.shiftruleForm.shiforiginalclass,
-      }).then(response=>{
-          console.log(response)
-             this.shiftruleForm = {};
+    xgbj() {
+      this.axios
+        .post("http://localhost:8088/TSM/student/updatastudentzb", {
+          studentId: this.shiftruleForm.shifid,
+          classesId: this.shiftruleForm.shiforiginalclass,
+        })
+        .then((response) => {
+          console.log(response);
+          this.shiftruleForm = {};
           this.shiftDialogVisible = false;
-               this.crea();
-      }).catch(function(err){
-        console.log(err)
-      })
+          this.crea();
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
     },
     shifresetForm(formName) {
       this.$refs[formName].resetFields();
@@ -2448,7 +2512,7 @@ export default {
     outresetForm(formName) {
       this.outruleForm = {};
       this.outcenterDialogVisible = false;
-       this.$refs[formName].resetFields();
+      this.$refs[formName].resetFields();
     },
     //  在读学员： 学员荣誉  删除弹出框
     openhonor1(row) {
@@ -2461,24 +2525,27 @@ export default {
           type: "warning",
         }
       ).then(() => {
-        console.log(row.studenthonorId)
-        this.axios.post("http://localhost:8088/TSM/studenthonor/delectry",{
-          studenthonorId:row.studenthonorId,
-        }).then(response=>{
-          console.log(response)
-          this.cxry();
+        console.log(row.studenthonorId);
+        this.axios
+          .post("http://localhost:8088/TSM/studenthonor/delectry", {
+            studenthonorId: row.studenthonorId,
+          })
+          .then((response) => {
+            console.log(response);
+            this.cxry();
             this.$message({
-          type: "success",
-          message: "删除成功!",
-        });
-        }).catch(function(err){
-          console.log(err)
-        })
-      
+              type: "success",
+              message: "删除成功!",
+            });
+          })
+          .catch(function (err) {
+            console.log(err);
+          });
+
         // this.nextaa();
       });
     },
-     //  在读学员： 学员谈话  删除弹出框
+    //  在读学员： 学员谈话  删除弹出框
     openhonor2(row) {
       this.$confirm(
         "此操作将永久删除学员的个人谈话及其关联的所有信息, 是否继续?",
@@ -2489,24 +2556,27 @@ export default {
           type: "warning",
         }
       ).then(() => {
-        console.log(row.studenttalkId)
-        this.axios.post("http://localhost:8088/TSM/studenttalk/delectstudenttalk",{
-          studenttalkId:row.studenttalkId,
-        }).then(response=>{
-          console.log(response)
-          this.cxth();
+        console.log(row.studenttalkId);
+        this.axios
+          .post("http://localhost:8088/TSM/studenttalk/delectstudenttalk", {
+            studenttalkId: row.studenttalkId,
+          })
+          .then((response) => {
+            console.log(response);
+            this.cxth();
             this.$message({
-          type: "success",
-          message: "删除成功!",
-        });
-        }).catch(function(err){
-          console.log(err)
-        })
-      
+              type: "success",
+              message: "删除成功!",
+            });
+          })
+          .catch(function (err) {
+            console.log(err);
+          });
+
         // this.nextaa();
       });
     },
-     //  在读学员： 学员处分  删除弹出框
+    //  在读学员： 学员处分  删除弹出框
     openhonor(row) {
       this.$confirm(
         "此操作将永久删除学员的个人处分及其关联的所有信息, 是否继续?",
@@ -2517,165 +2587,185 @@ export default {
           type: "warning",
         }
       ).then(() => {
-        console.log(row.stundentpunishId)
-        this.axios.post("http://localhost:8088/TSM/stundentpunish/delectstudentpun",{
-          stundentpunishId:row.stundentpunishId,
-        }).then(response=>{
-          console.log(response)
-          this.cxcf();
+        console.log(row.stundentpunishId);
+        this.axios
+          .post("http://localhost:8088/TSM/stundentpunish/delectstudentpun", {
+            stundentpunishId: row.stundentpunishId,
+          })
+          .then((response) => {
+            console.log(response);
+            this.cxcf();
             this.$message({
-          type: "success",
-          message: "删除成功!",
-        });
-        }).catch(function(err){
-          console.log(err)
-        })
-      
+              type: "success",
+              message: "删除成功!",
+            });
+          })
+          .catch(function (err) {
+            console.log(err);
+          });
+
         // this.nextaa();
       });
     },
     // 在读学员： 学员荣誉表格分页
-        honorhandleCurrentChange(val) {
-    this.pageInfo2.honorcurrentPage = val;
+    honorhandleCurrentChange(val) {
+      this.pageInfo2.honorcurrentPage = val;
       console.log(`每页 ${val} 条`);
       var _this = this;
       var ps = qs.stringify(this.pageInfo2);
       console.log(ps);
-      this.axios.get("http://localhost:8088/TSM/selectStudentHonorVo",{
-       params:{
-        currentPage:_this.pageInfo2.honorcurrentPage,
-         size:_this.pageInfo2.honorcurrentsize,
-         studnetid:_this.studentxiangq.studentId,
-        },
-      }).then(response=>{
-            console.log(response);
-          this.honortable=response.data.records
-      }).catch(function(err){
-        console.log(err)
-      });
+      this.axios
+        .get("http://localhost:8088/TSM/selectStudentHonorVo", {
+          params: {
+            currentPage: _this.pageInfo2.honorcurrentPage,
+            size: _this.pageInfo2.honorcurrentsize,
+            studnetid: _this.studentxiangq.studentId,
+          },
+        })
+        .then((response) => {
+          console.log(response);
+          this.honortable = response.data.records;
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
     },
-     honorhandleSizeChange(val) {
+    honorhandleSizeChange(val) {
       this.pageInfo2.honorcurrentsize = val;
       console.log(`当前页: ${val}`);
       var _this = this;
       var ps = qs.stringify(this.pageInfo2);
       console.log(ps);
-      this.axios.get("http://localhost:8088/TSM/selectStudentHonorVo",{
-       params:{
-        currentPage:_this.pageInfo2.honorcurrentPage,
-         size:_this.pageInfo2.honorcurrentsize,
-         studnetid:_this.studentxiangq.studentId,
-        },
-      }).then(response=>{
-            console.log(response);
-          this.honortable=response.data.records
+      this.axios
+        .get("http://localhost:8088/TSM/selectStudentHonorVo", {
+          params: {
+            currentPage: _this.pageInfo2.honorcurrentPage,
+            size: _this.pageInfo2.honorcurrentsize,
+            studnetid: _this.studentxiangq.studentId,
+          },
+        })
+        .then((response) => {
+          console.log(response);
+          this.honortable = response.data.records;
           this.pageInfo2.total = response.data.total;
-      }).catch(function(err){
-        console.log(err)
-      });
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
     },
     //在读学员：学员处罚表格分页
     honorhandleCurrentChange1(page) {
-    this.pageInfo4.honorcurrentPage = page;
+      this.pageInfo4.honorcurrentPage = page;
       console.log(`每页 ${page} 条`);
       var _this = this;
       var ps = qs.stringify(this.pageInfo4);
       console.log(ps);
-       this.axios.get("http://localhost:8088/TSM/selectStudentPun",{
-       params:{
-        currentPage:_this.pageInfo4.honorcurrentPage,
-         size:_this.pageInfo4.honorcurrentsize,
-         studnetid:_this.studentxiangq.studentId,
-        }
-    }).then(response=>{
-      console.log(response.data)
-        this.honortable1=response.data.records
-      
-    }).catch(err=>{
-      console.log(err)
-    })
+      this.axios
+        .get("http://localhost:8088/TSM/selectStudentPun", {
+          params: {
+            currentPage: _this.pageInfo4.honorcurrentPage,
+            size: _this.pageInfo4.honorcurrentsize,
+            studnetid: _this.studentxiangq.studentId,
+          },
+        })
+        .then((response) => {
+          console.log(response.data);
+          this.honortable1 = response.data.records;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
-    honorhandleSizeChange1(size){
-       this.pageInfo4.honorcurrentsize = size;
+    honorhandleSizeChange1(size) {
+      this.pageInfo4.honorcurrentsize = size;
       console.log(`当前页: ${size}`);
       var _this = this;
       var ps = qs.stringify(this.pageInfo4);
       console.log(ps);
-      this.axios.get("http://localhost:8088/TSM/selectStudentPun",{
-       params:{
-        currentPage:_this.pageInfo4.honorcurrentPage,
-         size:_this.pageInfo4.honorcurrentsize,
-          studnetid:_this.studentxiangq.studentId,
-        }
-    }).then(response=>{
-      console.log(response.data)
-        this.honortable1=response.data.records
-        this.pageInfo4.total=response.data.total
-    }).catch(function(err){
-        console.log(err)
-      });
+      this.axios
+        .get("http://localhost:8088/TSM/selectStudentPun", {
+          params: {
+            currentPage: _this.pageInfo4.honorcurrentPage,
+            size: _this.pageInfo4.honorcurrentsize,
+            studnetid: _this.studentxiangq.studentId,
+          },
+        })
+        .then((response) => {
+          console.log(response.data);
+          this.honortable1 = response.data.records;
+          this.pageInfo4.total = response.data.total;
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
     },
     //在读学员：学员谈话分页
-      converhandleSizeChange(size){
-                    this.pageInfo3.conversize = size;
+    converhandleSizeChange(size) {
+      this.pageInfo3.conversize = size;
       console.log(`当前页: ${size}`);
       var _this = this;
       var ps = qs.stringify(this.pageInfo3);
       console.log(ps);
-      this.axios.get("http://localhost:8088/TSM/selectStudentTalk",{
-        params:{
-            currentPage:_this.pageInfo3.convercurrentPage,
-         size:_this.pageInfo3.conversize,
-          studnetid:_this.studentxiangq.studentId,
-        }
-      }).then(response=>{
-          console.log(response.data)
-          this.conversationtable=response.data.records
-            this.pageInfo3.total=response.data.total
-      }).catch(err=>{
-        console.log(err)
-      })
-                  },
+      this.axios
+        .get("http://localhost:8088/TSM/selectStudentTalk", {
+          params: {
+            currentPage: _this.pageInfo3.convercurrentPage,
+            size: _this.pageInfo3.conversize,
+            studnetid: _this.studentxiangq.studentId,
+          },
+        })
+        .then((response) => {
+          console.log(response.data);
+          this.conversationtable = response.data.records;
+          this.pageInfo3.total = response.data.total;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
 
-    converhandleCurrentChange(page){
-                    this.pageInfo3.convercurrentPage = page;
+    converhandleCurrentChange(page) {
+      this.pageInfo3.convercurrentPage = page;
       console.log(`每页 ${page} 条`);
       var _this = this;
       var ps = qs.stringify(this.pageInfo3);
       console.log(ps);
-      this.axios.get("http://localhost:8088/TSM/selectStudentTalk",{
-        params:{
-            currentPage:_this.pageInfo3.convercurrentPage,
-         size:_this.pageInfo3.conversize,
-          studnetid:_this.studentxiangq.studentId,
-        }
-      }).then(response=>{
-          console.log(response.data)
-          this.conversationtable=response.data.records
-      }).catch(err=>{
-        console.log(err)
-      })
-                  },
+      this.axios
+        .get("http://localhost:8088/TSM/selectStudentTalk", {
+          params: {
+            currentPage: _this.pageInfo3.convercurrentPage,
+            size: _this.pageInfo3.conversize,
+            studnetid: _this.studentxiangq.studentId,
+          },
+        })
+        .then((response) => {
+          console.log(response.data);
+          this.conversationtable = response.data.records;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     //在读学员： 学员荣誉   添加荣誉弹框   表单确认、取消按钮
     addhonorsubmitForm(formName) {
-     
       this.$refs[formName].validate((valid) => {
         if (valid) {
-           console.log(this.addhonorruleForm.addhonorid)
-       console.log(this.addhonorruleForm.addhonortext)
-        console.log(this.addhonorruleForm.addhonortime)
-          this.axios.post("http://localhost:8088/TSM/studenthonor/addstudenthon",{
-            
-       studentId:this.addhonorruleForm.addhonorid, //学员编号
-        studenthonorContent:this.addhonorruleForm.addhonortext, //荣誉内容
-       studenthonorDate: this.addhonorruleForm.addhonortime, //荣誉时间
-    
-          }).then(response=>{
-            console.log(response)
-            this.cxry();
-          }).catch(function(err){
-            console.log(err)
-          });
+          console.log(this.addhonorruleForm.addhonorid);
+          console.log(this.addhonorruleForm.addhonortext);
+          console.log(this.addhonorruleForm.addhonortime);
+          this.axios
+            .post("http://localhost:8088/TSM/studenthonor/addstudenthon", {
+              studentId: this.addhonorruleForm.addhonorid, //学员编号
+              studenthonorContent: this.addhonorruleForm.addhonortext, //荣誉内容
+              studenthonorDate: this.addhonorruleForm.addhonortime, //荣誉时间
+            })
+            .then((response) => {
+              console.log(response);
+              this.cxry();
+            })
+            .catch(function (err) {
+              console.log(err);
+            });
           // this.addhonorruleForm = {};
           this.addcenterDialogVisible = false;
         } else {
@@ -2686,22 +2776,22 @@ export default {
     },
     //在读学员： 学员处分   添加处分弹框   表单确认、取消按钮
     addhonorsubmitForm1(formName) {
-     
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.axios.post("http://localhost:8088/TSM/stundentpunish/addstudentpun",{
-            
-       studentId:this.addhonorruleForm1.addhonorid, //学员编号
-       stundentpunishGrade:this.addhonorruleForm1.addhonorclass,//处分等级
-        stundentpunishReason:this.addhonorruleForm1.addhonortext, //处分内容
-       stundentpunishDate: this.addhonorruleForm1.addhonortime, //处分时间
-    
-          }).then(response=>{
-            console.log(response)
-            this.cxcf();
-          }).catch(function(err){
-            console.log(err)
-          });
+          this.axios
+            .post("http://localhost:8088/TSM/stundentpunish/addstudentpun", {
+              studentId: this.addhonorruleForm1.addhonorid, //学员编号
+              stundentpunishGrade: this.addhonorruleForm1.addhonorclass, //处分等级
+              stundentpunishReason: this.addhonorruleForm1.addhonortext, //处分内容
+              stundentpunishDate: this.addhonorruleForm1.addhonortime, //处分时间
+            })
+            .then((response) => {
+              console.log(response);
+              this.cxcf();
+            })
+            .catch(function (err) {
+              console.log(err);
+            });
           // this.addhonorruleForm = {};
           this.addpunish = false;
         } else {
@@ -2711,79 +2801,89 @@ export default {
       });
     },
     addhonorresetForm1(formName) {
-        this.$refs[formName].resetFields()
+      this.$refs[formName].resetFields();
       this.addhonorruleForm1 = {};
       this.addpunish = false;
-     
     },
     //分页查询荣誉
-    cxry(){
-        var _this=this;
-      this.axios.get("http://localhost:8088/TSM/selectStudentHonorVo",{
-        params:{
-        currentPage:_this.pageInfo2.honorcurrentPage,
-         size:_this.pageInfo2.honorcurrentsize,
-         studnetid:_this.studentxiangq.studentId
-        }
-      }).then(response=>{
-        console.log(response.data)
-        this.honortable=response.data.records
-        this.pageInfo2.total=response.data.total
-      }).catch(function(err){
-        console.log(err)
-      });
+    cxry() {
+      var _this = this;
+      this.axios
+        .get("http://localhost:8088/TSM/selectStudentHonorVo", {
+          params: {
+            currentPage: _this.pageInfo2.honorcurrentPage,
+            size: _this.pageInfo2.honorcurrentsize,
+            studnetid: _this.studentxiangq.studentId,
+          },
+        })
+        .then((response) => {
+          console.log(response.data);
+          this.honortable = response.data.records;
+          this.pageInfo2.total = response.data.total;
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
     },
     //分页查询谈话
-    cxth(){
-       var _this=this;
-       this.axios.get("http://localhost:8088/TSM/selectStudentTalk",{
-        params:{
-            currentPage:_this.pageInfo3.convercurrentPage,
-         size:_this.pageInfo3.conversize,
-            studnetid:_this.studentxiangq.studentId
-        }
-      }).then(response=>{
-          console.log(response.data)
-          this.conversationtable=response.data.records
-            this.pageInfo3.total=response.data.total
-      }).catch(err=>{
-        console.log(err)
-      })
+    cxth() {
+      var _this = this;
+      this.axios
+        .get("http://localhost:8088/TSM/selectStudentTalk", {
+          params: {
+            currentPage: _this.pageInfo3.convercurrentPage,
+            size: _this.pageInfo3.conversize,
+            studnetid: _this.studentxiangq.studentId,
+          },
+        })
+        .then((response) => {
+          console.log(response.data);
+          this.conversationtable = response.data.records;
+          this.pageInfo3.total = response.data.total;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     //分页查询处分
-    cxcf(){
-      var _this=this;
-        this.axios.get("http://localhost:8088/TSM/selectStudentPun",{
-       params:{
-        currentPage:_this.pageInfo4.honorcurrentPage,
-         size:_this.pageInfo4.honorcurrentsize,
-          studnetid:_this.studentxiangq.studentId
-        }
-    }).then(response=>{
-      console.log(response.data)
-        this.honortable1=response.data.records
-        this.pageInfo4.total=response.data.total
-    }).catch(err=>{
-      console.log(err)
-    })
+    cxcf() {
+      var _this = this;
+      this.axios
+        .get("http://localhost:8088/TSM/selectStudentPun", {
+          params: {
+            currentPage: _this.pageInfo4.honorcurrentPage,
+            size: _this.pageInfo4.honorcurrentsize,
+            studnetid: _this.studentxiangq.studentId,
+          },
+        })
+        .then((response) => {
+          console.log(response.data);
+          this.honortable1 = response.data.records;
+          this.pageInfo4.total = response.data.total;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     //在读学员： 学员荣誉   添加谈话   表单确认、取消按钮
     addconversubmitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.axios.post("http://localhost:8088/TSM/studenttalk/addstudenttalk",{
-      studenttalkContent:this.addconverruleForm.addconvertext,
-      studenttalkDate:this.addconverruleForm.addconvertime,
-            staffId:this.addconverruleForm.addconverclass,
-            studentId:this.addconverruleForm.addconverid,
-          }).then(response=>{
-              console.log(response)
-              this.cxth()
+          this.axios
+            .post("http://localhost:8088/TSM/studenttalk/addstudenttalk", {
+              studenttalkContent: this.addconverruleForm.addconvertext,
+              studenttalkDate: this.addconverruleForm.addconvertime,
+              staffId: this.addconverruleForm.addconverclass,
+              studentId: this.addconverruleForm.addconverid,
+            })
+            .then((response) => {
+              console.log(response);
+              this.cxth();
               this.addconverDialogVisible = false;
-          }).catch(err=>{
-            console.log(err)
-          })
-         
+            })
+            .catch((err) => {
+              console.log(err);
+            });
         } else {
           console.log("error submit!!");
           return false;
@@ -2794,7 +2894,7 @@ export default {
     //     this.$refs[formName].resetFields()
     //   this.addconverruleForm = {};
     //   this.addconverDialogVisible = false;
-     
+
     // },
     crea() {
       let _this = this;
@@ -2811,17 +2911,20 @@ export default {
           console.log(error);
         });
     },
-     lsxscrea() {
-       //历史学员查询
-      this.axios.get("http://localhost:8088/TSM/selectGraduation",{
-        params:this.pageInfo1,
-      }).then(response=>{
-        console.log(response)
-        this.tableDataOne=response.data.records;
-        this.pageInfo1.total=response.data.total;
-      }).catch(function(err){
-        console.log(err)
-      })
+    lsxscrea() {
+      //历史学员查询
+      this.axios
+        .get("http://localhost:8088/TSM/selectGraduation", {
+          params: this.pageInfo1,
+        })
+        .then((response) => {
+          console.log(response);
+          this.tableDataOne = response.data.records;
+          this.pageInfo1.total = response.data.total;
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
     },
   },
   created() {
@@ -2853,16 +2956,19 @@ export default {
         console.log(error);
       });
 
-      //历史学员查询
-      this.axios.get("http://localhost:8088/TSM/selectGraduation",{
-        params:this.pageInfo1,
-      }).then(response=>{
-        console.log(response)
-        this.tableDataOne=response.data.records;
-        this.pageInfo1.total=response.data.total;
-      }).catch(function(err){
-        console.log(err)
+    //历史学员查询
+    this.axios
+      .get("http://localhost:8088/TSM/selectGraduation", {
+        params: this.pageInfo1,
       })
+      .then((response) => {
+        console.log(response);
+        this.tableDataOne = response.data.records;
+        this.pageInfo1.total = response.data.total;
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
   },
 };
 </script>

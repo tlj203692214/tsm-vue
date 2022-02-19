@@ -4,7 +4,7 @@
       <tou></tou>
     </div>
     <el-container style="height: 100%">
-      <el-aside width="auto" style="overflow: hidden;background-color:red">
+      <el-aside width="auto" style="overflow: hidden;background-color:#272a36">
         <el-menu
           :default-active="$route.path"
           text-color="white"

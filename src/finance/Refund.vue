@@ -39,7 +39,7 @@
     <el-table-column prop="refundId" label="编号">
       <template #default="scope">{{ scope.row.refundId }}</template>
     </el-table-column>
-    <el-table-column prop="refundDate" label="退费时间"/>
+    <el-table-column prop="refundDate" label="退费时间" width="150"/>
     <el-table-column prop="refundMoney" label="退费金额">
       <template #default="scope">{{
         scope.row.courseMoney + scope.row.bookFee

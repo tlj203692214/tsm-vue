@@ -1638,6 +1638,8 @@ if(!numRe.test( this.editpopForm.headmaster) && !numRe.test(  this.editpopForm.c
          }
         }else if(direction=='right' && this.rulemationForm.value.length<=this.sessclassid.classesNumber){
           console.log(direction)
+          console.log("course编号"+this.sessclassid.courseId)
+          console.log(this.sessclassid.courseId)
           for(let item of value){
             console.log(item)
               this.axios.post("http://localhost:8088/TSM/student/xgstudent",{
