@@ -4,14 +4,14 @@
       <tou></tou>
     </div>
     <el-container style="height: 100%">
-      <el-aside width="auto" style="overflow: hidden;background-color:#272a36">
+      <el-aside width="auto" style="background-color: #272a36">
         <el-menu
           :default-active="$route.path"
           text-color="white"
           class="el-menu-vertical-demo"
           :collapse="isCollapse"
           background-color="#272a36"
-          style="color: white; height:91.5vh"
+          style="color: white; height: 91.5vh"
           :collapse-transition="true"
           :unique-opened="true"
           router
@@ -27,8 +27,8 @@
             :index="mune.navigationUrl"
           >
             <!--     <template     #title>     -->
-            <el-icon style="width: 39px; font-size: 32px"
-              ><img :src="mune.navigationIcon" alt=""
+            <el-icon style="width: 39px; font-size: 20px"
+              ><img style="width:20px;height:20px;" :src="mune.navigationIcon" alt="图片不见了"
             /></el-icon>
             <span>{{ mune.navigationName }}</span>
             <!--     </template>     -->
@@ -41,8 +41,8 @@
             v-show="mune.childern.length > 0"
           >
             <template #title>
-              <el-icon style="width: 32px; font-size: 32px"
-                ><img :src="mune.navigationIcon" alt=""
+              <el-icon style="width: 32px; font-size: 20px"
+                ><img style="width:20px;height:20px;" :src="mune.navigationIcon" alt=""
               /></el-icon>
               <span>{{ mune.navigationName }}</span>
               <!--     {{     mune.children     }}     -->
@@ -53,8 +53,8 @@
                 :key="childern"
                 :index="childern.navigationUrl"
               >
-                <el-icon style="font-size: 32px; width: 39px">
-                  <img :src="childern.navigationIcon" />
+                <el-icon style="font-size: 20px; width: 32px;">
+                  <img style="width:20px;height:20px;" :src="childern.navigationIcon" />
                 </el-icon>
                 <span>{{ childern.navigationName }}</span>  
               </el-menu-item>

@@ -85,25 +85,6 @@
     <div id="details">
       <el-form :model="personal" :label-position="right" label-width="120px">
         <input type="text" :value="personal.personalId" style="display: none" />
-        <!-- <div id="photo">
-          <el-upload
-            class="avatar-uploader"
-            action="http://localhost:8088/TSM/photo/upload"
-            :show-file-list="false"
-            :on-success="handleAvatarSuccess"
-            :before-upload="beforeAvatarUpload"
-          >
-           <img
-              v-if="personal.portraitUrl"
-              :src="personal.portraitUrl"
-              class="avatar"
-              :fit="scale - down"
-            /> 
-            <img :src="imageUrl" alt="" v-if="imageUrl" />
-            <el-icon v-else class="avatar-uploader-icon"><plus /></el-icon>
-          </el-upload>
-        </div> -->
-
         <el-row :gutter="24">
           <el-col :span="12">
             <el-form-item label="用户名字：">
@@ -122,7 +103,7 @@
         <el-row :gutter="24">
           <el-col :span="12">
             <el-form-item label="用户年龄：">
-              <el-input v-model="personal.personalAge"></el-input>
+              <el-input v-model="personal.personalAge" disabled></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -130,7 +111,8 @@
               <el-date-picker
                 v-model="personal.personalBirthday"
                 type="date"
-                placeholder="Pick a date"
+                value-format="YYYY-MM-DD"
+                @change="suan()"
               >
               </el-date-picker>
             </el-form-item>
@@ -145,7 +127,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="用户电话：">
-              <el-input v-model="personal.personalPhone"></el-input>
+              <el-input v-model.number="personal.personalPhone" maxlength="11" minlength="11"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -238,6 +220,21 @@ export default {
     },
   },
   methods: {
+    //日期转换成年龄
+    suan() {
+      const birthStr1 = this.personal.personalBirthday;
+      let a = new Date();
+      var b = new Date(birthStr1);
+      let age =
+        a.getFullYear() -
+        b.getFullYear() -
+        (a.getMonth() < b.getMonth() ||
+        (a.getMonth() == b.getMonth() && a.getDate() < b.getDate())
+          ? 1
+          : 0);
+      this.personal.personalAge = age;
+      console.log("年龄", age);
+    },
     // 给用户分配权限弹窗(该用户下的角色，选中)
     toUserPopup(row) {
       this.toUserDialogVisible = true;
@@ -375,8 +372,6 @@ export default {
           console.log(error);
         });
     },
-
-    //修改方法
 
     handleCurrentChange(page) {
       var _this = this;

@@ -3,8 +3,8 @@
     <span class="paysize">学员名称：</span>
     <el-input v-model="input" placeholder="请输入名字" />
     <span class="kong"></span>
-    <el-button> 查询</el-button>
-    <el-button>删除</el-button>
+    <el-button style="height: 36px; margin-top: 10px"> <search style="width: 1em; height: 1em; margin-right: 8px" />查询</el-button>
+    <!-- <el-button><delete style="width: 1em; height: 1em; margin-right: 8px" />删除</el-button> -->
   </div>
 
   <!--校务支出分页查询-->
@@ -251,10 +251,9 @@ export default {
 }
 
 .payheader {
-  margin-top: 40px;
   margin-bottom: 15px;
   background-color: white;
-  width: 1295px;
+  width: 100%;
   height: 64px;
   line-height: 64px;
 }
@@ -268,7 +267,7 @@ export default {
 }
 
 .payheader .el-button {
-  width: 100px;
+  width: 115px;
   background: #f60;
   color: white;
   border: 1px solid white;

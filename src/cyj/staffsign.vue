@@ -126,8 +126,8 @@
 			},
 			updatesigns(sg){
 				var _this=this
-				console.log("idididiidididi ",sg.signId)
-				this.axios.post("http://localhost:8088/TSM/updatestaffsign",{signId: sg.signId,})
+				console.log("idididiidididi ",sg.staffId)
+				this.axios.post("http://localhost:8088/TSM/updatestaffsign",{staffId: sg.staffId,})
 				.then(function(response){
 					console.log(response.data)
 					ElMessage({message: '打卡成功！',type: 'success',})
@@ -143,7 +143,6 @@
 					staffId: sessionStorage.getItem("staffId"),
 				}).then(function(response){
 					console.log(response.data)
-					alert("新增数据！！")
 				}).catch(function(error){
 					console.log(error)
 				})				

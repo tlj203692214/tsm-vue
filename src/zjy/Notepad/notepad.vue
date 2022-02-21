@@ -32,7 +32,6 @@
           {{ data.day.split("-").slice(1).join("-") }}
           {{ data.isSelected ? "✔️" : "" }}
         </p>
-
         <span v-for="NotepadData in NotepadData">
           <span
             v-if="NotepadData.beginTime == data.day"
@@ -104,7 +103,7 @@ export default {
         .get("http://localhost:8088/TSM/notepad/selectNotepad/" + this.staffId)
         .then((res) => {
           console.log(res);
-          console.log(res.data);
+          console.log(res.data[0].beginTime + "sssssssssssssss");
           this.NotepadData = res.data;
         });
     },

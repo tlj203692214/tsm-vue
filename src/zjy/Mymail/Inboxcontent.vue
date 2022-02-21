@@ -2,29 +2,29 @@
   <div>
     <div
       style="
-        border: solid 1px white;
-        background-color: #e1fff7;
-        border-width: 100%;
-        height: 40px;
+        background-color: white;
+        width: 100%;
+        height: 60px;
+        line-height:60px;
       "
     >
       <el-button
-        style="background-color: #0000ff; color: aliceblue"
+        style="background-color: #f60; color: aliceblue"
         @click="hf()"
         ><el-icon><position /></el-icon>回复</el-button
       >
       <el-button
-        style="background-color: #0000ff; color: aliceblue"
+        style="background-color: #f60; color: aliceblue"
         @click="zf()"
         ><el-icon><share /></el-icon>转发</el-button
       >
       <el-button
-        style="background-color: #0000ff; color: aliceblue"
+        style="background-color: #f60; color: aliceblue"
         @click="scs()"
         ><el-icon><delete-filled /></el-icon>删除</el-button
       >
       <el-button
-        style="background-color: #0000ff; color: aliceblue"
+        style="background-color: #f60; color: aliceblue"
         @click="fhs()"
         ><el-icon><toilet-paper /></el-icon>返回</el-button
       >
@@ -34,11 +34,11 @@
       <p>收件人：{{ staffName2 }}</p>
       <p>
         发件人：{{ staffName1
-        }}<span style="padding-left: 40%">发件时间:{{ receivingDate }}</span>
+        }}<span style="padding-left: 25%">发件时间:{{ receivingDate }}</span>
       </p>
       <p>
         <span style="font-size: 20px">发件内容:</span
-        ><span style="font-size: 50px">{{ receivingContent }}</span>
+        ><span style="font-size: 40px">{{ receivingContent }}</span>
       </p>
     </div>
   </div>

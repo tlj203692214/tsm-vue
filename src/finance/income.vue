@@ -4,7 +4,7 @@
     <el-input
       v-model="pageInfo.stuname"
       placeholder="请输入名字"
-      style="margin-right: 30px"
+      style="margin-right: 30px;height:36px;"
     />
     <span class="paysize">收款方式：</span>
     <el-select
@@ -20,8 +20,9 @@
       >
       </el-option>
     </el-select>
-    <el-button @click="selectName">查询</el-button>
-    <el-button>删除</el-button>
+    <el-button @click="selectName" style="height: 36px; margin-top: 10px">
+      <search style="width: 1em; height: 1em; margin-right: 8px" />查询</el-button>
+    <!-- <el-button><delete  style="width: 1em; height: 1em; margin-right: 8px" />删除</el-button> -->
   </div>
 
   <el-table
@@ -209,15 +210,18 @@ export default {
   color: #000000;
 }
 
+.payheader .el-input .el-input__inner {
+  height: 36px;
+}
+
 .payheader .el-select {
   margin-right: 30px;
 }
 
 .payheader {
-  margin-top: 40px;
   margin-bottom: 15px;
   background-color: white;
-  width: 1295px;
+  width: 100%;
   height: 64px;
   line-height: 64px;
 }
@@ -226,7 +230,7 @@ export default {
   margin-top: 30px;
 }
 .payheader .el-button {
-  width: 100px;
+  width: 115px;
   background: #f60;
   color: white;
   border: 1px solid white;

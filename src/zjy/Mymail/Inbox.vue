@@ -1,6 +1,12 @@
 <template>
-	
-  <div style="margin-top: 2%" class="diva">
+  <div
+    style="
+      background-color: white;
+      height: 60px;
+      line-height: 60px;
+    "
+    class="diva"
+  >
     阅读状态:<select v-model="pageInfo.zt" @change="sszt" class="d">
       <option value="a">全部邮件</option>
       <option value="b">已读邮件</option>
@@ -28,7 +34,7 @@
   </div>
   <div class="e">
     <el-button
-      style="background-color: blue; color: white"
+      style="background-color: #f60; color: white"
       :icon="CircleCloseFilled"
       @click="deleteFileOrDirectory(sjxsz)"
       :disabled="this.sjxsz.length === 0"
@@ -113,7 +119,7 @@ import {
   ArrowDown,
   CircleCloseFilled,
 } from "@element-plus/icons";
-import { ElMessage } from 'element-plus'
+import { ElMessage } from "element-plus";
 export default {
   data() {
     return {
@@ -135,7 +141,6 @@ export default {
     };
   },
   methods: {
-
     tableRowClassName({ row, rowIndex }) {
       if (rowIndex % 2 === 0) {
         return "gray";
@@ -150,8 +155,6 @@ export default {
           staffName2: this.staffName,
         })
         .then((res) => {
-          
-
           _this.creat();
         })
         .catch(function (error) {
@@ -177,7 +180,7 @@ export default {
       for (var i = 0; i < sjxsz.length; i++) {
         this.handeDel(sjxsz[i]);
       }
-	  ElMessage({message: '删除成功！',type: 'success',})
+      ElMessage({ message: "删除成功！", type: "success" });
     },
     sjxszchange(sjxsz) {
       this.sjxsz = sjxsz;
@@ -283,7 +286,6 @@ export default {
           console.log(response.data);
           _this.receivingData = response.data.records;
           _this.pageInfo.total = response.data.total;
-		  
         })
         .catch(function (error) {
           console.log(error);
@@ -291,7 +293,6 @@ export default {
     },
   },
   created() {
-   
     var _this = this;
     this.axios
       .get("http://localhost:8088/TSM/receiving/receiving", {
@@ -301,7 +302,6 @@ export default {
         console.log(response.data);
         _this.receivingData = response.data.records;
         _this.pageInfo.total = response.data.total;
-		
       })
       .catch(function (error) {
         console.log(error);
@@ -313,7 +313,6 @@ export default {
 <style>
 .a {
   color: blue;
-  text-decoration: underline;
 }
 
 .b {
@@ -323,28 +322,29 @@ export default {
   display: inline-block;
 }
 
-.diva .b .c {
-  width: 193px;
-  height: 30px;
+.c {
+  width: 15%;
+  height: 36px;
+  border: 1px solid #d4cfcf;
+  border-radius: 5px;
 }
 .diva .el-input .el-input__inner {
-  height: 30px;
-  margin-left: 0px;
-
-  margin-top: -5%;
+  height: 36px;
+  margin-left: 30px;
+  width: 200px;
 }
 .diva .d {
   width: 15%;
-  height: 30px;
+  height: 36px;
+  border: 1px solid #d4cfcf;
+  border-radius: 5px;
 }
 .diva .el-button {
-  margin-left: 10px;
-  margin-top: 0%;
+  margin-left: 30px;
+  background: #f60;
+  color: white;
 }
-.e {
-  width: 100%;
-  background-color: #c0d4ff;
-}
+
 /* .el-table .gray{
 		background-color:lightgray;
 	} */

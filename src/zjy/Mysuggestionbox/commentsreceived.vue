@@ -1,5 +1,8 @@
 <template>
-	<div style="margin-top:2%;" class="diva">
+	<div style="background-color: white;
+	width: 100%;
+	height: 60px;
+	line-height: 60px;margin-bottom:30px;" class="diva">
 	<div class="b">
 	快速检索:<select v-model="pageInfo.zt" class="c" @change="creat">
 		<option value="待回复的意见"><el-icon><delete-filled /></el-icon>待回复的意见</option>
@@ -44,11 +47,11 @@
 	  </div> 
 	  <!-- 回复界面-->
 	  <el-dialog v-model="xxjm" title="编辑意见" width="55%" :show-close="false">
-		  <div class="yjxx" style="background-color:lightblue">
+		  <div class="yjxx" style="background-color:white;">
 			  	<div :style="{display:b}" style="float:left;margin-right:5px;">
-		  	<el-button  type="primary" style="background-color: blue;color: white;" :icon="CircleCloseFilled" size="mini"  @click="replyOpinion('ruleForm')"><el-icon><edit /></el-icon>确定回复</el-button>
+		  	<el-button  type="primary" style="background-color: #f60;color: white;" :icon="CircleCloseFilled" size="mini"  @click="replyOpinion('ruleForm')"><el-icon><edit /></el-icon>确定回复</el-button>
 			</div>
-		  	<el-button style="background-color: blue;color: white;" :icon="CircleCloseFilled" size="mini"  @click="gbjm('ruleForm')"><el-icon><delete-filled /></el-icon>关闭</el-button>
+		  	<el-button style="background-color: #f60;color: white;" :icon="CircleCloseFilled" size="mini"  @click="gbjm('ruleForm')"><el-icon><delete-filled /></el-icon>关闭</el-button>
 		  </div>
 		  <el-form ref="ruleForm"  class="demo-ruleForm" :model="xx" :rules="rules">
 	  	意见信息

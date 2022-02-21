@@ -4,6 +4,7 @@
     class="demo-ruleForm"
     :model="ruleForm"
     :rules="rules"
+    :label-position="left"
   >
     <el-form-item label="标题:" prop="title">
       <el-input
@@ -23,7 +24,7 @@
     <el-form-item label="信件内容:" prop="content">
       <el-input
         type="textarea"
-        style="width:1000px;height:0.625rem;position:position:left:60px"
+        style="width:1000px;height:0.625rem;"
         v-model="ruleForm.content"
         clearable
       />
@@ -31,13 +32,13 @@
     <el-button
       type="primary"
       @click="qrfs('ruleForm')"
-      style="background-color: blue; margin-top: 2%"
+      style="background-color: #f60; margin-top: 2%"
       >确认发送</el-button
     >
     <el-button
       type="primary"
       @click="bccg('ruleForm')"
-      style="background-color: blue; margin-top: 2%"
+      style="background-color: #f60; margin-top: 2%"
       >保存草稿</el-button
     >
   </el-form>
@@ -45,10 +46,10 @@
     v-model="centerDialogVisible"
     title="选择用户"
     width="50%"
-    style="background-color: blue"
+    style="background-color: #f60"
   >
-    <div style="border: solid white; background-color: aliceblue">
-      <el-button @click="xzwc()" style="background-color: aqua"
+    <div>
+      <el-button @click="xzwc()" style="background-color: #f60;color:white;"
         >选择并关闭</el-button
       >
     </div>
@@ -59,7 +60,7 @@
       style="width: 200px; height: auto"
       v-model="ruleForm.staffName"
       clearable
-    /><el-button @click="cx()">
+    /><el-button @click="cx()" style="background:#f60;color:white">
       <el-icon><search /></el-icon
     ></el-button>
     <el-checkbox-group v-model="yhsz">
@@ -140,18 +141,28 @@ export default {
         resolve(nodes);
       } else {
         this.axios
-          .post("http://localhost:8088/TSM/dept/selectDeptsl/" + node.value)
+          .post("http://localhost:8088/TSM/dept/selectDept", {})
           .then((response) => {
             this.axios
               .post("http://localhost:8088/TSM/dept/selectDeptjl/" + node.value)
               .then((res) => {
                 const nodes = res.data.map((item) => {
+                  for (var a = 0; a < response.data.length; a++) {
+                    if (item.deptId == response.data[a].deptDid) {
+                      var c = false;
+                      break;
+                    } else {
+                      var c = true;
+                    }
+                  }
+
                   return {
                     value: item.deptId,
                     label: item.deptName,
-                    leaf: false,
+                    leaf: c,
                   };
                 });
+
                 resolve(nodes);
               });
           });

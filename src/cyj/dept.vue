@@ -267,6 +267,7 @@
 							})
 							.then(function(response){
 								console.log(response.data)
+								_this.depts()
 							}).catch(function(error){
 								console.log(error)
 							})
@@ -277,7 +278,7 @@
 					        return false
 					    }
 					})
-					this.depts()
+					
 				}
 			},
 			sonadddept(row){
@@ -313,12 +314,13 @@
 				this.axios.post("http://localhost:8088/TSM/dept/deldept/"+this.dept.deptid)
 				.then(function(response){
 					console.log(response.data)
+					_this.depts()
 				}).catch(function(error){
 					console.log(error)
 				})
 				ElMessage({message: '删除部门【'+this.dept.dname+'】成功！',type: 'success',})
 				this.centerDel = false
-				this.depts()
+				
 			},
 			depts(){
 				var _this=this

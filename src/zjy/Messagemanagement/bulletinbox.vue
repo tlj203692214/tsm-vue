@@ -1,5 +1,14 @@
 <template>
-  <div style="margin-top: 2%" class="diva">
+  <div
+    style="
+      background-color: white;
+      width: 100%;
+      height: 60px;
+      line-height: 60px;
+      margin-bottom: 10px;
+    "
+    class="diva"
+  >
     公告状态:<select v-model="pageInfo.zt" class="d" @change="creat">
       <option value="a">全部公告</option>
       <option value="b">已录入公告</option>
@@ -26,29 +35,38 @@
       ><el-icon><search /></el-icon>搜索</el-button
     >
   </div>
-  <div class="e">
+  <div
+    class="e"
+    style="
+      background-color: white;
+      width: 100%;
+      height: 60px;
+      line-height: 60px;
+      margin-bottom: 20px;
+    "
+  >
     <el-button
-      style="background-color: blue; color: white"
+      style="background-color: #f60; color: white"
       :icon="CircleCloseFilled"
       @click="(xzjm = true), qk()"
       ><el-icon><circle-plus-filled /></el-icon>新增</el-button
     >
     <el-button
-      style="background-color: blue; color: white"
+      style="background-color: #f60; color: white"
       :icon="CircleCloseFilled"
       @click="releaseNotices(ggxsz)"
       :disabled="this.ggxsz.length === 0"
       ><el-icon><reading /></el-icon>发布</el-button
     >
     <el-button
-      style="background-color: blue; color: white"
+      style="background-color: #f60; color: white"
       :icon="CircleCloseFilled"
       @click="DeactivateNotices(ggxsz)"
       :disabled="this.ggxsz.length === 0"
       ><el-icon><lock /></el-icon>暂停</el-button
     >
     <el-button
-      style="background-color: blue; color: white"
+      style="background-color: #f60; color: white"
       :icon="CircleCloseFilled"
       @click="delectnotice(ggxsz)"
       :disabled="this.ggxsz.length === 0"
@@ -703,6 +721,9 @@ export default {
 <style>
 .d {
   width: 30%;
-  height: 30px;
+  height: 36px;
+  border-radius: 5px;
+  border:1px solid #d4cfcf;
+  outline: none;
 }
 </style>

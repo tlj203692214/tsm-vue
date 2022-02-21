@@ -71,15 +71,12 @@
                 </div>
                 <div class="el-col el-col-12" style="padding-left: 7.5px">
                   <div data-v-d8a87178 class="today-item">
-                    <p class="today-title">消息通知</p>
+                    <p class="today-title">公告通知</p>
                     <div class="notification-record">
                       <ul>
                         <li v-for="a in NoticeData">
-                          {{ a.noticeContent
-                          }}<span style="color: gray; font-size: 10px">{{
-                            a.noticeDate
-                          }}</span
-                          >ssss
+                          {{ a.noticeContent}}
+                          <span style="color: gray; font-size: 15px; margin-left:12px;" >{{ a.noticeDate }}</span>
                         </li>
                       </ul>
                     </div>
@@ -389,7 +386,6 @@ export default {
         });
     },
     ckgg() {
-     
       var _this = this;
       this.axios
         .get("http://localhost:8088/TSM/notice/selectNotice/" + this.deptId)

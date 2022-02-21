@@ -22,8 +22,9 @@
     </el-select>
     <span class="kong"></span>
 
-    <el-button @click="selectState()">查询</el-button>
-    <el-button @click="updateState()">审核通过</el-button>
+    <el-button @click="selectState()" style="height: 36px; margin-top: 10px">
+      <search style="width: 1em; height: 1em; margin-right: 8px" />查询</el-button>
+    <el-button @click="updateState()"><finished style="width: 1em; height: 1em; margin-right: 8px"/>审核通过</el-button>
   </div>
 
   <el-table
@@ -318,10 +319,9 @@ export default {
   margin-right: 30px;
 }
 .payheader {
-  margin-top: 40px;
   margin-bottom: 15px;
   background-color: white;
-  width: 1295px;
+  width: 100%;
   height: 64px;
   line-height: 64px;
 }
@@ -330,7 +330,8 @@ export default {
   margin-top: 30px;
 }
 .payheader .el-button {
-  width: 100px;
+  width: 115px;
+  height: 30px;
   background: #f60;
   color: white;
   border: 1px solid white;

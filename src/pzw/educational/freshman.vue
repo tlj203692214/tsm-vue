@@ -22,7 +22,7 @@
       ==============================================================================================================================
       第一步填写学员信息      
        -->
-    
+
           <div v-if="this.active == 0">
             <div style="margin-top: 2%">
               <!-- 基础信息 -->
@@ -52,7 +52,6 @@
                     label-width="100px"
                     class="demo-ruleForm"
                   >
-
                     <!-- 姓名 -->
                     <el-row :gutter="24">
                       <el-col :span="12">
@@ -245,22 +244,18 @@
                     label="应付金额"
                     width="160"
                   >
-                  <template #default="scope">
-                    {{scope.row.courseMoney+scope.row.bookFee}}
-                  </template>
+                    <template #default="scope">
+                      {{ scope.row.courseMoney + scope.row.bookFee }}
+                    </template>
                   </el-table-column>
                   <el-table-column fixed="right" label="操作" width="100">
                     <template #default="scope">
-                      <el-button
-                        @click="open()"
-                        type="text"
-                        size="small"
+                      <el-button @click="open()" type="text" size="small"
                         >删除</el-button
                       >
                     </template>
                   </el-table-column>
                 </el-table>
-              
               </div>
               <!-- 
       ========================================================================================================================
@@ -284,9 +279,13 @@
                 </el-input>
                 <!-- 弹框： 搜索按钮 -->
                 <!-- <div class="searchbutton"> -->
-                  <el-button size="small" style="background:#f60" @click="sskc()"> 
-                    <el-icon color="white"><search /></el-icon>
-                    </el-button>
+                <el-button
+                  size="small"
+                  style="background: #f60"
+                  @click="sskc()"
+                >
+                  <el-icon color="white"><search /></el-icon>
+                </el-button>
                 <!-- </div> -->
                 <!-- 重置 -->
                 <el-link
@@ -354,7 +353,7 @@
                     @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
                     :current-page="pageInfo.currentPage"
-                    :page-sizes="[2,4,6,8]"
+                    :page-sizes="[2, 4, 6, 8]"
                     :page-size="pageInfo.size"
                     layout="total, sizes, prev, pager, next, jumper"
                     :total="pageInfo.total"
@@ -363,15 +362,8 @@
                 </div>
                 <template #footer>
                   <span class="dialog-footer">
-                    <el-button @click="qxan()"
-                      >取消</el-button
-                    >
-                    <el-button
-                      type="primary"
-                      @click="qdxzkc()"
-                      >确认</el-button
-                    >
-                   
+                    <el-button @click="qxan()">取消</el-button>
+                    <el-button type="primary" @click="qdxzkc()">确认</el-button>
                   </span>
                 </template>
               </el-dialog>
@@ -382,197 +374,272 @@
   ==================================================================================================================================
   第三步：缴费信息
            -->
-           <div v-else-if="this.active==2">
+          <div v-else-if="this.active == 2">
             <!-- 包所有的内容 -->
-  <div>
-    <!-- 订单信息 -->
-    <div>
-      <!-- 订单信息 -->
-      <div style="padding-top: 2%; margin-left: 6%; padding-bottom: 1%">
-        <span
-          style="
-            background-color: #409eff;
-            width: 0.5%;
-            height: 0.5%;
-            margin-left: 2%;
-          "
-          >&nbsp;</span
-        >
-        <div style="margin-top: -1.5%; margin-left: 3.5%">
-          <span style="color: #303133; font-size: 14px; font-weight: 700"
-            >订单信息</span
-          >
-        </div>
-      </div>
-      <!-- 订单信息表格 -->
-      <div>
-        <el-table
-          class="tableOne"
-          :data="tablesj"
-          stripe="true"
-          border
-          style="width: 84%; margin-left: 2%; margin-top: 2%; margin: 0 auto"
-        >
-          <el-table-column
-            prop="courseName"
-            style="margin: 0 auto"
-            label="课程名称"
-            width="200"
-          >
-          </el-table-column>
-          <el-table-column prop="courseMoney" label="课程金额" width="180">
-          </el-table-column>
-          <el-table-column prop="courseHour" label="课时数量" width="180">
-          </el-table-column>
-          <el-table-column prop="coursePrice" label="课时单价" width="180">
-          </el-table-column>
-          <el-table-column prop="bookFee" label="书本费" width="180">
-          </el-table-column>
-          <el-table-column prop="courpayable" label="应付金额" width="186">
-             <template #default="scope">
-                    {{scope.row.courseMoney+scope.row.bookFee}}
-                  </template>
-          </el-table-column>
-        </el-table>
-      </div>
-    </div>
-    <!-- 支付信息 -->
-    <div>
-      <!-- 支付信息 -->
-      <div style="padding-top: 2%; margin-left: 6%; padding-bottom: 1%">
-        <span
-          style="
-            background-color: #409eff;
-            width: 0.5%;
-            height: 0.5%;
-            margin-left: 2%;
-          "
-          >&nbsp;</span
-        >
-        <div style="margin-top: -1.5%; margin-left: 3.5%">
-          <span style="color: #303133; font-size: 14px; font-weight: 700"
-            >支付信息</span
-          >
-        </div>
-      </div>
-      <!-- 支付信息内容 -->
-      <el-form
-        :model="ruleForm1"
-        :rules="rules1"
-        ref="ruleForm1"
-        label-width="100px"
-        class="demo-ruleForm"
-      >
-        <div style="border: 1px solid #eee; width: 84%; margin-left: 8%">
-          <!-- 学员姓名 -->
-          <div style="margin-top: 1.5%; margin-left: 2%; width: 16%">
-            <span style="font-size: 14px; color: #606266">学员姓名</span>
-            <span style="margin-left: 12%; color: #303133; font-size: 14px"
-              >{{tableData.name}}</span
-            >
+            <div>
+              <!-- 订单信息 -->
+              <div>
+                <!-- 订单信息 -->
+                <div
+                  style="padding-top: 2%; margin-left: 6%; padding-bottom: 1%"
+                >
+                  <span
+                    style="
+                      background-color: #409eff;
+                      width: 0.5%;
+                      height: 0.5%;
+                      margin-left: 2%;
+                    "
+                    >&nbsp;</span
+                  >
+                  <div style="margin-top: -1.5%; margin-left: 3.5%">
+                    <span
+                      style="color: #303133; font-size: 14px; font-weight: 700"
+                      >订单信息</span
+                    >
+                  </div>
+                </div>
+                <!-- 订单信息表格 -->
+                <div>
+                  <el-table
+                    class="tableOne"
+                    :data="tablesj"
+                    stripe="true"
+                    border
+                    style="
+                      width: 84%;
+                      margin-left: 2%;
+                      margin-top: 2%;
+                      margin: 0 auto;
+                    "
+                  >
+                    <el-table-column
+                      prop="courseName"
+                      style="margin: 0 auto"
+                      label="课程名称"
+                      width="200"
+                    >
+                    </el-table-column>
+                    <el-table-column
+                      prop="courseMoney"
+                      label="课程金额"
+                      width="180"
+                    >
+                    </el-table-column>
+                    <el-table-column
+                      prop="courseHour"
+                      label="课时数量"
+                      width="180"
+                    >
+                    </el-table-column>
+                    <el-table-column
+                      prop="coursePrice"
+                      label="课时单价"
+                      width="180"
+                    >
+                    </el-table-column>
+                    <el-table-column prop="bookFee" label="书本费" width="180">
+                    </el-table-column>
+                    <el-table-column
+                      prop="courpayable"
+                      label="应付金额"
+                      width="186"
+                    >
+                      <template #default="scope">
+                        {{ scope.row.courseMoney + scope.row.bookFee }}
+                      </template>
+                    </el-table-column>
+                  </el-table>
+                </div>
+              </div>
+              <!-- 支付信息 -->
+              <div>
+                <!-- 支付信息 -->
+                <div
+                  style="padding-top: 2%; margin-left: 6%; padding-bottom: 1%"
+                >
+                  <span
+                    style="
+                      background-color: #409eff;
+                      width: 0.5%;
+                      height: 0.5%;
+                      margin-left: 2%;
+                    "
+                    >&nbsp;</span
+                  >
+                  <div style="margin-top: -1.5%; margin-left: 3.5%">
+                    <span
+                      style="color: #303133; font-size: 14px; font-weight: 700"
+                      >支付信息</span
+                    >
+                  </div>
+                </div>
+                <!-- 支付信息内容 -->
+                <el-form
+                  :model="ruleForm1"
+                  :rules="rules1"
+                  ref="ruleForm1"
+                  label-width="100px"
+                  class="demo-ruleForm"
+                >
+                  <div
+                    style="border: 1px solid #eee; width: 84%; margin-left: 8%"
+                  >
+                    <!-- 学员姓名 -->
+                    <div style="margin-top: 1.5%; margin-left: 2%; width: 16%">
+                      <span style="font-size: 14px; color: #606266"
+                        >学员姓名</span
+                      >
+                      <span
+                        style="
+                          margin-left: 12%;
+                          color: #303133;
+                          font-size: 14px;
+                        "
+                        >{{ tableData.name }}</span
+                      >
+                    </div>
+                    <!-- 应付价格 -->
+                    <div style="margin-left: 19%; margin-top: -2%">
+                      <span style="font-size: 14px; color: #606266"
+                        >应付价格</span
+                      >
+                      <span style="color: red; margin-left: 2%"
+                        >￥{{
+                          tablesj[0].courseMoney + tablesj[0].bookFee
+                        }}元</span
+                      >
+                    </div>
+                    <!-- 经办人 -->
+                    <el-form-item
+                      label="经办人"
+                      prop="handler"
+                      style="margin-top: 1%; margin-left: -1%"
+                    >
+                      <el-select
+                        v-model="ruleForm1.handler"
+                        placeholder="请选择经办人"
+                        size="small"
+                        style="width: 26%"
+                        @click="banliren()"
+                      >
+                        <el-option
+                          v-for="item in options"
+                          :key="item.staffId"
+                          :label="item.staffName"
+                          :value="item.staffId"
+                        >
+                        </el-option>
+                      </el-select>
+                    </el-form-item>
+                    <!-- 支付方式 -->
+                    <el-form-item label="支付方式" prop="payment">
+                      <el-radio-group
+                        v-model="ruleForm1.payment"
+                        placeholder="请选择支付方式"
+                      >
+                        <el-radio-button
+                          border
+                          label="微信"
+                          size="small"
+                          style="margin: 0 2px"
+                          ><img
+                            src="../../assets/img/微信图标.png"
+                            style="
+                              height: 18px;
+                              width: 18px;
+                              vertical-align: middle;
+                            "
+                          /><span>微信</span></el-radio-button
+                        >
+                        <!-- 支付宝 -->
+                        <el-radio-button
+                          border
+                          label="支付宝"
+                          size="small"
+                          style="margin: 0 10px"
+                          ><img
+                            src="../../assets/img/支付宝图标.png"
+                            style="
+                              height: 18px;
+                              width: 18px;
+                              vertical-align: middle;
+                            "
+                          /><span>支付宝</span></el-radio-button
+                        >
+                        <!-- 现金 -->
+                        <el-radio-button border label="现金" size="small"
+                          ><img
+                            src="../../assets/img/现金图标.png"
+                            style="
+                              height: 18px;
+                              width: 18px;
+                              vertical-align: middle;
+                            "
+                          /><span>现金</span></el-radio-button
+                        >
+                        <!-- 刷卡 -->
+                        <el-radio-button
+                          border
+                          label="刷卡"
+                          size="small"
+                          style="margin: 0 10px"
+                          ><img
+                            src="../../assets/img/银行卡图标.png"
+                            style="
+                              height: 18px;
+                              width: 18px;
+                              vertical-align: middle;
+                            "
+                          /><span>刷卡</span></el-radio-button
+                        >
+                      </el-radio-group>
+                    </el-form-item>
+                    <!-- 支付金额 -->
+                    <el-form-item label="支付金额" prop="pamount">
+                      <el-input
+                        v-model="ruleForm1.pamount"
+                        size="small"
+                        style="width: 15%"
+                        class="textright"
+                      ></el-input
+                      >元
+                      <el-button
+                        size="small"
+                        style="
+                          background: #fff0e6;
+                          border-color: #ffc299;
+                          color: #f60;
+                          margin: 0 15px;
+                        "
+                        id="payfull"
+                        @click="fq()"
+                        >全额付款</el-button
+                      >
+                    </el-form-item>
+                    <!-- 支付时间 -->
+                    <el-form-item
+                      prop="value3"
+                      label="支付时间"
+                      class="demonstration"
+                    >
+                      <div class="block">
+                        <el-date-picker
+                          v-model="ruleForm1.value3"
+                          type="datetime"
+                          placeholder="选择支付时间"
+                          :default-time="datetime"
+                          value-format="YYYY-MM-DD"
+                          size="small"
+                        >
+                        </el-date-picker>
+                      </div>
+                    </el-form-item>
+                  </div>
+                </el-form>
+              </div>
+            </div>
           </div>
-          <!-- 应付价格 -->
-          <div style="margin-left: 19%; margin-top: -2%">
-            <span style="font-size: 14px; color: #606266">应付价格</span>
-            <span style="color: red; margin-left: 2%">￥{{tablesj[0].courseMoney+tablesj[0].bookFee}}元</span>
-          </div>
-          <!-- 经办人 -->
-          <el-form-item
-            label="经办人"
-            prop="handler"
-            style="margin-top: 1%; margin-left: -1%"
-          >
-            <el-select
-              v-model="ruleForm1.handler"
-              placeholder="请选择经办人"
-              size="small"
-              style="width: 26%"
-              @click="banliren()"
-            >
-              <el-option
-                  v-for="item in options"
-                  :key="item.staffId"
-                  :label="item.staffName"
-                  :value="item.staffId"
-    >
-    </el-option>
-            </el-select>
-          </el-form-item>
-          <!-- 支付方式 -->
-          <el-form-item label="支付方式" prop="payment">
-            <el-radio-group
-              v-model="ruleForm1.payment"
-              placeholder="请选择支付方式"
-            >
-              <el-radio-button border label="微信" size="small" style="margin: 0 2px"
-                ><img
-                  src="../../assets/img/微信图标.png"
-                  style="height: 18px; width: 18px; vertical-align: middle"
-                /><span>微信</span></el-radio-button
-              >
-              <!-- 支付宝 -->
-              <el-radio-button border label="支付宝" size="small" style="margin: 0 10px"
-                ><img
-                  src="../../assets/img/支付宝图标.png"
-                  style="height: 18px; width: 18px; vertical-align: middle"
-                /><span>支付宝</span></el-radio-button
-              >
-              <!-- 现金 -->
-              <el-radio-button border label="现金" size="small"
-                ><img
-                  src="../../assets/img/现金图标.png"
-                  style="height: 18px; width: 18px; vertical-align: middle"
-                /><span>现金</span></el-radio-button
-              >
-              <!-- 刷卡 -->
-              <el-radio-button border label="刷卡" size="small" style="margin: 0 10px"
-                ><img
-                  src="../../assets/img/银行卡图标.png"
-                  style="height: 18px; width: 18px; vertical-align: middle"
-                /><span>刷卡</span></el-radio-button
-              >
-            </el-radio-group>
-          </el-form-item>
-          <!-- 支付金额 -->
-          <el-form-item label="支付金额" prop="pamount">
-            <el-input
-              v-model="ruleForm1.pamount"
-              size="small"
-              style="width: 15%"
-              class="textright"
-            ></el-input
-            >元
-            <el-button
-              size="small"
-              style="
-                background: #fff0e6;
-                border-color: #ffc299;
-                color: #f60;
-                margin: 0 15px;
-              "
-              id="payfull"
-              @click="fq()"
-              >全额付款</el-button
-            >
-          </el-form-item>
-        <!-- 支付时间 -->
-        <el-form-item prop="value3" label="支付时间" class="demonstration">
-       <div class="block">
-    <el-date-picker
-      v-model="ruleForm1.value3"
-      type="datetime"
-      placeholder="选择支付时间"
-      :default-time="defaultTime"
-      size="small"
-    >
-    </el-date-picker>
-  </div>
-        </el-form-item>
-        </div>
-      </el-form>
-    </div>
-  </div>
-           </div>
           <!-- <thirdstep v-else-if="this.active == 2"></thirdstep> -->
         </div>
         <!-- 上一步按钮 -->
@@ -589,30 +656,27 @@
           >上一步</el-button
         >
         <!-- 下一步按钮 -->
-       
-               <el-button
-          v-if="this.active ==0"
+
+        <el-button
+          v-if="this.active == 0"
           style="margin-left: 4%"
           @click="next('ruleForm')"
           >下一步</el-button
         >
- 
-  
-               <el-button
-          v-if="this.active==1"
+
+        <el-button
+          v-if="this.active == 1"
           style="margin-left: 4%"
           @click="next1('tablesj')"
           >下一步</el-button
         >
-       
-     
+
         <el-button
           v-else-if="this.active == 2"
           style="margin-left: 4%"
-          @click="tjopen('ruleForm1'),xgxszt(),addxs()"
+          @click="tjopen('ruleForm1'), xgxszt(), addxs()"
           >确认提交</el-button
         >
-     
       </div>
     </div>
   </div>
@@ -622,8 +686,8 @@
 import firststep from "../educational/firststep.vue";
 import secondstep from "../educational/secondstep.vue";
 import thirdstep from "../educational/thirdstep.vue";
-import qs from 'qs';
-  import { ElMessage } from 'element-plus'
+import qs from "qs";
+import { ElMessage } from "element-plus";
 export default {
   data() {
     return {
@@ -633,7 +697,7 @@ export default {
       // 表单验证
       ruleForm: {
         //编号
-        studentfilesId:'',
+        studentfilesId: "",
         // 姓名
         inforname: "",
         // 性别
@@ -647,7 +711,7 @@ export default {
         // 毕业学校
         infoschool: "",
         //状态
-        studentfilesState:'',
+        studentfilesState: "",
       },
       // 新增访客弹框出生日期
       form: {
@@ -673,14 +737,14 @@ export default {
       },
       // 第二步值
       // ==========================================================================================================================
-       multipleSelection:[],
-       //sessionstorage存表格数据
-       tablesess:[],
-      radio:false,
+      multipleSelection: [],
+      //sessionstorage存表格数据
+      tablesess: [],
+      radio: false,
       // sessionstorage存数据
       tableData: [],
       //表格
-      tablesj:[],
+      tablesj: [],
       // 弹框的表格
       tableDataTwo: [],
       // 弹框
@@ -688,40 +752,42 @@ export default {
       //  弹框内容：  搜索文本框
       input: "",
       // 分页
-     pageInfo: {
+      pageInfo: {
         total: 0,
         size: 2,
         currentPage: 1,
       },
       //=============================================================================================================================
       //第三步：缴费信息
-       // 支付时间
+      // 支付时间
       pickerOptions: {
-          shortcuts: [{
-            text: '今天',
+        shortcuts: [
+          {
+            text: "今天",
             onClick(picker) {
-              picker.$emit('pick', new Date());
-            }
-          }, {
-            text: '昨天',
+              picker.$emit("pick", new Date());
+            },
+          },
+          {
+            text: "昨天",
             onClick(picker) {
               const date = new Date();
               date.setTime(date.getTime() - 3600 * 1000 * 24);
-              picker.$emit('pick', date);
-            }
-          }, {
-            text: '一周前',
+              picker.$emit("pick", date);
+            },
+          },
+          {
+            text: "一周前",
             onClick(picker) {
               const date = new Date();
               date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit('pick', date);
-            }
-          }]
-        },
+              picker.$emit("pick", date);
+            },
+          },
+        ],
+      },
       // 订单信息
-      tableData1: [
-       
-      ],
+      tableData1: [],
       // 支付信息内容表单
       ruleForm1: {
         // 经办人
@@ -731,7 +797,7 @@ export default {
         // 支付金额
         pamount: "0",
         // 支付时间
-        value3:"",
+        value3: "",
       },
       rules1: {
         // 经办人
@@ -747,53 +813,53 @@ export default {
           { required: true, message: "请填写支付金额", trigger: "blur" },
         ],
         // 支付时间
-        value3: [
-          { required: true, message:"选择支付时间", trigger: "blur"}
-        ],
+        value3: [{ required: true, message: "选择支付时间", trigger: "blur" }],
       },
-       //办理人
-    options:[],
+      //办理人
+      options: [],
     };
   },
 
   methods: {
     tjopen(ruleForm1) {
-       this.$refs[ruleForm1].validate((valid) => {
+      var a = new Date(this.ruleForm1.value3);
+      this.$refs[ruleForm1].validate((valid) => {
         if (valid) {
-      this.$confirm("请确认报名信息无误,是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-      })
-        .then(() => {
-          this.axios.post("http://localhost:8088/TSM/payMoney/intopatmoney",{
-        paymoneyMoney:this.tablesj[0].courseMoney+this.tablesj[0].bookFee, // 缴费金额
-        paymoneyDate:this.ruleForm1.value3, // 缴费时间
-        paymoneyMode:this.ruleForm1.payment, //缴费方式
-        courseId:this.tablesj[0].courseId,//  课程外键
-        staffId:this.ruleForm1.handler, //员工外键
-        studentfilesId:this.ruleForm.studentfilesId,// 学员外键
-
-          }).then(response=>{
-            console.log(response)
-            this.$message({
-            type: "success",
-            message: "报名成功!",
-          });
-          this.nextaa();
-          }).catch(function(error){
-              console.log(error)
-          });
-          
-         
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消报名",
-          });
-        });
-       } else {
+          this.$confirm("请确认报名信息无误,是否继续?", "提示", {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "warning",
+          })
+            .then(() => {
+              this.axios
+                .post("http://localhost:8088/TSM/payMoney/intopatmoney", {
+                  paymoneyMoney:
+                    this.tablesj[0].courseMoney + this.tablesj[0].bookFee, // 缴费金额
+                  paymoneyDate: a, // 缴费时间
+                  paymoneyMode: this.ruleForm1.payment, //缴费方式
+                  courseId: this.tablesj[0].courseId, //  课程外键
+                  staffId: this.ruleForm1.handler, //员工外键
+                  studentfilesId: this.ruleForm.studentfilesId, // 学员外键
+                })
+                .then((response) => {
+                  console.log(response);
+                  this.$message({
+                    type: "success",
+                    message: "报名成功!",
+                  });
+                  this.nextaa();
+                })
+                .catch(function (error) {
+                  console.log(error);
+                });
+            })
+            .catch(() => {
+              this.$message({
+                type: "info",
+                message: "已取消报名",
+              });
+            });
+        } else {
           console.log("error submit!!");
           return false;
         }
@@ -805,38 +871,42 @@ export default {
       });
     },
     //修改学生状态
-    xgxszt(){
+    xgxszt() {
       this.routepath.forEach((item) => {
-        if(item.path=='/studentcenter'){
-
-        }else{
-          this.axios.post("http://localhost:8088/TSM/studentfiles/updatefollow",{
-        studentfilesId:this.ruleForm.studentfilesId,
-      }).then(response=>{
-        console.log(response)
-      }).catch(function(error){
-          console.log(error)
-      });
+        if (item.path == "/studentcenter") {
+        } else {
+          this.axios
+            .post("http://localhost:8088/TSM/studentfiles/updatefollow", {
+              studentfilesId: this.ruleForm.studentfilesId,
+            })
+            .then((response) => {
+              console.log(response);
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
         }
       });
-      
     },
     //添加学生
-    addxs(){
-        this.axios.post("http://localhost:8088/TSM/student/addstudent",{
-     studentName:this.ruleForm.inforname,
-      studentSex: this.ruleForm.inforsexs,
-       studentPhone: this.ruleForm.infocontact,
-        parentPhone: this.ruleForm.information,
-          studentLoc:this.ruleForm.infoaddress,
-          studentSchool:this.ruleForm.infoschool,
+    addxs() {
+      this.axios
+        .post("http://localhost:8088/TSM/student/addstudent", {
+          studentName: this.ruleForm.inforname,
+          studentSex: this.ruleForm.inforsexs,
+          studentPhone: this.ruleForm.infocontact,
+          parentPhone: this.ruleForm.information,
+          studentLoc: this.ruleForm.infoaddress,
+          studentSchool: this.ruleForm.infoschool,
           studentBirthday: this.form.date1,
-          studentAge:this.form.age,
-           courseid:this.tablesj[0].courseId,//课程外键
-        }).then(response=>{
-               console.log(response)
-        }).catch(function(err){
-            console.log(err)
+          studentAge: this.form.age,
+          courseid: this.tablesj[0].courseId, //课程外键
+        })
+        .then((response) => {
+          console.log(response);
+        })
+        .catch(function (err) {
+          console.log(err);
         });
     },
     // 下一步
@@ -845,42 +915,44 @@ export default {
         if (valid) {
           this.active++;
           var userEntity = {
-              name:this.ruleForm.inforname,
-              sex:this.ruleForm.inforsexs,
-              phone:this.ruleForm.infocontact,
-              csny:this.form.date1,
-              age:this.form.age,
-              jzphone:this.ruleForm.information,
-              byxx:this.ruleForm.infoschool,
-              jtzz:this.ruleForm.infoaddress,
-            };
-         sessionStorage.setItem('user', JSON.stringify(userEntity));
-          if (this.active > 2) { 
-            
+            name: this.ruleForm.inforname,
+            sex: this.ruleForm.inforsexs,
+            phone: this.ruleForm.infocontact,
+            csny: this.form.date1,
+            age: this.form.age,
+            jzphone: this.ruleForm.information,
+            byxx: this.ruleForm.infoschool,
+            jtzz: this.ruleForm.infoaddress,
+          };
+          sessionStorage.setItem("user", JSON.stringify(userEntity));
+          if (this.active > 2) {
             this.active = 0;
           }
-          var userJsonStr = sessionStorage.getItem('user');
+          var userJsonStr = sessionStorage.getItem("user");
           userEntity = JSON.parse(userJsonStr);
-          this.tableData=userEntity
-          console.log(userEntity.name+"json数据"); // => tom
-         
+          this.tableData = userEntity;
+          console.log(userEntity.name + "json数据"); // => tom
         } else {
           console.log("error submit!!");
           return false;
         }
       });
     },
-     // 下一步
+    // 下一步
     next1() {
-      console.log(this.tablesj+"集合")
-      if(this.tablesj==undefined||this.tablesj==null||this.tablesj.length<=0){
-          ElMessage.warning({
-            message: '需要选择学习的课程',
-            type: 'warning',
-          })
-      }else{
+      console.log(this.tablesj + "集合");
+      if (
+        this.tablesj == undefined ||
+        this.tablesj == null ||
+        this.tablesj.length <= 0
+      ) {
+        ElMessage.warning({
+          message: "需要选择学习的课程",
+          type: "warning",
+        });
+      } else {
         //  console.log(this.tablesj.courseMoney+"json数据name");
-          this.active++;
+        this.active++;
         //     var kccour = {
         //       courseId:this.tablesj.courseId,
         //       courseMoney:this.tablesj.courseMoney,
@@ -889,18 +961,17 @@ export default {
         //       coursePrice:this.tablesj.coursePrice,
         //       courPayable:this.tablesj.courPayable,
         //       bookFee:this.tablesj.bookFee,
-             
+
         //     };
         //  sessionStorage.setItem('cour', JSON.stringify(kccour));
         //   var courJson = sessionStorage.getItem('cour');
         //   kccour = JSON.parse(courJson);
         //   this.tableData1=kccour
         //   console.log(kccour.courseId+"json数据ID"); // => tom
-          if (this.active > 2) {
-            this.active = 0;
-          }
-         
-          }
+        if (this.active > 2) {
+          this.active = 0;
+        }
+      }
     },
     // 上一步
     nextOne() {
@@ -914,7 +985,6 @@ export default {
         this.active = 0;
       }
     },
-   
 
     //   表单的确定和取消，暂时没使用
     submitForm(formName) {
@@ -950,122 +1020,116 @@ export default {
 
     // 第二步方法
     //=============================================================================================================================
-     // 表格
+    // 表格
     // handleClick(row) {
     //   console.log(row);
     // },
-   // 表格的选中 可以获得当前选中的数据
+    // 表格的选中 可以获得当前选中的数据
     handleSelectionChange(val) {
       this.multipleSelection = val;
-    }, 
+    },
     select(selection, row) {
-	// 清除 所有勾选项
-	this.$refs.multipleTable.clearSelection()
-	// 当表格数据都没有被勾选的时候 就返回
-	// 主要用于将当前勾选的表格状态清除
-	if(selection.length == 0) return 
-	this.$refs.multipleTable.toggleRowSelection(row, true);
-},
-// 表格某一行的单击事件
-rowClick(row, column) {
-    const selectData = this.multipleSelection
-    this.$refs.multipleTable.clearSelection()
-    if( selectData.length==1 ) {
-        selectData.forEach(item => {
-        	// 判断 如果当前的一行被勾选, 再次点击的时候就会取消选中
-            if (item == row) {
-                this.$refs.multipleTable.toggleRowSelection(row, false);
-            }
-            // 不然就让当前的一行勾选
-            else {
-                this.$refs.multipleTable.toggleRowSelection(row, true);
-                
-            }
-        })
-    } 
-    else {
+      // 清除 所有勾选项
+      this.$refs.multipleTable.clearSelection();
+      // 当表格数据都没有被勾选的时候 就返回
+      // 主要用于将当前勾选的表格状态清除
+      if (selection.length == 0) return;
+      this.$refs.multipleTable.toggleRowSelection(row, true);
+    },
+    // 表格某一行的单击事件
+    rowClick(row, column) {
+      const selectData = this.multipleSelection;
+      this.$refs.multipleTable.clearSelection();
+      if (selectData.length == 1) {
+        selectData.forEach((item) => {
+          // 判断 如果当前的一行被勾选, 再次点击的时候就会取消选中
+          if (item == row) {
+            this.$refs.multipleTable.toggleRowSelection(row, false);
+          }
+          // 不然就让当前的一行勾选
+          else {
+            this.$refs.multipleTable.toggleRowSelection(row, true);
+          }
+        });
+      } else {
         this.$refs.multipleTable.toggleRowSelection(row, true);
-    }
-
-},
-//确定新增课程弹窗
- qdxzkc(){
-     this.input='',
-      this.centerDialogVisible = false
-       this.tablesj=this.multipleSelection
-       this.sskc()
-     
-     
-    
-  },
-  qxan(){
-     this.centerDialogVisible = false
-     this.input='',
-      this.crea()
-   
-  },
-//搜索课程
-  sskc(){
-    var _this=this
-    this.axios.get("http://localhost:8088/TSM/course/mohuselect",{
-      params:{
-          currentPage: _this.pageInfo.currentPage,
-              size: _this.pageInfo.size,
-            kcmc:_this.input,
-        }
-    }).then(respon=>{
-      console.log(respon.data)
-        this.tableDataTwo = respon.data.records;
+      }
+    },
+    //确定新增课程弹窗
+    qdxzkc() {
+      (this.input = ""), (this.centerDialogVisible = false);
+      this.tablesj = this.multipleSelection;
+      this.sskc();
+    },
+    qxan() {
+      this.centerDialogVisible = false;
+      (this.input = ""), this.crea();
+    },
+    //搜索课程
+    sskc() {
+      var _this = this;
+      this.axios
+        .get("http://localhost:8088/TSM/course/mohuselect", {
+          params: {
+            currentPage: _this.pageInfo.currentPage,
+            size: _this.pageInfo.size,
+            kcmc: _this.input,
+          },
+        })
+        .then((respon) => {
+          console.log(respon.data);
+          this.tableDataTwo = respon.data.records;
           this.pageInfo.total = respon.data.total;
-    }).catch(function(err){
+        })
+        .catch(function (err) {});
+    },
 
-    })
-  },
-    
-    
-    
-  // 分页
+    // 分页
     handleCurrentChange(page) {
-				var _this = this
-				this.pageInfo.currentPage = page
-				var ps = qs.stringify(this.pageInfo)
-				console.log(ps)
-				this.axios.get("http://localhost:8088/TSM/course/mohuselect", {
-          params:{
-          currentPage: _this.pageInfo.currentPage,
-              size: _this.pageInfo.size,
-            kcmc:_this.input,
-        }
-					})
-					.then(function(response) {
-						console.log("1-------------------------------------------")
-						console.log(response.data)
-						_this.tableDataTwo = response.data.records
-					}).catch(function(error) {
-						console.log(error)
-					})
-			},
-			handleSizeChange(size) {
-				var _this = this
-				this.pageInfo.size = size
-				var ps = qs.stringify(this.pageInfo)
-				console.log(ps)
-				this.axios.get("http://localhost:8088/TSM/course/mohuselect", {
-           params:{
-          currentPage: _this.pageInfo.currentPage,
-              size: _this.pageInfo.size,
-            kcmc:_this.input,
-        }
-					})
-					.then(function(response) {
-						console.log("2-------------------------------------------")
-						console.log(response.data)
-						_this.tableDataTwo = response.data.records
-						_this.pageInfo.total = response.data.total
-					}).catch(function(error) {
-						console.log(error)
-					})
-			},
+      var _this = this;
+      this.pageInfo.currentPage = page;
+      var ps = qs.stringify(this.pageInfo);
+      console.log(ps);
+      this.axios
+        .get("http://localhost:8088/TSM/course/mohuselect", {
+          params: {
+            currentPage: _this.pageInfo.currentPage,
+            size: _this.pageInfo.size,
+            kcmc: _this.input,
+          },
+        })
+        .then(function (response) {
+          console.log("1-------------------------------------------");
+          console.log(response.data);
+          _this.tableDataTwo = response.data.records;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    handleSizeChange(size) {
+      var _this = this;
+      this.pageInfo.size = size;
+      var ps = qs.stringify(this.pageInfo);
+      console.log(ps);
+      this.axios
+        .get("http://localhost:8088/TSM/course/mohuselect", {
+          params: {
+            currentPage: _this.pageInfo.currentPage,
+            size: _this.pageInfo.size,
+            kcmc: _this.input,
+          },
+        })
+        .then(function (response) {
+          console.log("2-------------------------------------------");
+          console.log(response.data);
+          _this.tableDataTwo = response.data.records;
+          _this.pageInfo.total = response.data.total;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
     // 表格删除弹框
     open() {
       this.$confirm("确定删除此课程吗？", "提示", {
@@ -1074,7 +1138,7 @@ rowClick(row, column) {
         type: "warning",
       })
         .then(() => {
-          this.tablesj=[]
+          this.tablesj = [];
           this.$message({
             type: "success",
             message: "删除成功!",
@@ -1088,61 +1152,65 @@ rowClick(row, column) {
         });
     },
     crea() {
-    let _this=this;
-    this.axios.get("http://localhost:8088/TSM/course/fyselectcourse",{
-      params: _this.pageInfo
-    })
-    .then(response =>{
-      console.log(response);
-      this.tableDataTwo=response.data.records;
-      this.pageInfo.total=response.data.total
-    })
-    .catch(function(error){
-       console.log(error);
-    })
+      let _this = this;
+      this.axios
+        .get("http://localhost:8088/TSM/course/fyselectcourse", {
+          params: _this.pageInfo,
+        })
+        .then((response) => {
+          console.log(response);
+          this.tableDataTwo = response.data.records;
+          this.pageInfo.total = response.data.total;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    //第三步方法
+    //=============================================================================================================================
+    banliren() {
+      this.axios
+        .get("http://localhost:8088/TSM/selectstall", {})
+        .then((response) => {
+          console.log(response.data);
+          this.options = response.data;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    //全额付款
+    fq() {
+      this.ruleForm1.pamount =
+        this.tablesj[0].courseMoney + this.tablesj[0].bookFee;
+    },
   },
-  //第三步方法
-  //=============================================================================================================================
-  banliren(){
-    this.axios.get("http://localhost:8088/TSM/selectstall",{
-
-    }).then(response=>{
-      console.log(response.data)
-      this.options=response.data
-    }).catch(function(error){
-  console.log(error);
-    });
-
-  },
-  //全额付款
-  fq(){
-   this.ruleForm1.pamount=this.tablesj[0].courseMoney+this.tablesj[0].bookFee
-  }
-  },
-    //直接查询
+  //直接查询
   created() {
-    this.ruleForm.studentfilesId=sessionStorage.getItem('studentfilesId');
-      this.ruleForm.inforname=sessionStorage.getItem('studentfilesName');
-       this.ruleForm.inforsexs=sessionStorage.getItem('studentfilesSex');
-        this.ruleForm.infocontact=sessionStorage.getItem('studentfilesPhone');
-         this.ruleForm.information=sessionStorage.getItem('parentPhone');
-          this.ruleForm.infoaddress=sessionStorage.getItem('studentfilesLoc');
-           this.ruleForm.infoschool=sessionStorage.getItem('studentfilesSchool');
-           this.form.date1=sessionStorage.getItem('studentfilesBirthday');
-           this.form.age=sessionStorage.getItem('studentfilesAge');
-            this.ruleForm.studentfilesState=sessionStorage.getItem('studentfilesState');
-    let _this=this;
-    this.axios.get("http://localhost:8088/TSM/course/fyselectcourse",{
-      params: _this.pageInfo
-    })
-    .then(response =>{
-      console.log(response);
-      this.tableDataTwo=response.data.records;
-      this.pageInfo.total=response.data.total
-    })
-    .catch(function(error){
-       console.log(error);
-    })
+    this.ruleForm.studentfilesId = sessionStorage.getItem("studentfilesId");
+    this.ruleForm.inforname = sessionStorage.getItem("studentfilesName");
+    this.ruleForm.inforsexs = sessionStorage.getItem("studentfilesSex");
+    this.ruleForm.infocontact = sessionStorage.getItem("studentfilesPhone");
+    this.ruleForm.information = sessionStorage.getItem("parentPhone");
+    this.ruleForm.infoaddress = sessionStorage.getItem("studentfilesLoc");
+    this.ruleForm.infoschool = sessionStorage.getItem("studentfilesSchool");
+    this.form.date1 = sessionStorage.getItem("studentfilesBirthday");
+    this.form.age = sessionStorage.getItem("studentfilesAge");
+    this.ruleForm.studentfilesState =
+      sessionStorage.getItem("studentfilesState");
+    let _this = this;
+    this.axios
+      .get("http://localhost:8088/TSM/course/fyselectcourse", {
+        params: _this.pageInfo,
+      })
+      .then((response) => {
+        console.log(response);
+        this.tableDataTwo = response.data.records;
+        this.pageInfo.total = response.data.total;
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   },
   components: {
     firststep,
@@ -1190,7 +1258,6 @@ rowClick(row, column) {
 </style>
 <style lang="less" scoped>
 .wrap {
- 
   /deep/ .myTable {
     /*  审查DOM也可以找到这个结构，同上  */
     .el-table__header-wrapper {
@@ -1200,5 +1267,4 @@ rowClick(row, column) {
     }
   }
 }
-
 </style>

@@ -1,9 +1,9 @@
 <template>
-  <div class="tou">
+  <div>
     <!-- 搜索框 -->
-    <div style="margin-top: 10px">
+    <div style="margin-bottom:20px;background-color:white;height:60px;line-height:60px;">
       <el-input
-        style="width: 15%"
+        style="width: 15%;margin-left:10px;"
         v-model="shoushuokuan"
         placeholder="输入地址"
       />
@@ -397,6 +397,4 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.tou {
-}
 </style>

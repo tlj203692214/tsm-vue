@@ -1,5 +1,8 @@
 <template>
-  <div style="margin-top: 2%" class="diva">
+  <div style="background-color: white;
+	width: 100%;
+	height: 60px;
+	line-height: 60px;margin-bottom:30px;" class="diva">
     <div class="b">
       检索条件:<select v-model="pageInfo.zt" class="c" @change="creat()">
         <option value="全部的意见">
@@ -13,15 +16,16 @@
         </option>
       </select>
     </div>
-  </div>
-  <div class="e">
+     
     <el-button
-      style="background-color: blue; color: white"
+      style="background-color: #f60; color: white"
       :icon="CircleCloseFilled"
       @click="fsyj = true"
       ><el-icon><circle-plus-filled /></el-icon>新增</el-button
     >
+
   </div>
+ 
   <el-table
     border
     ref="mt"
@@ -175,18 +179,18 @@
       :model="ruleForm"
       :rules="rules"
     >
-      <div class="yjxx" style="background-color: lightblue">
+      <div class="yjxx" style="background-color: white">
         <div :style="{ display: b }" style="float: left; margin-right: 5px">
           <el-button
             type="primary"
-            style="background-color: blue; color: white"
+            style="background-color: #f60; color: white"
             :icon="CircleCloseFilled"
             size="mini"
             @click="updateopinion('ruleForm')"
             ><el-icon><check /></el-icon>保存</el-button
           >
           <el-button
-            style="background-color: blue; color: white"
+            style="background-color: #f60; color: white"
             :icon="CircleCloseFilled"
             size="mini"
             @click="delectopinion()"
@@ -195,7 +199,7 @@
         </div>
         <el-button
           type="primary"
-          style="background-color: blue; color: white"
+          style="background-color: #f60; color: white"
           :icon="CircleCloseFilled"
           size="mini"
           @click="gbjm('ruleForm')"

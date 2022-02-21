@@ -2,19 +2,19 @@
   <div>
     <div
       style="
-        border: solid 1px white;
-        background-color: #e1fff7;
+        background-color: white;
         border-width: 100%;
-        height: 40px;
+        height: 50px;
+        line-height:50px;
       "
     >
       <el-button
-        style="background-color: #0000ff; color: aliceblue"
+        style="background-color: #f60; color: aliceblue"
         @click="scf()"
         >删除</el-button
       >
       <el-button
-        style="background-color: #0000ff; color: aliceblue"
+        style="background-color: #f60; color: aliceblue"
         @click="fhf()"
         >返回</el-button
       >
@@ -24,11 +24,11 @@
       <p>收件人：{{ staffName2 }}</p>
       <p>
         发件人：{{ staffName1
-        }}<span style="padding-left: 40%">发件时间:{{ sendDate }}</span>
+        }}<span style="padding-left:25%">发件时间:{{ sendDate }}</span>
       </p>
       <p>
         <span style="font-size: 20px">发件内容:</span
-        ><span style="font-size: 50px">{{ sendContent }}</span>
+        ><span style="font-size: 40px">{{ sendContent }}</span>
       </p>
     </div>
   </div>

@@ -30,9 +30,9 @@
 				</div>
 				<div class="showTableData">
 					<el-table ref="mt" :data="adminData" @selection-change="handeselect" style="width: 100%;">
-						<el-table-column prop="portraitUrl" label="头像" width="80"><!-- {{scope.row.portraitUrl}} :src="scope.row.portraitUrl" -->
+						<!-- <el-table-column prop="portraitUrl" label="头像" width="80">
 							<template #default="scope"><img style="width: 3rem;height: 3rem;" src="../assets/img/headx/勾勾.jpg"></template>
-						</el-table-column>
+						</el-table-column> -->
 						<el-table-column prop="personalName" label="姓名"></el-table-column>
 						<el-table-column prop="personalPhone" label="手机号" width="150"></el-table-column>
 						<el-table-column prop="deptName" label="部门"></el-table-column>
