@@ -20,7 +20,7 @@
 							<el-button :icon="Search" @click="selectAdmins()"></el-button>
 						</template>
 				    </el-input>
-					<el-radio-group v-model="pageInfo.radio" @change="selectAdmins">
+					<el-radio-group style="float: right;" v-model="pageInfo.radio" @change="selectAdmins">
 						<el-radio :label="3">在职</el-radio>
 						<el-radio :label="6">离职</el-radio>
 					</el-radio-group>
@@ -42,11 +42,11 @@
 						<el-table-column label="操作" width="150">
 							<template #default="scope">
 								<span v-if="scope.row.staffId==staffid">
-									<el-button size="mini" @click="">编辑</el-button>
+									<el-button size="mini" @click="">详情</el-button>
 									<el-button size="mini" disabled>辞退</el-button>
 								</span>
 								<span v-else-if="scope.row.administrationState==0">
-									<el-button size="mini" @click="">编辑</el-button>
+									<el-button size="mini" @click="">详情</el-button>
 									<el-button type="danger" size="mini" @click="tranmission(scope.row)">辞退</el-button>
 								</span>
 								<span v-else><el-button type="primary" size="mini" @click="tranmission(scope.row)">恢复</el-button></span>
@@ -65,7 +65,7 @@
 					    </el-pagination>
 					</div>
 				</div>
-				<el-dialog v-model="centerDialogVisible" title="新增员工信息" width="52%" center>
+				<el-dialog v-model="centerDialogVisible" title="新增员工信息" width="52%" @close="resetaddFrom('ruleForm')" center>
 				    <el-form 
 				        ref="ruleForm"
 				        :model="ruleForm"
@@ -135,17 +135,18 @@
 				</div>
 				<div class="showTableData">
 					<el-table ref="mt" :data="personalData" @selection-change="handeselect" style="width: 100%;">
-						<el-table-column prop="personalId" label="档案编号">
+						<el-table-column prop="personalId" label="实习编号">
 							<template #default="scope">ID:{{scope.row.personalId}}</template>
 						</el-table-column>
 						<el-table-column prop="personalName" label="姓名"></el-table-column>
 						<el-table-column prop="personalSex" label="性别"></el-table-column>
 						<el-table-column prop="personalAge" label="年龄"></el-table-column>
 						<el-table-column prop="personalPhone" label="手机号"></el-table-column>
-						<el-table-column prop="entryTime" label="存档时间" width="150"></el-table-column>
-						<el-table-column label="操作">
+						<el-table-column prop="entryTime" label="入职时间"></el-table-column>
+						<el-table-column label="操作" width="200">
 							<template #default="scope">
-								<el-button type="primary" size="mini" @click="">员工转正</el-button>
+								<el-button type="primary" size="mini" @click="UpstaffFrom(scope.row)">员工转正</el-button>
+								<el-button type="danger" size="mini" @click="staffctFrom(scope.row)">员工辞退</el-button>
 							</template>
 						</el-table-column>
 					</el-table>
@@ -161,6 +162,31 @@
 					    </el-pagination>
 					</div>
 				</div>
+				<el-dialog v-model="staffUpdate" title="员工转正" width="35%" @close="reststaffUp('form')" center>
+					<el-form ref="form" :model="form" :rules="staffrules" label-width="120px">
+						<el-form-item label="编号" prop="id" style="width: 360px;display: none;">
+							<el-input disabled v-model="form.id"></el-input>
+						</el-form-item>
+						<el-form-item label="员工姓名" prop="name" style="width: 360px;">
+							<el-input disabled v-model="form.name"></el-input>
+						</el-form-item>
+						<el-form-item label="部门名称" prop="deptid">
+							<el-cascader :props="props" style="width: 240px;" v-model="form.deptid" />
+						</el-form-item>
+					</el-form>
+					<template #footer>
+						<el-button @click="reststaffUp('form')">取消</el-button>
+						<el-button type="primary" @click="submitstaffUp('form')">确定</el-button>
+					</template>
+				</el-dialog>
+				<el-dialog v-model="staffDel" title="提示" width="35%">
+					<el-icon><i-warning-filled /></el-icon>
+					<span>确定把实习员工【{{admin.sname}}】辞退？</span>
+					<template #footer>
+						<el-button @click="staffDel = false">取消</el-button>
+						<el-button type="primary" @click="DelstaffFrom()">确定</el-button>
+					</template>
+				</el-dialog>
 			</div>
 		</el-tab-pane>
 	</el-tabs>
@@ -176,6 +202,11 @@
 	export default{
 		data() {
 			return {
+				props: {
+				  checkStrictly: true,
+				  lazy: true,
+				  lazyLoad: this.getCheckedNodes,
+				},
 				activeName:'0',
 				ruleForm: {
 				    name: '',
@@ -231,6 +262,15 @@
 						},
 					],
 				},
+				staffrules:{
+					deptid: [
+					    {
+					        required: true,
+					        message: '部门名称不可为空',
+					        trigger: 'blur',
+					    },
+					],
+				},
 				staffid: sessionStorage.getItem("staffId"),
 				adminData: [],
 				personalData: [],
@@ -245,14 +285,135 @@
 				centerDialogVisible: ref(false),
 				centerDel:ref(false),
 				centerHuiFu:ref(false),
+				staffUpdate:ref(false),
+				staffDel:ref(false),
 				admin:{
 					sname:'',
 					state:'',
 					staffid:'',
-				}
+				},
+				form:{
+					id:'',
+					name:'',
+					deptid:'',
+				},
 			}
 		},
 		methods:{
+			getCheckedNodes(node, resolve) {
+			  const { data, level } = node;
+			  if (level === 0) {
+			    this.axios.post("http://localhost:8088/TSM/dept/selectDept", {})
+			      .then((response) => {
+			        this.axios
+			          .post("http://localhost:8088/TSM/dept/selectDeptjl/" + 0)
+			          .then((res) => {
+			            const nodes = res.data.map((item) => {
+			              for (var a = 0; a < response.data.length; a++) {
+			                if (item.deptId == response.data[a].deptDid) {
+			                  var c = false;
+			                  break;
+			                } else {
+			                  var c = true;
+			                }
+			              }
+			              return {
+			                value: item.deptId,
+			                label: item.deptName,
+			                leaf: c,
+			              };
+			            });
+			            resolve(nodes);
+			          });
+			      });
+			  } else {
+			    this.axios.post("http://localhost:8088/TSM/dept/selectDept", {})
+			      .then((response) => {
+			        this.axios
+			          .post("http://localhost:8088/TSM/dept/selectDeptjl/" + node.value)
+			          .then((res) => {
+			            const nodes = res.data.map((item) => {
+			              for (var a = 0; a < response.data.length; a++) {
+			                if (item.deptId == response.data[a].deptDid) {
+			                  var c = false;
+			                  break;
+			                } else {
+			                  var c = true;
+			                }
+			              }
+			              return {
+			                value: item.deptId,
+			                label: item.deptName,
+			                leaf: c,
+			              };
+			            });
+			            resolve(nodes);
+			          });
+			      });
+			  }
+			},
+			UpstaffFrom(row){
+				this.form.id = row.personalId
+ 				this.form.name = row.personalName
+				this.staffUpdate = true
+			},
+			reststaffUp(updatestaff){
+				this.$refs[updatestaff].resetFields()
+				this.staffUpdate = false
+			},
+			submitstaffUp(updatestaff){//添加员工账号
+				var staffname = this.form.name+this.form.id
+				this.$refs[updatestaff].validate((valid) => {
+					if(valid){
+						var _this=this
+						this.axios.post("http://localhost:8088/TSM/staff/addstaff",{
+							staffName:staffname,
+							staffPass:123456,
+						}).then(function(response){
+							console.log("添加员工账号信息",response.data)
+							_this.personalUp(response.data)
+							_this.Addadministration(response.data)
+							_this.personals()
+						}).catch(function(error){
+							console.log(error)
+						})
+					}else {
+						console.log('error submit!!')
+						return false
+					}
+				})
+			},
+			personalUp(sid){
+				var _this=this
+				this.axios.post("http://localhost:8088/TSM/personal/updatePersonal",{
+					personalId:this.form.id,
+					staffId:sid,
+					personalState:1,
+				}).then(function(response){
+					console.log(response.data)
+				}).catch(function(error){
+					console.log(error)
+				})
+				console.log("员工转正成功")
+			},
+			Addadministration(sid){
+				console.log("jjjjj ",sid)
+				alert(this.form.deptid)
+				var tid = this.form.deptid[this.form.deptid.length-1]
+				console.log("sssssss",tid)
+				var _this=this
+				this.axios.post("http://localhost:8088/TSM/administration/addAdministration",{
+					staffId:sid,
+					deptId:tid,
+					positionId:9,
+				}).then(function(response){
+					console.log(response.data)
+				}).catch(function(error){
+					console.log(error)
+				})
+				this.staffUpdate = false
+				console.log("员工转正成功!!员工管理表关联成功")
+			},
 			resetaddFrom(addformName){
 				this.$refs[addformName].resetFields()
 				this.centerDialogVisible = false
@@ -281,6 +442,26 @@
 						return false
 					}
 				})
+			},
+			staffctFrom(row){
+				this.admin.staffid = row.personalId
+				this.admin.sname = row.personalName
+				this.staffDel = true
+			},
+			DelstaffFrom(){
+				console.log("iddddd",this.admin.staffid)
+				var _this=this
+				this.axios.post("http://localhost:8088/TSM/personal/updatePersonal",{
+					personalId:this.admin.staffid,
+					deleted:1,		
+				}).then(function(response){
+					console.log(response.data)
+					_this.personals()
+				}).catch(function(error){
+					console.log(error)
+				})
+				ElMessage({message: '员工辞退成功！',type: 'success',})
+				this.staffDel = false
 			},
 			tranmission(row){
 				this.admin.staffid=row.staffId

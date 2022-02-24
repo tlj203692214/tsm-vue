@@ -60,6 +60,10 @@
 			</el-form-item>
 			</div>
 	</el-form>
+	 <div>
+	    <el-radio v-model="radio1" label="1" size="large" style="margin-left:20px;color:green">已完成</el-radio>
+	    <el-radio v-model="radio1" label="0" size="large" style="margin-left:20px;color:red" >未完成</el-radio>
+	  </div>
 </template>
 
 <script>
@@ -67,6 +71,7 @@
 	export default{
 		data(){
 			return{
+				radio1:sessionStorage.getItem("notepadState"),//记事本状态
 				add:"",
 				update:"",
 				ruleForm: {
@@ -148,6 +153,7 @@
 			    notepadPlace:this.ruleForm.notepadPlace,
 			    notepadContent:this.ruleForm.notepadContent,
 			    staffId:this.ruleForm.staffId,
+				notepadState:this.radio1,
 				})
 				.then((response) => {
 				this.$refs[formName].resetFields();
@@ -166,7 +172,7 @@
 								}
 							})
 						},
-			addNotepad(formName) {    //新增意见
+			addNotepad(formName) {    //新增并新建记事本
 		
 							let _this=this
 							this.$refs[formName].validate((valid) => {
@@ -246,6 +252,7 @@
 				this.update="true",
 				this.add="none"
 			}else{
+				this.ruleForm.beginTime=sessionStorage.getItem("beginTime"),
 				this.add="true",
 				this.update="none"
 			}

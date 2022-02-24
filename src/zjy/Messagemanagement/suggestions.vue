@@ -49,7 +49,7 @@
     <el-button
       style="background-color: #f60; color: white"
       :icon="CircleCloseFilled"
-      @click="(xzyjx = true), cxyh(), xzqk()"
+      @click="(xzyjx = true), cxyh(), xzqk('ruleForm')"
       ><el-icon><circle-plus-filled /></el-icon>新增</el-button
     >
     <el-button
@@ -377,10 +377,10 @@ export default {
 
     gbjm(formName) {
       this.$refs[formName].resetFields(),
-        (this.ruleForm.remarks = ""),
-        (this.ruleForm.userScope = ""),
-        (this.yhsz = []), //清空所有数据
-        (this.xzyjx = false);
+        this.ruleForm.remarks = "",
+        this.ruleForm.userScope = "",
+        this.yhsz = [], //清空所有数据
+        this.xzyjx = false;
       this.xgyjx = false;
     },
     enable(row) {
@@ -451,16 +451,17 @@ export default {
       this.DeptId = "0"; //回到初始值
     },
 
-    xzqk() {
+    xzqk(formName) {
       //新增按钮清空所有参数
-      (this.ruleForm.staffId = ""),
-        (this.ruleForm.suggestionsManage = ""),
-        (this.ruleForm.suggestionsName = ""),
-        (this.ruleForm.remarks = ""),
-        (this.ruleForm.userScopesz = []),
-        (this.ruleForm.userScope = ""),
-        (this.ruleForm.staffName = ""),
-        (this.yhsz = []);
+	  this.$refs[formName].resetFields(),
+      this.ruleForm.staffId="",
+      this.ruleForm.suggestionsManage="",
+      this.ruleForm.suggestionsName="",
+      this.ruleForm.remarks="",
+      this.ruleForm.userScopesz=[],
+      this.ruleForm.userScope="",
+      this.ruleForm.staffName="",
+      this.yhsz=[]
     },
     selectDept() {
       //查询部门

@@ -317,12 +317,7 @@ export default {
       //删除意见
       let _this = this;
       this.axios
-        .post("http://localhost:8088/TSM/opinion/delectOpinion", {
-          opinionId: this.xx.opinionId,
-          staffId: this.xx.staffId,
-          deleted: "1",
-          suggestionsId: this.xx.suggestionsId,
-        })
+        .post("http://localhost:8088/TSM/opinion/delectOpinion/"+this.xx.opinionId)
         .then((response) => {
           _this.xgyj = false;
           _this.creat();

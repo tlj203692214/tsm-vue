@@ -48,7 +48,7 @@
     <el-button
       style="background-color: #f60; color: white"
       :icon="CircleCloseFilled"
-      @click="(xzjm = true), qk()"
+      @click="(xzjm = true), qk('ruleForm')"
       ><el-icon><circle-plus-filled /></el-icon>新增</el-button
     >
     <el-button
@@ -210,7 +210,7 @@
         <el-button type="primary" @click="gbjm('ruleForm')"> 关闭</el-button>
       </span>
     </template>
-    <!-- 	{{sss[sss.length-1][sss[sss.length-1].length-1]}} -->
+
   </el-dialog>
   <!-- 修改界面-->
   <el-dialog
@@ -503,11 +503,12 @@ export default {
       //将多选框勾选的内容放入数组
       this.ggxsz = ggxsz;
     },
-    qk() {
+    qk(formName) {
       //将之前的记录清空
-      this.ruleForm.noticeType = "";
-      this.ruleForm.noticeTheme = "";
-      this.ruleForm.noticeContent = "";
+       this.$refs[formName].resetFields();
+	   this.ruleForm.noticeType ="";
+	   this.ruleForm.noticeTheme ="";
+	   this.ruleForm.noticeContent ="";
     },
     addNoticeg(formName) {
       //新增公告并关闭弹窗
@@ -519,14 +520,14 @@ export default {
               this.ruleForm.deptName[i][this.ruleForm.deptName[i].length - 1] +
               ",";
           } //将数组转化为字符串
-
+  var deptName=","+this.deptNames
           //去掉最后一个逗号
-          if (this.deptNames.length > 0) {
-            this.deptNames = this.deptNames.substr(
-              0,
-              this.deptNames.length - 1
-            );
-          }
+          // if (this.deptNames.length > 0) {
+          //   this.deptNames = this.deptNames.substr(
+          //     0,
+          //     this.deptNames.length - 1
+          //   );
+          // }
 
           this.axios
             .post("http://localhost:8088/TSM/notice/addNotice", {
@@ -534,7 +535,7 @@ export default {
               noticeTheme: this.ruleForm.noticeTheme,
               noticeContent: this.ruleForm.noticeContent,
               staffId: this.staffId,
-              deptName: this.deptNames,
+              deptName: deptName,
             })
             .then((response) => {
               this.$refs[formName].resetFields();
@@ -558,26 +559,27 @@ export default {
       let _this = this;
       this.$refs[formName].validate((valid) => {
         if (valid) {
+			 
           for (var i = 0; i < this.ruleForm.deptName.length; i++) {
             this.deptNames +=
               this.ruleForm.deptName[i][this.ruleForm.deptName[i].length - 1] +
               ",";
           } //将数组转化为字符串
-
+		   var deptName=","+this.deptNames
           //去掉最后一个逗号
-          if (this.deptNames.length > 0) {
-            this.deptNames = this.deptNames.substr(
-              0,
-              this.deptNames.length - 1
-            );
-          }
+          // if (this.deptNames.length > 0) {
+          //   this.deptNames = this.deptNames.substr(
+          //     0,
+          //     this.deptNames.length - 1
+          //   );
+          // }
           this.axios
             .post("http://localhost:8088/TSM/notice/addNotice", {
               noticeType: this.ruleForm.noticeType,
               noticeTheme: this.ruleForm.noticeTheme,
               noticeContent: this.ruleForm.noticeContent,
               staffId: this.staffId,
-              deptName: this.deptNames,
+              deptName:deptName,
             })
             .then((response) => {
               this.$refs[formName].resetFields();

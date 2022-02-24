@@ -45,7 +45,7 @@
 			    </el-pagination>
 			</div>
 		</div>
-		<el-dialog v-model="sondeptAdd" title="添加子部门" width="35%" center>
+		<el-dialog v-model="sondeptAdd" title="添加子部门" width="35%" @close="resetsonFrom('addsonform')" center>
 			<el-form ref="addsonform" :model="addsonform" :rules="addsonrules" label-width="120px">
 				<el-form-item label="上级部门编号" style="display: none;" >
 					<el-input v-model="addsonform.did"></el-input>
@@ -62,7 +62,7 @@
 				<el-button type="primary" @click="insertsonFrom('addsonform')">确定</el-button>
 			</template>
 		</el-dialog>
-		<el-dialog v-model="centerAdd" title="添加部门" width="35%" center>
+		<el-dialog v-model="centerAdd" title="添加部门" width="35%" @close="resetaddFrom('addform')" center>
 			<el-form ref="addform" :model="addform" :rules="addrules" label-width="120px">
 				<el-form-item label="部门名称" prop="name" style="width: 360px;">
 					<el-input v-model="addform.name"></el-input>
@@ -169,7 +169,6 @@
 		},
 		methods:{
 			addtranmisi(addformName){
-				this.addform.name = ''
 				this.centerAdd = true
 				this.listDepts()
 			},
@@ -193,7 +192,7 @@
 							var _this=this
 							this.axios.post("http://localhost:8088/TSM/dept/addDept",{
 								deptName:this.addsonform.name,
-								deptdid:this.addsonform.did,
+								deptDid:this.addsonform.did,
 							}).then(function(response){
 								console.log(response.data)
 							}).catch(function(error){
@@ -285,6 +284,7 @@
 				this.addsonform.did = row.deptId
 				this.addsonform.dname = row.deptName
 				this.sondeptAdd = true
+				this.listDepts()
 			},
 			updatedept(row){
 				this.form.id = row.deptId

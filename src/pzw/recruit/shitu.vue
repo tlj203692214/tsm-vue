@@ -288,13 +288,13 @@
             </el-button>
               </div>
               <div v-else>
-            <el-button
+            <!-- <el-button
               type="text"
               size="small"
               @click.prevent="deleteRow(scope.$index, tableData)"
             >
               报名
-            </el-button>
+            </el-button> -->
             <el-button type="text" size="small" @click="tjgj(scope.$index, scope.row)">
               添加跟进
             </el-button>
@@ -2066,9 +2066,7 @@ span > .el-tag--light {
   --el-tag-font-color: #ff5722;
   --el-tag-hover-color: #ff9777;
 }
-/* li > span {
-  color: #303133;
-} */
+
 </style>
 
 

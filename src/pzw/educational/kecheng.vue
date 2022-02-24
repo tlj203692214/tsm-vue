@@ -5,22 +5,38 @@
         <!-- 课程管理 -->
         <el-tab-pane label="课程管理" name="first">
           <div style="background: #f5f7fa; width: 100%; height: 2ex"></div>
-          <el-button style="margin-left: 77%;margin-top: 16px;" @click="xinzhenkc=true">新增课程</el-button>
+          <el-button style="color:#ffffff;margin-left: 77%;margin-top: 16px;background:#f60;" @click="xinzhenkc=true">新增课程</el-button>
           <div class="kecheng">
             <el-table :data="tableData" stripe style="width: 100%">
-              <el-table-column prop="kcname" label="课程名称" width="180" />
-              <el-table-column prop="kcjine" label="课程金额" width="180" />
-              <el-table-column prop="kcsl" label="课程数量" width="180" />
-              <el-table-column prop="kcdanjia" label="课程单价" width="180" />
-              <el-table-column prop="shubenfei" label="书本费" />
+              <el-table-column prop="courseName" label="课程名称" width="180" />
+              <el-table-column prop="courseMoney" label="课程金额" width="180" />
+              <el-table-column prop="courseHour" label="课程数量" width="180" />
+              <el-table-column prop="coursePrice" label="课程单价" width="180" />
+              <el-table-column prop="bookFee" label="书本费" />
               <el-table-column label="操作">
                 <template #default="scope">
-                  <el-button type="text" size="mini" @click="bianjikc = true"
+                  <el-button type="text" size="mini" @click="bjkctc(scope.row)"
                     >编辑</el-button
+                  >
+                  <el-button type="text" size="mini" @click="sckc(scope.row)"
+                    >删除</el-button
                   >
                 </template>
               </el-table-column>
             </el-table>
+            <div class="block">
+    <el-pagination
+      @size-change="kchandleSizeChange"
+      @current-change="kchandleCurrentChange"
+      :current-page="pageInfo.currentPage"
+      :page-sizes="[2, 4, 6, 8]"
+      :page-size="pageInfo.size"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="pageInfo.total"
+    >
+    </el-pagination>
+  </div>
+  
           </div>
         </el-tab-pane>
         
@@ -40,7 +56,7 @@
               <el-select
                 style="width: 7%"
                 v-model="shousuoxlk"
-                placeholder="请选择"
+               
               >
                 <el-option
                   v-for="item in options"
@@ -50,8 +66,15 @@
                 >
                 </el-option>
               </el-select>
+
               <!-- 搜索框 -->
-              <el-input style="width: 15%" v-model="shoushuokuan" />
+              <span v-if="shousuoxlk=='教程名称'">
+                 <el-input style="width: 15%" v-model="shoushuokuan" placeholder="请输入教程名称" clearable />
+              </span>
+              <span v-else-if="shousuoxlk=='入库人'">
+                 <el-input style="width: 15%" v-model="shoushuokuan" placeholder="请输入入库人名称" clearable />
+              </span>
+             
 
               <!-- 搜索按钮 -->
               <el-button
@@ -63,6 +86,7 @@
                   --el-button-hover-color: #f60;
                 "
                 type="primary"
+                @click="jcss()"
               >
                 <el-icon>
                   <search />
@@ -84,34 +108,23 @@
                 <el-icon><plus /></el-icon>
                 新增教程
               </el-button>
-              <el-button
-                style="
-                  background: #f60;
-                  --el-button-hover-color: #ff9f5f;
-                  --el-button-active-background-color: #d35400;
-                  --el-button-border-color: black;
-                  --el-button-hover-color: #f60;
-                  color: white;
-                "
-              >
-                <el-icon><delete /></el-icon>
-                删除
-              </el-button>
+             
               <br />
               <!-- 教程表格 -->
               <el-table :data="jiaocai" stripe style="width: 100%">
                 <el-table-column type="selection" width="55" />
                 <el-checkbox v-model="checked1" label="Option 1"></el-checkbox>
-                <el-table-column prop="jcname" label="教程名称" width="180" />
+                <el-table-column prop="purchaseName" label="教程名称" width="160" />
                 <el-table-column
-                  prop="jcshulian"
+                  prop="purchaseNumber"
                   label="教程数量"
                   width="180"
                 />
-                <el-table-column prop="jcjiage" label="教程金额" width="180" />
-                <el-table-column prop="caigouyuan" label="采购员" width="180" />
-                <el-table-column prop="kcname" label="课程" width="180" />
-                <el-table-column prop="cgdate" label="采购时间" />
+                 <el-table-column prop="purchasePrice" label="教程单价" width="160" />
+                <el-table-column prop="purchaseAount" label="教程总金额" width="160" />
+                <el-table-column prop="staffName" label="采购员" width="160" />
+                <el-table-column prop="courseName" label="课程" width="160" />
+                <el-table-column prop="purchaseDate" label="采购时间" width="160"/>
                 <el-table-column label="操作">
                   <template #default="scope">
                     <el-button
@@ -123,6 +136,16 @@
                   </template>
                 </el-table-column>
               </el-table>
+               <el-pagination
+      @size-change="rkhandleSizeChange"
+      @current-change="rkhandleCurrentChange"
+      :current-page="pageInfo1.currentPage"
+      :page-sizes="[2, 4, 6, 8]"
+      :page-size="pageInfo1.size"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="pageInfo1.total"
+    >
+    </el-pagination>
             </el-tab-pane>
 
             <!-- 
@@ -235,7 +258,6 @@ layout="total, sizes, prev, pager, next, jumper"
         <el-form-item label="课程名称">
           <el-input
             style="width: 30%"
-            disabled
             v-model="xzkc.kcname"
           ></el-input>
         </el-form-item>
@@ -246,7 +268,7 @@ layout="total, sizes, prev, pager, next, jumper"
           label="课程金额"
          
         >
-          <el-input style="width: 30%" v-model.number="xzkc.kcje"></el-input>
+          <el-input style="width: 30%" v-model.number="xzkc.kcje"  :disabled="true"></el-input>
         </el-form-item>
         <!-- 新增课程课时 -->
         <el-form-item
@@ -257,7 +279,7 @@ layout="total, sizes, prev, pager, next, jumper"
         >
           <el-input
             style="width: 30%"
-            @change="suan()"
+            @change="suan1()"
             v-model.number="xzkc.kcks"
           ></el-input>
         </el-form-item>
@@ -270,7 +292,7 @@ layout="total, sizes, prev, pager, next, jumper"
         >
           <el-input
             style="width: 30%"
-            @change="suan()"
+            @change="suan1()"
             v-model.number="xzkc.kcdj"
           ></el-input>
         </el-form-item>
@@ -279,7 +301,7 @@ layout="total, sizes, prev, pager, next, jumper"
           prop="shuben"
           style="position: relative; top: -7.7ex"
           label="书本价格"
-         
+           @change="suan1()"
         >
           <el-input style="width: 30%" v-model.number="xzkc.shuben"></el-input>
         </el-form-item>
@@ -303,7 +325,6 @@ layout="total, sizes, prev, pager, next, jumper"
         <el-form-item label="课程名称">
           <el-input
             style="width: 30%"
-            disabled
             v-model="bjkc.kcname"
           ></el-input>
         </el-form-item>
@@ -313,8 +334,9 @@ layout="total, sizes, prev, pager, next, jumper"
           style="position: relative; top: -8.4ex; left: 40%"
           label="课程金额"
           :rules="[{ type: 'number', message: '请输入正确金额' }]"
+           
         >
-          <el-input style="width: 30%" v-model.number="bjkc.kcje"></el-input>
+          <el-input style="width: 30%" :disabled="true" v-model.number="bjkc.kcje"></el-input>
         </el-form-item>
         <!-- 编辑课程课时 -->
         <el-form-item
@@ -346,6 +368,7 @@ layout="total, sizes, prev, pager, next, jumper"
         <el-form-item
           prop="shuben"
           style="position: relative; top: -7.7ex"
+           @change="suan()"
           label="书本价格"
           :rules="[{ type: 'number', message: '请输入正确费用' }]"
         >
@@ -458,50 +481,74 @@ layout="total, sizes, prev, pager, next, jumper"
         </el-form-item>
         <!-- 新增教程金额 -->
         <el-form-item
-          prop="jcjiage"
+          prop="zjsl"
           style="position: relative; top: -8.4ex; left: 40%"
           label="教程金额"
         >
-          <el-input style="width: 30%" v-model.number="xzjc.jcjiage"></el-input>
+          <el-input style="width: 30%" v-model.number="xzjc.zjsl" :disabled="true"></el-input>
         </el-form-item>
         <!-- 教程数量 -->
         <el-form-item
           prop="jcshulian"
           style="position: relative; top: -3.4ex"
           label="教程数量"
+         
         >
           <el-input
             style="width: 30%"
             v-model.number="xzjc.jcshulian"
+             @change="suan2()"
+          ></el-input>
+        </el-form-item>
+        <!-- 教程进价 -->
+        <el-form-item
+          prop="jcjiage"
+          style="position: relative; top: -12.4ex; left: 40%"
+          label="教程进价"
+           
+        >
+          <el-input
+            style="width: 30%"
+            v-model.number="xzjc.jcjiage"
+             @change="suan2()"
           ></el-input>
         </el-form-item>
         <!-- 新增采购员-->
         <el-form-item
           prop="caigouyuan"
-          style="position: relative; top: -11.7ex; left: 40%"
+          style="position: relative; top: -8.7ex; left: 0%"
           label="采购员"
         >
-          <el-input style="width: 30%" v-model="xzjc.caigouyuan"></el-input>
+          <!-- <el-input style="width: 30%" v-model=""></el-input> -->
+          <el-select style="width: 30%" v-model="xzjc.caigouyuan" placeholder="请选择入库人" @click="cxrkr()">
+    <el-option
+      v-for="item in options1"
+      :key="item.staffId"
+      :label="item.staffName"
+      :value="item.staffId"
+    >
+    </el-option>
+  </el-select>
         </el-form-item>
         <!-- 新增课程 -->
         <el-form-item
-          prop="kecheng"
-          style="position: relative; top: -7.7ex"
+          prop="kcname"
+          style="position: relative; top: -17.2ex;left:40%"
           label="课程"
         >
-          <el-select v-model="xzjc.kecheng" style="width: 30%">
+          <el-select v-model="xzjc.kcname" style="width: 30%" @click="cxkc()" placeholder="请选择课程">
             <el-option
               v-for="item in kc"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+              :key="item.courseId"
+              :label="item.courseName"
+              :value="item.courseId"
             ></el-option>
           </el-select>
         </el-form-item>
 
         <!-- 新增时间 -->
         <el-form-item
-          style="position: relative; top: -16ex; left: 40%"
+          style="position: relative; top: -14ex; left: 0%"
           prop="cgdate"
           label="采购时间"
         >
@@ -516,10 +563,10 @@ layout="total, sizes, prev, pager, next, jumper"
 
         <template #footer>
           <span class="dialog-footer">
+            <el-button @click="kcquxiao('xzjc')">取消</el-button>
             <el-button type="primary" @click="kconoff('xzjc')"
               >确定</el-button
             >
-            <el-button @click="kcquxiao('xzjc')">取消</el-button>
           </span>
         </template>
       </el-dialog>
@@ -677,6 +724,7 @@ layout="total, sizes, prev, pager, next, jumper"
 import { ref, defineComponent } from "vue";
 import { ElConfigProvider } from "element-plus";
 import zhCn from "element-plus/lib/locale/lang/zh-cn";
+import { ElMessage } from 'element-plus'
 import {
   ArrowLeft,
   Edit,
@@ -700,6 +748,16 @@ export default {
   props: {},
   data() {
     return {
+      pageInfo:{
+        currentPage:1,
+        size:2,
+        total:0
+      },
+      pageInfo1:{
+        currentPage:1,
+        size:2,
+        total:0
+      },
       locale: zhCn,
       activeName: "first",
       activeName1: "first",
@@ -721,7 +779,7 @@ export default {
       currentPage: 1,
       //新增课程
       xzkc:{
-         kcname: "java",
+         kcname: "",
         kcks: 0,
         kcdj: 0,
         shuben: 0,
@@ -750,11 +808,12 @@ export default {
           },
     //编辑课程
       bjkc: {
-        kcname: "java",
+        kcname: "",
         kcks: 0,
         kcdj: 0,
         shuben: 0,
         kcje: 0,
+        kcid:'',
       },
       rules2: {
           kcname: [
@@ -778,39 +837,20 @@ export default {
         ]
           },
       //课程
-      tableData: [
-        {
-          kcname: "java",
-          kcjine: 18000,
-          kcsl: 180,
-          kcdanjia: 100,
-          shubenfei: 500,
-        },
-      ],
+      tableData: [],
       //教程
-      jiaocai: [
-        {
-          jcname: "java一条龙",
-          jcshulian: 100,
-          jcjiage: 200,
-          caigouyuan: "大力",
-          cgdate: new Date(),
-          kcname: "java",
-          zjsl: 0,
-        },
-      ],
+      jiaocai: [],
       //新增教程
-      xzjc: [
+      xzjc: 
         {
           jcname: "",
           jcshulian: 0,
           jcjiage: 0,
           caigouyuan: "",
-          cgdate: new Date(),
+          cgdate:'',
           kcname: "",
           zjsl: 0,
         },
-      ],
       //新增教程出库
       xzjcck:[
           {
@@ -935,6 +975,7 @@ export default {
           label: "入库人",
         },
       ]),
+       options1: ref([]),
 
       kc: ref([
         {
@@ -942,7 +983,7 @@ export default {
           label: "java",
         },
       ]),
-      shousuoxlk: "",
+      shousuoxlk: "教程名称",
       shoushuokuan: "",
     };
   },
@@ -953,22 +994,111 @@ export default {
     xzsubmitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.xinzhenkc = false;
+          this.axios.post("http://localhost:8088/TSM/course/addcourse",{
+            courseName:this.xzkc.kcname,
+            courseMoney:this.xzkc.kcje,
+            courseHour:this.xzkc.kcks,
+            coursePrice:this.xzkc.kcdj,
+            bookFee:this.xzkcshuben
+          }).then(response=>{
+              console.log(response);
+              this.crea();
+               this.xinzhenkc = false;
+
+          }).catch(function(err){
+              console.log(err)
+          })
+         
         } else {
           console.log("error submit!!");
           return false;
         }
       });
     },
+    bjkctc(row){
+      this.bjkc.kcname=row.courseName
+      this.bjkc.kcks=row.courseHour
+      this.bjkc.kcdj=row.coursePrice
+      this.bjkc.shuben=row.bookFee
+      this.bjkc.kcje=row.courseMoney
+      this.bjkc.kcid=row.courseId
+     this.bianjikc = true
+    },
+    sckc(row){
+        this.$confirm("是否删除课程信息?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          this.axios.post("http://localhost:8088/TSM/course/updatazt",{
+             courseId:row.courseId
+          }).then(response=>{
+            console.log(response)
+            this.$message({
+            type: "success",
+            message: "删除成功!",
+          });
+          this.crea()
+          }).catch(err=>{
+              console.log(err)
+          })
+        }).catch(() => {
+          this.$message({
+            type: "info",
+            message: "取消删除",
+          });
+        });
+    },
     xzresetForm(formName){
        this.$refs[formName].resetFields()
         this.xinzhenkc = false;
+    },
+    //添加时：查询入库人
+    cxrkr(){
+        this.axios.get("http://localhost:8088/TSM/staff/selectstaffqudao",{
+
+        }).then(response=>{
+            console.log(response.data)
+            this.options1=response.data
+        }).catch(err=>{
+          console.log(err)
+        })
+    },
+    //添加时：查询课程
+    cxkc(){
+      this.axios.get("http://localhost:8088/TSM/course/selectcourse",{
+
+        }).then(response=>{
+            console.log(response.data)
+            this.kc=response.data
+        }).catch(err=>{
+          console.log(err)
+        })
     },
        //编辑教程库存窗口
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.bianjikc = false;
+          this.axios.post("http://localhost:8088/TSM/course/updatacourse",{
+        courseId:this.bjkc.kcid,
+        courseMoney:this.bjkc.kcje,
+        bookFee:this.bjkc.shuben,
+        coursePrice:this.bjkc.kcdj,
+        courseHour:this.bjkc.kcks,
+        courseName:this.bjkc.kcname
+          }).then(response=>{
+              console.log(response)
+               ElMessage.success({
+            message: '修改成功',
+            type: 'success',
+          })
+          this.crea()
+              this.bianjikc = false;
+          }).cathc(err=>{
+            console.log(err)
+          })
+          
         } else {
           console.log("error submit!!");
           return false;
@@ -983,6 +1113,34 @@ export default {
       kconoff(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
+          this.axios.post("http://localhost:8088/TSM/purchase/interpurchase",{
+        purchaseName:this.xzjc.jcname,
+        purchaseNumber:this.xzjc.jcshulian,
+        purchasePrice: this.xzjc.zjsl, //单价
+        purchaseAount:this.xzjc.jcjiage,//总价
+        staffId: this.xzjc.caigouyuan,//采购员编号
+        courseId:this.xzjc.kcname,//课程编号
+        purchaseDate:this.xzjc.cgdate //采购时间
+
+          }).then(response=>{
+            console.log(response.data)
+            this.axios.post("http://localhost:8088/TSM/expenditure/interexpenditure",{
+              expenditureMoney:this.xzjc.jcjiage,
+              expenditureDate:this.xzjc.cgdate,
+              purchaseId:response.data
+            }).then(response=>{
+                console.log(response)
+                this.cgcrea()
+            ElMessage.success({
+            message: '添加教程采购',
+            type: 'success',
+          })
+            }).catch(err=>{
+              console.log(err)
+            })
+          }).catch(err=>{
+            console.log(err)
+          })
           this.xinzengkc = false;
          
         } else {
@@ -1039,9 +1197,93 @@ export default {
       });
     },
     suan() {
-      let jg = this.bjkc.kcdj * this.bjkc.kcks;
+      let jg = this.bjkc.kcdj * this.bjkc.kcks+this.bjkc.shuben;
       this.bjkc.kcje = jg;
     },
+    suan1() {
+      let jg = this.xzkc.kcdj * this.xzkc.kcks+this.xzkc.shuben;
+      this.xzkc.kcje = jg;
+    },
+     suan2() {
+      let jg = this.xzjc.jcshulian * this.xzjc.jcjiage;
+      this.xzjc.zjsl= jg;
+    },
+    kchandleSizeChange(size){
+        this.pageInfo.size=size
+        this.axios.get("http://localhost:8088/TSM/course/fyselectcourse",{
+      params:this.pageInfo
+    }).then(response=>{
+        console.log(response.data)
+        this.tableData=response.data.records
+        this.pageInfo.total=response.data.total
+    }).catch(err=>{
+      console.log(err)
+    })
+    },
+    kchandleCurrentChange(page){
+      this.pageInfo.currentPage=page
+        this.axios.get("http://localhost:8088/TSM/course/fyselectcourse",{
+      params:this.pageInfo
+    }).then(response=>{
+        console.log(response.data)
+        this.tableData=response.data.records
+    }).catch(err=>{
+      console.log(err)
+    })
+    },
+    //入库教程搜索
+    jcss(){
+        this.axios.get("http://localhost:8088/TSM/selectmhpurchase",{
+          params:{
+            size: this.pageInfo1.size,
+            currentPage: this.pageInfo1.currentPage,
+            name: this.shoushuokuan, //搜索信息
+            jcmc:this.shousuoxlk
+          }
+        }).then(response=>{
+            this.jiaocai=response.data.records
+        this.pageInfo1.total=response.data.total
+        }).catch(err=>{
+            console.log(err)
+        })
+    },
+    //入库分页
+    rkhandleSizeChange(size) {
+         this.pageInfo1.size=size
+          console.log(`每页 ${size} 条`);
+           //教程采购查询
+   this.axios.get("http://localhost:8088/TSM/selectmhpurchase",{
+          params:{
+            size: this.pageInfo1.size,
+            currentPage: this.pageInfo1.currentPage,
+            name: this.shoushuokuan, //搜索信息
+            jcmc:this.shousuoxlk
+          }
+        }).then(response=>{
+            this.jiaocai=response.data.records
+        this.pageInfo1.total=response.data.total
+        }).catch(err=>{
+            console.log(err)
+        })
+      },
+    rkhandleCurrentChange(page) {
+         this.pageInfo1.currentPage=page
+         console.log(`当前页: ${page}`);
+          //教程采购查询
+    this.axios.get("http://localhost:8088/TSM/selectmhpurchase",{
+          params:{
+            size: this.pageInfo1.size,
+            currentPage: this.pageInfo1.currentPage,
+            name: this.shoushuokuan, //搜索信息
+            jcmc:this.shousuoxlk
+          }
+        }).then(response=>{
+            this.jiaocai=response.data.records
+        }).catch(err=>{
+            console.log(err)
+        })
+      },
+
     handleSizeChange(val) {
         this.size=val
         console.log(`每页 ${val} 条`);
@@ -1050,8 +1292,51 @@ export default {
         this.currentPage=val
         console.log(`当前页: ${val}`);
       },
+crea() {
+    this.axios.get("http://localhost:8088/TSM/course/fyselectcourse",{
+      params:this.pageInfo
+    }).then(response=>{
+        console.log(response.data)
+        this.tableData=response.data.records
+        this.pageInfo.total=response.data.total
+    }).catch(err=>{
+      console.log(err)
+    })
   },
-  created() {},
+  cgcrea(){
+    //教程采购查询
+    this.axios.get("http://localhost:8088/TSM/selectpurchase",{
+      params:this.pageInfo1
+    }).then(response=>{
+       console.log(response.data)
+        this.jiaocai=response.data.records
+        this.pageInfo1.total=response.data.total
+    }).catch(err=>{
+         console.log(err)
+    })
+  },
+  },
+  created() {
+    this.axios.get("http://localhost:8088/TSM/course/fyselectcourse",{
+      params:this.pageInfo
+    }).then(response=>{
+        console.log(response.data)
+        this.tableData=response.data.records
+        this.pageInfo.total=response.data.total
+    }).catch(err=>{
+      console.log(err)
+    })
+    //教程采购查询
+    this.axios.get("http://localhost:8088/TSM/selectpurchase",{
+      params:this.pageInfo1
+    }).then(response=>{
+       console.log(response.data)
+        this.jiaocai=response.data.records
+        this.pageInfo1.total=response.data.total
+    }).catch(err=>{
+         console.log(err)
+    })
+  },
   mounted() {},
 };
 </script>

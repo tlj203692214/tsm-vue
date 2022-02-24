@@ -24,25 +24,19 @@
         :cell-style="{ padding: '0px' }"
       >
         <el-table-column type="selection" width="50" />
+        <el-table-column label="用户id" prop="staffId" v-if="show">
+          <template #default="sc">{{ sc.row.staffId }}</template>
+        </el-table-column>
         <el-table-column prop="staffPosition_id" label="编号" width="80">
           <template #default="scope">{{ scope.row.personalId }} </template>
         </el-table-column>
-        <!-- <el-table-column label="用户头像" width="120">
-          <template #default="scope">
-            <img
-              :src="scope.row.portraitUrl"
-              alt=""
-              style="width: 50px; height: 50px"
-            />
-          </template>
-        </el-table-column> -->
         <el-table-column prop="personalName" label="用户名字" />
         <el-table-column prop="deptName" label="部门名字" />
         <el-table-column prop="positionName" label="角色名字" />
         <el-table-column prop="entryTime" label="入职时间" />
-        <el-table-column prop="personalState" label="用户状态">
+        <el-table-column prop="staffState" label="用户状态">
           <template #default="scope">
-            <span v-if="scope.row.personalState == 0">不可用</span>
+            <span v-if="scope.row.staffState == 1">不可用</span>
             <span v-else>可用</span>
           </template>
         </el-table-column>
@@ -127,7 +121,11 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="用户电话：">
-              <el-input v-model.number="personal.personalPhone" maxlength="11" minlength="11"></el-input>
+              <el-input
+                v-model.number="personal.personalPhone"
+                maxlength="11"
+                minlength="11"
+              ></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -149,11 +147,12 @@
         </el-row>
       </el-form>
     </div>
-
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="centerDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="updateDetails()">确认</el-button>
+        <el-button type="primary" @click="updateDetails(), updateStaffState()"
+          >确认</el-button
+        >
       </span>
     </template>
   </el-dialog>
@@ -177,10 +176,13 @@ const value2 = ref(true);
 <script>
 import qs from "qs";
 import { ref } from "vue";
-// import MTree from './tree.vue'
+import { ElMessage } from 'element-plus';
 export default {
   data() {
     return {
+      // 表格隐藏
+      show: false,
+    
       editcontent: false,
       centerDialogVisible: false,
       toUserDialogVisible: false,
@@ -214,12 +216,20 @@ export default {
       },
     };
   },
-  computed: {
-    powerId() {
-      return this.editpower.positionId;
-    },
-  },
   methods: {
+    //修改用户的状态
+    updateStaffState() {
+      this.axios
+        .post("http://localhost:8088/TSM/staff/upstaffstate/" +this.personal.staffId
+        ).then(() => {
+          console.log("修改成功");
+          this.centerDialogVisible = false;
+          this.flesh();
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
     //日期转换成年龄
     suan() {
       const birthStr1 = this.personal.personalBirthday;
@@ -235,6 +245,7 @@ export default {
       this.personal.personalAge = age;
       console.log("年龄", age);
     },
+  
     // 给用户分配权限弹窗(该用户下的角色，选中)
     toUserPopup(row) {
       this.toUserDialogVisible = true;
@@ -250,25 +261,6 @@ export default {
         .catch(function (error) {
           console.log(error);
         });
-    },
-    handleAvatarSuccess(res, file) {
-      console.log(res);
-      this.imageUrl = res;
-      //   this.personal.portraitUrl = URL.createObjectURL(file.raw);
-      this.personal.portraitUrl = res;
-    },
-    beforeAvatarUpload(file) {
-      const isJPG = file.type === "image/jpeg";
-      const isLt2M = file.size / 1024 / 1024 < 2;
-
-      if (!isJPG) {
-        this.$message.error("上传头像图片只能是 JPG 格式!");
-      }
-      if (!isLt2M) {
-        this.$message.error("上传头像图片大小不能超过 2MB!");
-      }
-
-      return isJPG && isLt2M;
     },
     //弹出详情方法
     detailsUp(row) {
@@ -304,7 +296,6 @@ export default {
     },
     // 修改用户信息
     updateDetails() {
-      var _this = this;
       console.log(this.personal.personalId);
       this.axios
         .post("http://localhost:8088/TSM/personal/updatePersonal", {
@@ -321,7 +312,7 @@ export default {
         .then((res) => {
           console.log(res);
           console.log("修改成功");
-          _this.centerDialogVisible = false;
+          this.centerDialogVisible = false;
           this.flesh();
         })
         .catch(function (error) {
@@ -335,23 +326,6 @@ export default {
         .then((res) => {
           console.log(res);
           this.roleList = res.data;
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    },
-    // 根据id修改头像
-    updateportrait() {
-      var _this = this;
-      this.axios
-        .post("http://localhost:8088/TSM/portrait/updatePortrait", {
-          portraitId: this.personal.portraitId,
-          portraitUrl: this.personal.portraitUrl,
-        })
-        .then((res) => {
-          console.log(res);
-          _this.centerDialogVisible = false;
-          _this.flesh();
         })
         .catch(function (error) {
           console.log(error);

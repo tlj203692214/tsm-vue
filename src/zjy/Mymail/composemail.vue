@@ -71,6 +71,7 @@
         ><span>{{ staffData.staffName }}</span></el-checkbox
       >
     </el-checkbox-group>
+
   </el-dialog>
 </template>
 
@@ -247,7 +248,7 @@ export default {
 
       this.ruleForm.sjr = this.yhsz; //将数组读取
     },
-    aa(sz, id) {
+    addsandr(sz, id) {
       //添加收件表和发件表的中间表数据方法
 
       this.axios
@@ -303,9 +304,10 @@ export default {
               staffName2: this.ruleForm.staffNames,
             })
             .then(function (res) {
+				
               _this.tjsjx(res.data.sendId); //调用添加收件箱方法
               for (var i = 0; i < _this.ruleForm.sjr.length; i++) {
-                _this.aa(_this.ruleForm.sjr[i], res.data.sendId); //调用添加收件表和发件表的中间表数据方法
+                _this.addsandr(_this.ruleForm.sjr[i], res.data.sendId); //调用添加收件表和发件表的中间表数据方法
               }
 
               var id = sessionStorage.getItem("draftId");
@@ -323,10 +325,10 @@ export default {
                   });
                 sessionStorage.setItem("qkcs", "");
               }
-              (_this.ruleForm.staffNames = ""), (_this.ruleForm.title = "");
-              (_this.ruleForm.content = ""),
-                (_this.ruleForm.sjr = []),
-                (_this.yhsz = []), //清空参数
+              _this.ruleForm.staffNames = "", _this.ruleForm.title = "";
+              _this.ruleForm.content = "",
+                _this.ruleForm.sjr = [],
+                _this.yhsz = [], //清空参数
                 ElMessage({ message: "发送成功！", type: "success" });
             })
             .catch(function (erreo) {

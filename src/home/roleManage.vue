@@ -8,9 +8,15 @@
       style="margin-right: 30px; width: 180px; height: 36px"
     />
     <el-button @click="selectPosName()" style="height: 36px; margin-top: 10px">
-      <search style="width: 1em; height: 1em; margin-right: 8px" />查询</el-button>
+      <search
+        style="width: 1em; height: 1em; margin-right: 8px"
+      />查询</el-button
+    >
     <el-button @click="insertPopup()" style="height: 36px; margin-top: 10px">
-      <plus style="width: 1em; height: 1em; margin-right: 8px"/>添加角色</el-button>
+      <plus
+        style="width: 1em; height: 1em; margin-right: 8px"
+      />添加角色</el-button
+    >
   </div>
   <!-- 角色数据显示表格 -->
   <div class="position_content">
@@ -43,6 +49,11 @@
           >
           <el-button type="text" @click="toGranPopup(scope.row), selectNav()"
             >授权</el-button
+          >
+          <el-button
+            type="text"
+            @click="selectcheckNav(scope.row), selectNavAll()"
+            >授权2</el-button
           >
         </template>
       </el-table-column>
@@ -140,20 +151,21 @@
     </el-form>
   </el-dialog>
 
-  <!-- 授权的弹窗 -->
-  <el-dialog title="给角色授权" v-model="toGrantDialogVisible">
-    <div>
-      <el-checkbox-group v-model="checkedMenu">
-        <el-checkbox
-          v-for="menu in AllMenu"
-          :key="menu.navigationId"
-          :label="menu.navigationId"
-          >{{ menu.navigationName }}</el-checkbox
-        ></el-checkbox-group
-      >
-    </div>
+  <!-- 角色授权 -->
+  <el-dialog title="角色授权" v-model="forGrantDialogVisible">
+    <el-tree
+      :data="NavList"
+      :props="defaultProps"
+      show-checkbox
+      :default-checked-keys="this.checkedNav"
+      node-key="navigationId"
+      ref="tree"
+      width="35%"
+      @check="currentChecked"
+    >
+    </el-tree>
     <div slot="footer">
-      <el-button @click="toGrantDialogVisible = false">取 消</el-button>
+      <el-button @click="forGrantDialogVisible = false">取 消</el-button>
       <el-button type="primary" @click="toGranforposition()">确 定</el-button>
     </div>
   </el-dialog>
@@ -174,20 +186,30 @@
 <script>
 import qs from "qs";
 import { ref, defineComponent } from "vue";
+import { ElMessage } from "element-plus";
 export default {
   data() {
     return {
       role: [],
       deptInfo: [],
       // 选中的数据
-      checkedMenu: [],
       checkedInfo: [],
+      checkedNav: [],
+
       // 所有的数据
-      AllMenu: [],
+      NavList: [],
       checked: false,
+      // 角色授权弹窗
+      forGrantDialogVisible: false,
+      // 默认的树形控件数据格式
+      defaultProps: {
+        label: "navigationName",
+        children: "childern",
+      },
+      // 是否有相同的角色
+      isRoleName: true,
       roleDialogVisible: false,
       updateroleDialogVisible: false,
-      toGrantDialogVisible: false,
       menuId: "",
       navId: "",
       pageInfo: {
@@ -251,6 +273,12 @@ export default {
     };
   },
   methods: {
+    // 选中的节点
+    currentChecked(nodeObj, SelectedObj) {
+      console.log(SelectedObj.checkedKeys, "键"); // 这是选中节点的key数组
+      console.log(SelectedObj.checkedNodes, "节点数组"); // 这是选中节点数组
+      this.checkedInfo = SelectedObj.checkedKeys;
+    },
     // 添加角色弹窗
     insertPopup() {
       this.roleDialogVisible = true;
@@ -262,28 +290,29 @@ export default {
       this.roleInfo = row;
       this.menuId = row.positionId;
     },
-    // 给角色授权弹窗(已选中的)
-    toGranPopup(row) {
-      this.toGrantDialogVisible = true;
+    // 角色授权（选中的权限菜单）
+    selectcheckNav(row) {
+      this.forGrantDialogVisible = true;
       this.navId = row.positionId;
       this.axios
         .post("http://localhost:8088/TSM/positionNav/selectPosById", {
           positionId: row.positionId,
         })
         .then((res) => {
-          this.checkedMenu = res.data;
-          this.checkedInfo = res.data;
+          console.error("选择的角色", res.data);
+          this.checkedNav = res.data;
         })
         .catch(function (error) {
           console.log(error);
         });
     },
-    // 查询所有的权限
-    selectNav() {
+    // 查询所有的菜单权限
+    selectNavAll() {
       this.axios
-        .get("http://localhost:8088/TSM/navigation/selectNav")
+        .get("http://localhost:8088/TSM/navigation/selectNavigation2")
         .then((res) => {
-          this.AllMenu = res.data;
+          this.NavList = res.data;
+          // this.checkedInfo = res.data;
         })
         .catch(function (error) {
           console.log(error);
@@ -291,45 +320,56 @@ export default {
     },
     // 给角色授权
     toGranforposition() {
-      console.log(this.checkedMenu !== this.checkedInfo);
-      if (this.checkedMenu !== "" && this.checkedMenu !== this.checkedInfo) {
-        for (let i = 0; i < this.checkedMenu.length; i++) {
-          this.axios
-            .post("http://localhost:8088/TSM/position-nav/insertPosAndNav", {
-              navId: this.checkedMenu[i],
-              positionId: this.navId,
-            })
-            .then(() => {
-              console.log("添加成功");
-              this.toGrantDialogVisible = false;
-            })
-            .catch(function (error) {
-              console.log(error);
-            });
-        }
-      } else {
-        this.toGrantDialogVisible = false;
-      }
+      console.log(this.navId, "选择的编号");
+      // console.log(this.NavList !== this.checkedInfo);
+      // if (this.NavList !== "" && this.NavList !== this.checkedInfo) {
+        this.axios
+          .post("http://localhost:8088/TSM/position-nav/insertPosAndNav/"+this.navId,this.checkedInfo)
+          .then((res) => {
+            ElMessage({ message: "授权成功", type: "success" });
+            this.toGrantDialogVisible = false;
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      // } else {
+      //   this.toGrantDialogVisible = false;
+      // }
     },
     // 添加方法
     insertPosition(roleInfo) {
       this.$refs[roleInfo].validate((valid) => {
         if (valid) {
-          this.axios
-            .post("http://localhost:8088/TSM/position/insertPosition", {
-              positionName: this.roleInfo.positionName,
-              positionRemark: this.roleInfo.positionRemark,
-              positionState: this.roleInfo.positionState,
-              deptId: this.roleInfo.deptId,
-            })
-            .then((res) => {
-              console.log(res);
-              console.log("添加成功");
-              this.flesh();
-            })
-            .catch(function (error) {
-              console.log(error);
-            });
+          for (var name = 0; name < this.role.length; name++) {
+            if (this.role[name].positionName == this.roleInfo.positionName) {
+              this.isRoleName = false;
+              break;
+            } else {
+              this.isRoleName = true;
+            }
+          }
+          if (this.isRoleName == false) {
+            ElMessage({ message: "该角色已存在！！！", type: "warning" });
+          } else {
+            this.axios
+              .post("http://localhost:8088/TSM/position/insertPosition", {
+                positionName: this.roleInfo.positionName,
+                positionRemark: this.roleInfo.positionRemark,
+                positionState: this.roleInfo.positionState,
+                deptId: this.roleInfo.deptId,
+              })
+              .then((res) => {
+                console.log(res);
+                ElMessage({ message: "添加成功", type: "success" });
+                this.roleDialogVisible = false;
+                this.flesh();
+              })
+              .catch(function (error) {
+                console.log(error);
+              });
+          }
+        } else {
+          return false;
         }
       });
     },

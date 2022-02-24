@@ -13,6 +13,7 @@ import income from '../finance/income.vue'
 import users from '../home/userManage.vue'
 import position from '../home/roleManage.vue'
 import menu from '../home/menuManage.vue'
+import aaa from '../home/aaa.vue'
 
 
 import admin from '../cyj/admin.vue'
@@ -66,6 +67,11 @@ const routes = [{
                 component: workbench
             },
             {
+                path: '/aaa',
+                name: 'aaa',
+                component: aaa
+            },
+            {
                 path: '/users',
                 name: 'users',
                 component: users
@@ -90,6 +96,7 @@ const routes = [{
                 name: 'paymoney',
                 component: paymoney
             },
+
             {
                 path: '/expenditure',
                 name: 'expenditure',

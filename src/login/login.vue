@@ -78,7 +78,7 @@ export default {
             })
             .then(function (res) {
               console.log(res);
-              if (res.data !== "") {
+              if (res.data !== "" && res.data.staffState == 0) {
                 console.log(res.data.message);
                 console.log("登录成功");
                 sessionStorage.setItem("isLogin", true);

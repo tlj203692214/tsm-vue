@@ -452,7 +452,7 @@
       v-model="centerDialogStudentVisible"
       title="学员分班"
       width="65%"
-      @close="resetStudentForm('ruleStudentmationForm')"
+      @close="fpxyresetForm()"
       center
     >
     <div class="form2" >
@@ -1199,6 +1199,7 @@ if(!numRe.test( this.editpopForm.headmaster) && !numRe.test(  this.editpopForm.c
     },
     // 添加班级弹框： 清空弹框内容，关闭弹框
     resetForm(rulemationForm) {
+      alert("sss")
       // this.rulemationForm = {};
       this.rulemationForm.num = 0;
         this.$refs[rulemationForm].resetFields();
@@ -1207,6 +1208,7 @@ if(!numRe.test( this.editpopForm.headmaster) && !numRe.test(  this.editpopForm.c
     },
     // 分配学员： 清空弹框内容，关闭弹框
     fpxyresetForm() {
+      this.rulemationForm.value=[];
      this.data=[];
       // this.rulemationForm = {};
       // this.rulemationForm.num = 0;
@@ -1243,6 +1245,7 @@ if(!numRe.test( this.editpopForm.headmaster) && !numRe.test(  this.editpopForm.c
     },
     //给未分班的学员添加班级
     xgxsbjkc(){
+      this.rulemationForm.value=[];
       this.data=[];
       // console.log("快出来")
       //  console.log(this.sessclassid.courseId)
@@ -1616,17 +1619,33 @@ if(!numRe.test( this.editpopForm.headmaster) && !numRe.test(  this.editpopForm.c
           })
         }else if(direction=='left'){
           console.log(direction)
-          let ac={};
+          let ac=[];
+          let a=[];
           for(let i of value){
-            ac=i
+            ac.push(i)
           }
-         
-             for(let item of this.data){
-             
-             if(item.key!=ac){
-              this.axios.post("http://localhost:8088/TSM/student/xgstudentkcbj",{
+// for(let d=0;d<k.length;d++){
+//   for(let b=0;b<l.length;b++){
+//     if(k[d]==l[b]){
+//        break;
+//     }else if(b==l.length-1){
+//       alert(k[d])
+//     }else{
+
+//     }
+//   }
+// }
+
+
+
+  for(let b=0;b<this.data.length;b++){      
+    for(let a=0;a<ac.length;a++){
+      if(this.data[b].key==ac[a]){
+       break;
+      }else if(a==ac.length-1){
+         this.axios.post("http://localhost:8088/TSM/student/xgstudentkcbj",{
                 
-            studentId:item.key,
+            studentId:this.data[b].key,
           courseid:'',
           classesId:'',
       }).then(response=>{
@@ -1634,8 +1653,28 @@ if(!numRe.test( this.editpopForm.headmaster) && !numRe.test(  this.editpopForm.c
       }).catch(err=>{
         console.log(err)
       })
-             }
-         }
+      }
+      
+    }
+     console.log('ac')
+    console.log(ac)
+    console.log('this.data[b].key')
+    console.log(this.data[b].key)
+    if(ac==undefined||ac.length<=0){
+      this.axios.post("http://localhost:8088/TSM/student/xgstudentkcbj",{
+                
+            studentId:this.data[b].key,
+          courseid:'',
+          classesId:'',
+      }).then(response=>{
+          console.log(response)
+      }).catch(err=>{
+        console.log(err)
+      })
+    }
+  }
+    
+
         }else if(direction=='right' && this.rulemationForm.value.length<=this.sessclassid.classesNumber){
           console.log(direction)
           console.log("course编号"+this.sessclassid.courseId)
@@ -1722,11 +1761,11 @@ if(!numRe.test( this.editpopForm.headmaster) && !numRe.test(  this.editpopForm.c
       var ps=qs.stringify(this.pageInfo1)
       console.log(ps);
       console.log(`每页 ${size} 条`);
-       this.axios.get("http://localhost:8088/TSM/selectlikestudent",{
+      this.axios.get("http://localhost:8088/TSM/selectstudnet",{
           params:{
             currentPage:this.pageInfo1.currentPageOne,
             size:this.pageInfo1.sizeOne,
-            // name:this.classstudentbig.input,
+            id:this.sessclassid.classesId,
           }
       }).then(response=>{
           console.log(response.data)
@@ -1741,11 +1780,11 @@ if(!numRe.test( this.editpopForm.headmaster) && !numRe.test(  this.editpopForm.c
       var ps=qs.stringify(this.pageInfo1)
       console.log(ps);
       console.log(`每页 ${page} 条`);
-       this.axios.get("http://localhost:8088/TSM/selectlikestudent",{
+        this.axios.get("http://localhost:8088/TSM/selectstudnet",{
           params:{
             currentPage:this.pageInfo1.currentPageOne,
             size:this.pageInfo1.sizeOne,
-            // name:this.classstudentbig.input,
+            id:this.sessclassid.classesId,
           }
       }).then(response=>{
           console.log(response.data)

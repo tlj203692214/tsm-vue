@@ -19,6 +19,9 @@
 					<span v-if="sg.signState==0">
 						<el-button type="primary" style="margin-left: 1rem;" @click="updatesigns(sg)">打卡</el-button>
 					</span>
+					<span v-else-if="sg.signState==1">
+						<el-button type="primary" style="margin-left: 1rem;" @click="updatesigns(sg)">下班打卡</el-button>
+					</span>
 					<span v-else>
 						<el-button type="danger" disabled style="margin-left: 1rem;">打卡</el-button>
 					</span>
@@ -35,7 +38,8 @@
 				<el-table-column prop="signState" label="状态" width="200">
 					<template #default="scope">
 						<span v-if="scope.row.signState==0">未打卡</span>
-						<span v-else>已打卡</span>
+						<span v-else-if="scope.row.signState==1">上班已打卡</span>
+						<span v-else>下班已打卡</span>
 					</template>
 				</el-table-column>
 				<el-table-column label="操作">
@@ -46,7 +50,7 @@
 						<span v-else>
 							<el-button type="danger" disabled size="mini">打卡</el-button>
 						</span> -->
-						<el-button type="primary" size="mini" @click="attendanceByid(scope.row)">本月考勤</el-button>
+						<el-button type="primary" size="mini" @click="attendanceByid(scope.row)">考勤记录</el-button>
 					</template>
 				</el-table-column>
 			</el-table>
@@ -62,7 +66,7 @@
 			    </el-pagination>
 			</div>
 		</div>
-		<el-dialog v-model="kaoqing" title="本月考勤" width="40%" center>
+		<el-dialog v-model="kaoqing" title="考勤记录" width="40%" center>
 		    <el-calendar ref="calendar">
 		        <template #header="{ date }">
 					<span>考勤员工：{{xy}}</span>
@@ -126,16 +130,32 @@
 			},
 			updatesigns(sg){
 				var _this=this
-				console.log("idididiidididi ",sg.staffId)
-				this.axios.post("http://localhost:8088/TSM/updatestaffsign",{staffId: sg.staffId,})
-				.then(function(response){
-					console.log(response.data)
-					ElMessage({message: '打卡成功！',type: 'success',})
-					_this.addAttendance()
-					_this.staffsigns()
-				}).catch(function(error){
-					console.log(error)
-				})
+				console.log("idididid ",sg.staffId,"状态",sg.signState)
+				if(sg.signState==0){
+					this.axios.post("http://localhost:8088/TSM/updatestaffsign",{
+						staffId: sg.staffId,
+						signState: sg.signState,
+					}).then(function(response){
+						console.log(response.data)
+						ElMessage({message: '上班打卡成功！',type: 'success',})
+						_this.addAttendance()
+						_this.staffsigns()
+					}).catch(function(error){
+						console.log(error)
+					})
+				}else if(sg.signState==1){
+					this.axios.post("http://localhost:8088/TSM/updatestaffsign",{
+						staffId: sg.staffId,
+						signState: sg.signState,
+					}).then(function(response){
+						console.log(response.data)
+						ElMessage({message: '下班打卡成功！',type: 'success',})
+						_this.addAttendance()
+						_this.staffsigns()
+					}).catch(function(error){
+						console.log(error)
+					})
+				}
 			},
 			addAttendance(){
 				var _this=this

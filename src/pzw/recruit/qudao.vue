@@ -1,9 +1,9 @@
 <template>
   <div>
     <!-- 搜索框 -->
-    <div style="margin-bottom:20px;background-color:white;height:60px;line-height:60px;">
+    <div style="margin-top: 10px">
       <el-input
-        style="width: 15%;margin-left:10px;"
+        style="width: 15%"
         v-model="shoushuokuan"
         placeholder="输入地址"
       />
@@ -397,4 +397,5 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+
 </style>

@@ -28,17 +28,35 @@
         </el-button-group>
       </template>
       <template #dateCell="{ data }">
-        <p :class="data.isSelected ? 'is-selected' : ''" @click="addnotepad()">
-          {{ data.day.split("-").slice(1).join("-") }}
-          {{ data.isSelected ? "✔️" : "" }}
-        </p>
+		  <span v-if="this.newDate>data.day">
+		  <p :class="data.isSelected ? 'is-selected' : ''">
+		    {{ data.day.split("-").slice(1).join("-") }}
+		    {{ data.isSelected ? "✔️" : "" }}
+		  </p>
+		  </span>
+		 <span v-else>
+			<p :class="data.isSelected ? 'is-selected' : ''" @click="addnotepad(data.day)">
+			  {{ data.day.split("-").slice(1).join("-") }}
+			  {{ data.isSelected ? "✔️" : "" }}
+			</p>
+		 </span>
+       
         <span v-for="NotepadData in NotepadData">
+			<span v-if="NotepadData.beginTime <= data.day && data.day<=NotepadData.endTime">
           <span
-            v-if="NotepadData.beginTime == data.day"
-            style="color: blue; text-decoration: underline"
+            v-if="NotepadData.notepadState==0 &&NotepadData.endTime<this.newDate"
+            style="color:red; text-decoration: underline"
             @click="updatenotepad(NotepadData)"
-            >{{ NotepadData.notepadTheme[0] + "..." }}</span
-          >&nbsp;
+            >{{ NotepadData.notepadTheme + "..." }}&nbsp;
+			</span>
+		  <span  v-else-if="NotepadData.notepadState==0 &&NotepadData.endTime>=this.newDate"
+            style="color:orange; text-decoration: underline"
+            @click="updatenotepad(NotepadData)">{{ NotepadData.notepadTheme+ "..." }}&nbsp;
+		  </span>
+		  <span v-else style="color:green; text-decoration: underline"
+            @click="updatenotepad(NotepadData)">{{ NotepadData.notepadTheme + "..." }}&nbsp;	  
+		  </span>
+		 </span>
         </span>
       </template>
     </el-calendar>
@@ -69,6 +87,7 @@ export default {
   },
   data() {
     return {
+		newDate:"",
       weekbegin: "",
       weekend: "",
       staffId: sessionStorage.getItem("staffId"),
@@ -77,9 +96,12 @@ export default {
     };
   },
   methods: {
-    addnotepad() {
+    addnotepad(data) {
       //新增记事本
+	
       this.$router.push("/addnotepad");
+	  sessionStorage.setItem("beginTime",data);
+	  sessionStorage.setItem("notepadState",0); //新建记事本默认未完成
       sessionStorage.setItem("notepad", "add"); //参数（区别修改和新增）
     },
     updatenotepad(notepad) {
@@ -96,6 +118,7 @@ export default {
       sessionStorage.setItem("notepadPlace", notepad.notepadPlace); //记事本地点
       sessionStorage.setItem("notepadContent", notepad.notepadContent); //记事本内容
       sessionStorage.setItem("notepadId", notepad.notepadId); //记事本id
+	   sessionStorage.setItem("notepadState",notepad.notepadState); //记事本状态
     },
     selectNotepad() {
       //查询记事本
@@ -109,10 +132,12 @@ export default {
     },
   },
   created() {
-    // var date2 = new Date(this.value)
-    // date2.setDate(this.value.getDate()+7)
-    // var time2 = date2.getFullYear()+"-"+(date2.getMonth()+1)+"-"+date2.getDate()
-    // this.value=time2,
+ var date = new Date()
+       var year = date.getFullYear()
+       var month = date.getMonth() + 1 < 10 ? 
+                     '0' + (date.getMonth() + 1) : date.getMonth()+ 1
+       var day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate()
+  this.newDate=year + '-' +month + '-' + day;
     this.selectNotepad();
   },
 };
