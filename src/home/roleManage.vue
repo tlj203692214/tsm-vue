@@ -47,13 +47,10 @@
           <el-button type="text" @click="updatePopup(scope.row)"
             >修改</el-button
           >
-          <el-button type="text" @click="toGranPopup(scope.row), selectNav()"
-            >授权</el-button
-          >
           <el-button
             type="text"
             @click="selectcheckNav(scope.row), selectNavAll()"
-            >授权2</el-button
+            >授权</el-button
           >
         </template>
       </el-table-column>
@@ -195,7 +192,7 @@ export default {
       // 选中的数据
       checkedInfo: [],
       checkedNav: [],
-
+      checkedMenu: [],
       // 所有的数据
       NavList: [],
       checked: false,
@@ -276,11 +273,14 @@ export default {
     // 选中的节点
     currentChecked(nodeObj, SelectedObj) {
       console.log(SelectedObj.checkedKeys, "键"); // 这是选中节点的key数组
-      console.log(SelectedObj.checkedNodes, "节点数组"); // 这是选中节点数组
-      this.checkedInfo = SelectedObj.checkedKeys;
+      console.log(SelectedObj.halfCheckedKeys, "键数组"); // 这是选中节点数组
+      console.log(nodeObj, "节点数组"); // 这是选中节点数组
+      this.checkedMenu = [SelectedObj.checkedKeys, SelectedObj.halfCheckedKeys];
+      console.log(this.checkedMenu + "编号");
     },
     // 添加角色弹窗
     insertPopup() {
+      this.roleInfo = "";
       this.roleDialogVisible = true;
       this.selectDept();
     },
@@ -299,8 +299,9 @@ export default {
           positionId: row.positionId,
         })
         .then((res) => {
-          console.error("选择的角色", res.data);
+          console.log("选择的角色", res.data);
           this.checkedNav = res.data;
+          this.checkedMenu = res.data;
         })
         .catch(function (error) {
           console.log(error);
@@ -312,7 +313,6 @@ export default {
         .get("http://localhost:8088/TSM/navigation/selectNavigation2")
         .then((res) => {
           this.NavList = res.data;
-          // this.checkedInfo = res.data;
         })
         .catch(function (error) {
           console.log(error);
@@ -320,21 +320,26 @@ export default {
     },
     // 给角色授权
     toGranforposition() {
-      console.log(this.navId, "选择的编号");
-      // console.log(this.NavList !== this.checkedInfo);
-      // if (this.NavList !== "" && this.NavList !== this.checkedInfo) {
-        this.axios
-          .post("http://localhost:8088/TSM/position-nav/insertPosAndNav/"+this.navId,this.checkedInfo)
-          .then((res) => {
-            ElMessage({ message: "授权成功", type: "success" });
-            this.toGrantDialogVisible = false;
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
-      // } else {
-      //   this.toGrantDialogVisible = false;
-      // }
+      console.log(this.checkedMenu, "shouqu");
+      for (var a = 0; a < this.checkedMenu.length; a++) {
+        if (this.checkedNav !== this.checkedMenu && this.checkedNav !== "") {
+          this.axios
+            .post(
+              "http://localhost:8088/TSM/position-nav/insertPosAndNav/" +
+                this.navId,
+              this.checkedMenu[a]
+            )
+            .then((res) => {
+              this.forGrantDialogVisible = false;
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        } else {
+          this.forGrantDialogVisible = false;
+        }
+      }
+      ElMessage({ message: "授权成功", type: "success" });
     },
     // 添加方法
     insertPosition(roleInfo) {
@@ -349,7 +354,10 @@ export default {
             }
           }
           if (this.isRoleName == false) {
-            ElMessage({ message: "该角色已存在！！！", type: "warning" });
+            ElMessage({
+              message: "该角色已存在,请重新输入！",
+              type: "warning",
+            });
           } else {
             this.axios
               .post("http://localhost:8088/TSM/position/insertPosition", {
@@ -361,8 +369,8 @@ export default {
               .then((res) => {
                 console.log(res);
                 ElMessage({ message: "添加成功", type: "success" });
-                this.roleDialogVisible = false;
                 this.flesh();
+                this.roleDialogVisible = false;
               })
               .catch(function (error) {
                 console.log(error);

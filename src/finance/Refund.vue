@@ -23,8 +23,15 @@
     <span class="kong"></span>
 
     <el-button @click="selectState()" style="height: 36px; margin-top: 10px">
-      <search style="width: 1em; height: 1em; margin-right: 8px" />查询</el-button>
-    <el-button @click="updateState()"><finished style="width: 1em; height: 1em; margin-right: 8px"/>审核通过</el-button>
+      <search
+        style="width: 1em; height: 1em; margin-right: 8px"
+      />查询</el-button
+    >
+    <el-button @click="updateState()"
+      ><finished
+        style="width: 1em; height: 1em; margin-right: 8px"
+      />审核通过</el-button
+    >
   </div>
 
   <el-table
@@ -32,7 +39,7 @@
     :data="refundDate"
     style="width: 100%"
     @selection-change="handleSelectionChange"
-     border
+    border
     :row-style="{ height: '23px' }"
     :cell-style="{ padding: '0px' }"
   >
@@ -40,7 +47,7 @@
     <el-table-column prop="refundId" label="编号">
       <template #default="scope">{{ scope.row.refundId }}</template>
     </el-table-column>
-    <el-table-column prop="refundDate" label="退费时间" width="150"/>
+    <el-table-column prop="refundDate" label="退费时间" width="150" />
     <el-table-column prop="refundMoney" label="退费金额">
       <template #default="scope">{{
         scope.row.courseMoney + scope.row.bookFee
@@ -124,9 +131,28 @@ export default {
         },
       ]),
       sels: [],
+      expendInfo: {},
     };
   },
   methods: {
+    // 添加到校务支出审核表
+    insertExpenditure(row) {
+      this.axios
+        .post(
+          "http://localhost:8088/TSM/expenditure/insertExpenditureByRefund",
+          {
+            expenditureMoney: row.refundMoney,
+            refundId: row.refundId,
+            staffId: row.staffId,
+          }
+        )
+        .then((res) => {
+          console.log(res + "添加成功");
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
     // 统计所有的金额
     countMoney() {
       var _this = this;
@@ -177,6 +203,7 @@ export default {
     // 批量修改状态
     updateState() {
       var a = this.sels;
+      console.log(a, "信息");
       if (a == 0) {
         ElMessage({
           message: "请选中你要修改一行",
@@ -184,12 +211,21 @@ export default {
         });
       } else {
         for (var i = 0; i < a.length; i++) {
-          this.editState(a[i]);
+          console.log(a[i].refundState, "状态");
+          if (a[i].refundState == 0) {
+            ElMessage({
+              message: "改数据已被审核，请重新选择！",
+              type: "error",
+            });
+          } else {
+            this.editState(a[i]);
+            this.insertExpenditure(a[i]);
+            ElMessage({
+              message: "修改成功",
+              type: "success",
+            });
+          }
         }
-        ElMessage({
-          message: "修改成功",
-          type: "success",
-        });
       }
     },
 

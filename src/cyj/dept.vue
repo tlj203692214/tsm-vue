@@ -19,7 +19,9 @@
 			</el-button>
 		</div>
 		<div class="showTableData">
-			<el-table ref="mt" :data="deptData" @selection-change="handeselect" style="width: 100%;">
+			<el-table ref="mt" :data="deptData" row-key="deptId" border lazy :load="load"
+				:tree-props="{children:'children',hasChildren:'hasChildren'}"
+				@selection-change="handeselect" style="width: 100%;">
 				<el-table-column width="100"></el-table-column>
 				<el-table-column prop="deptId" label="部门编号">
 					<template #default="scope">ID:{{scope.row.deptId}}</template>
@@ -116,7 +118,8 @@
 					input: '',
 					currentPage:1,
 					pagesize:3,
-					total:0
+					total:0,
+					tid:0
 				},
 				dept:{
 					deptid:'',
@@ -323,12 +326,15 @@
 				
 			},
 			depts(){
+				this.pageInfo.tid = 0
 				var _this=this
 				this.axios.get("http://localhost:8088/TSM/dept/depts"
 				                ,{params:this.pageInfo})
 				.then(function(response){
 					console.log(response.data)
-					_this.deptData=response.data.records
+					_this.deptData=response.data.records.map(v => {
+					    return { ...v, hasChildren: true };
+					});
 					_this.pageInfo.total=response.data.total
 				}).catch(function(error){
 					console.log(error)
@@ -345,6 +351,7 @@
 				})
 			},
 			handleCurrentChange(page){
+				this.pageInfo.tid=0
 				var _this=this
 				this.pageInfo.currentPage=page
 				var ps=qs.stringify(this.pageInfo)
@@ -353,12 +360,15 @@
 				.then(function(response){
 					console.log("1-------------------------------------------")
 					console.log(response.data)
-					_this.deptData=response.data.records
+					_this.deptData=response.data.records.map(v => {
+						return { ...v, hasChildren: true };
+					});
 				}).catch(function(error){
 					console.log(error)
 				})
 			},
 			handleSizeChange(size){
+				this.pageInfo.tid=0
 				var _this=this
 				this.pageInfo.pagesize=size
 				var ps=qs.stringify(this.pageInfo)
@@ -367,20 +377,51 @@
 				.then(function(response){
 					console.log("2-------------------------------------------")
 					console.log(response.data)
-					_this.deptData=response.data.records
+					_this.deptData=response.data.records.map(v => {
+						return { ...v, hasChildren: true };
+					});
 					_this.pageInfo.total=response.data.total
 				}).catch(function(error){
 					console.log(error)
 				})
 			},
+			load(tree, treeNote, resolve) {
+				this.pageInfo.tid = tree.deptId;
+				var _this=this
+				this.axios
+					.post("http://localhost:8088/TSM/dept/selectDept", {})
+					.then((res) => {
+				    console.log(res.data+"ssss");
+				for(var a=0;a<res.data.length;a++){
+					if(res.data[a].deptDid==_this.pageInfo.tid){
+						var has=true;
+						break;
+					}else{
+						 var has=false
+					}
+				}
+				this.axios.get("http://localhost:8088/TSM/dept/depts"
+				                ,{params:this.pageInfo})
+				.then(function(response){
+					const nodes = response.data.records.map(v => {
+					    return { ...v, hasChildren: has };
+					});
+					resolve(nodes);
+				}).catch(function(error){
+					console.log(error)
+				})	
+				})
+			},		      
 		},
 		created(){
 			var _this=this
 			this.axios.get("http://localhost:8088/TSM/dept/depts"
 			                ,{params:this.pageInfo})
 			.then(function(response){
-				console.log(response.data)
-				_this.deptData=response.data.records
+				console.log(response.data+"sss")
+				_this.deptData=response.data.records.map(v => {
+			  	    return { ...v, hasChildren: true };
+			  	});
 				_this.pageInfo.total=response.data.total
 			}).catch(function(error){
 				console.log(error)

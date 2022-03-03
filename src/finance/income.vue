@@ -30,10 +30,9 @@
     border
     style="width: 100%"
     @selection-change="handleCurrentChange"
-    :row-style="{ height: '23px' }"
+    :row-style="{ height: '35px' }"
     :cell-style="{ padding: '0px' }"
   >
-    <el-table-column type="selection" width="50"></el-table-column>
     <el-table-column prop="paymoneyId" label="编号">
       <template #default="scope">{{ scope.row.paymoneyId }}</template>
     </el-table-column>
@@ -85,16 +84,20 @@ export default {
           label: "全部支付",
         },
         {
-          value: "微信支付",
+          value: "微信",
           label: "微信支付",
         },
         {
-          value: "支付宝支付",
+          value: "支付宝",
           label: "支付宝支付",
         },
         {
-          value: "现金支付",
+          value: "现金",
           label: "现金支付",
+        },
+        {
+          value: "刷卡",
+          label: "刷卡支付",
         },
       ]),
     };

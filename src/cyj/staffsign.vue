@@ -35,7 +35,7 @@
 				</el-table-column>
 				<el-table-column prop="personalName" label="员工姓名" width="200"></el-table-column>
 				<el-table-column prop="signDate" label="上次打卡时间" width="240"></el-table-column>
-				<el-table-column prop="signState" label="状态" width="200">
+				<el-table-column prop="signState" label="今日状态" width="200">
 					<template #default="scope">
 						<span v-if="scope.row.signState==0">未打卡</span>
 						<span v-else-if="scope.row.signState==1">上班已打卡</span>

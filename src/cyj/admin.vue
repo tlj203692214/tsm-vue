@@ -30,9 +30,7 @@
 				</div>
 				<div class="showTableData">
 					<el-table ref="mt" :data="adminData" @selection-change="handeselect" style="width: 100%;">
-						<!-- <el-table-column prop="portraitUrl" label="头像" width="80">
-							<template #default="scope"><img style="width: 3rem;height: 3rem;" src="../assets/img/headx/勾勾.jpg"></template>
-						</el-table-column> -->
+						<el-table-column prop="administrationId" label="编号" width="80"></el-table-column>
 						<el-table-column prop="personalName" label="姓名"></el-table-column>
 						<el-table-column prop="personalPhone" label="手机号" width="150"></el-table-column>
 						<el-table-column prop="deptName" label="部门"></el-table-column>
@@ -42,11 +40,11 @@
 						<el-table-column label="操作" width="150">
 							<template #default="scope">
 								<span v-if="scope.row.staffId==staffid">
-									<el-button size="mini" @click="">详情</el-button>
+									<el-button size="mini" @click="Adminsxq(scope.row)">详情</el-button>
 									<el-button size="mini" disabled>辞退</el-button>
 								</span>
 								<span v-else-if="scope.row.administrationState==0">
-									<el-button size="mini" @click="">详情</el-button>
+									<el-button size="mini" @click="Adminsxq(scope.row)">详情</el-button>
 									<el-button type="danger" size="mini" @click="tranmission(scope.row)">辞退</el-button>
 								</span>
 								<span v-else><el-button type="primary" size="mini" @click="tranmission(scope.row)">恢复</el-button></span>
@@ -65,6 +63,18 @@
 					    </el-pagination>
 					</div>
 				</div>
+				<el-dialog v-model="centerXq" title="员工详情" width="36%" center>
+					<p style="float: left; width: 60%;"><span style="margin: 52px;">员工名称：{{staffForm.personalName}}</span></p>
+					<p>性别：<span>{{staffForm.personalSex}}</span></p>
+					<div style="margin: 21px 0;">
+						<p style="float: left; width: 60%;"><span style="margin: 52px;">手机号：{{staffForm.personalPhone}}</span></p>
+						<p>入职时间：<span>{{staffForm.entryTime}}</span></p>
+					</div>
+					<div style="margin-bottom: 20px;">
+						<p style="float: left; width: 60%;"><span style="margin: 52px;">所属部门：{{staffForm.deptName}}</span></p>
+						<p>职位：<span>{{staffForm.positionName}}</span></p>
+					</div>
+				</el-dialog>
 				<el-dialog v-model="centerDialogVisible" title="新增员工信息" width="52%" @close="resetaddFrom('ruleForm')" center>
 				    <el-form 
 				        ref="ruleForm"
@@ -215,6 +225,14 @@
 					age: '',
 					card: '',
 				},
+				staffForm:{
+					personalName: '',
+					personalSex: '',
+					personalPhone: '',
+					entryTime: '',
+					deptName: '',
+					positionName:'',
+				},
 				rules: {
 					name: [
 				    {
@@ -283,6 +301,7 @@
 					total:0
 				},
 				centerDialogVisible: ref(false),
+				centerXq:ref(false),
 				centerDel:ref(false),
 				centerHuiFu:ref(false),
 				staffUpdate:ref(false),
@@ -372,6 +391,7 @@
 						}).then(function(response){
 							console.log("添加员工账号信息",response.data)
 							_this.personalUp(response.data)
+							_this.insertStaffsign(response.data)
 							_this.Addadministration(response.data)
 							_this.personals()
 						}).catch(function(error){
@@ -396,6 +416,18 @@
 				})
 				console.log("员工转正成功")
 			},
+			insertStaffsign(sid){
+				var _this=this
+				this.axios.post("http://localhost:8088/TSM/addstaffsign",{
+					signDate: new Date(),
+					staffId:sid,
+				}).then(function(response){
+					console.log(response.data)
+				}).catch(function(error){
+					console.log(error)
+				})
+				console.log("员工转正成功,员工打卡新增成功")
+			},
 			Addadministration(sid){
 				console.log("jjjjj ",sid)
 				alert(this.form.deptid)
@@ -412,7 +444,7 @@
 					console.log(error)
 				})
 				this.staffUpdate = false
-				console.log("员工转正成功!!员工管理表关联成功")
+				console.log("员工转正成功!!员工管理表新增成功")
 			},
 			resetaddFrom(addformName){
 				this.$refs[addformName].resetFields()
@@ -426,7 +458,7 @@
 							personalName:this.ruleForm.name,
 							personalSex:this.ruleForm.sex,
 							personalAge:this.ruleForm.age,
-							entryTime:new Date,
+							entryTime:new Date(),
 							personalPhone:this.ruleForm.phone,
 							personalIdcard:this.ruleForm.card,
 						}).then(function(response){
@@ -464,7 +496,7 @@
 				this.staffDel = false
 			},
 			tranmission(row){
-				this.admin.staffid=row.staffId
+				this.admin.staffid=row.administrationId
 				this.admin.sname=row.personalName
 				this.admin.state=row.administrationState
 				if(row.administrationState==0){
@@ -506,6 +538,17 @@
 					this.centerHuiFu = false
 				}
 				this.selectAdmins()
+			},
+			Adminsxq(row){
+				this.centerXq = true
+				var _this=this
+				this.axios.get("http://localhost:8088/TSM/admins/"+row.administrationId)
+				.then(function(response){
+					console.log(response.data)
+					_this.staffForm=response.data
+				}).catch(function(error){
+					console.log(error)
+				})
 			},
 			selectAdmins(){
 				var _this=this

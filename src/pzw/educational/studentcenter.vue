@@ -195,7 +195,7 @@
                         @click="studentbj(scope.row)"
                         >编辑</el-button
                       >
-                      <el-button type="text" size="small" @click="openschool"
+                      <el-button type="text" size="small" @click="openschool(scope.row)"
                         >删除</el-button
                       >
                     </template>
@@ -394,7 +394,7 @@
                         @click="routepath(scope.row)"
                         >续报</el-button
                       >
-                      <el-button type="text" size="small" @click="opendelect"
+                      <el-button type="text" size="small" @click="opendelect(scope.row)"
                         >删除</el-button
                       >
                     </template>
@@ -423,8 +423,8 @@
         <el-tab-pane label="退学学员信息" name="third">
           <div>
             <el-form
-              ref="formData"
-              :model="formData"
+              ref="formData12"
+              :model="formData12"
               :rules="rules"
               size="medium"
               label-width="100px"
@@ -433,7 +433,7 @@
                 <el-input
                   style="width: 150px"
                   placeholder="请输入学生姓名"
-                  v-model="formData.input"
+                  v-model="formData12.input"
                   clearable
                 >
                 </el-input>
@@ -445,7 +445,7 @@
                 <el-button
                   type="primary"
                   style="background: #f60; border: 10px white"
-                  @click="mohuchaxun()"
+                  @click="mohuchaxun1()"
                 >
                   <el-icon><search /></el-icon>
                 </el-button>
@@ -457,7 +457,7 @@
                 style="margin-top: -84px; margin-left: 150px"
               >
                 <el-link
-                  @click="resetForm1('formData')"
+                  @click="resetForm12('formData12')"
                   :underline="false"
                   style="color: #000000"
                   >重&nbsp;置</el-link
@@ -466,29 +466,29 @@
             </el-form>
           </div>
           <!-- 
-        学员学退信息表格
+        学员退学信息表格
        -->
           <el-table :data="tableDataOne1" style="width: 100%" max-height="300">
-            <el-table-column prop="nameone" label="姓名" width="125">
+            <el-table-column prop="studentName" label="姓名" width="125">
             </el-table-column>
-            <el-table-column prop="ageone" label="年龄" width="125">
+            <el-table-column prop="studentAge" label="年龄" width="125">
             </el-table-column>
-            <el-table-column prop="sexssone" label="性别" width="125">
+            <el-table-column prop="studentSex" label="性别" width="125">
             </el-table-column>
-            <el-table-column prop="phonesone" label="联系电话" width="205">
+            <el-table-column prop="studentPhone" label="联系电话" width="205">
             </el-table-column>
-            <el-table-column prop="addressone" label="学生住址" width="225">
+            <el-table-column prop="studentLoc" label="学生住址" width="225">
             </el-table-column>
-            <el-table-column prop="classsone" label="所学专业" width="155">
+            <el-table-column prop="courseName" label="所学专业" width="155">
             </el-table-column>
-            <el-table-column prop="timeone" label="退学时间" width="155">
+            <el-table-column prop="leaveschoolDate" label="退学时间" width="155">
             </el-table-column>
             <el-table-column
-              prop="timeone"
+              prop="leaveschoolReason"
               label="退学原因"
               width="160"
             ></el-table-column>
-            <el-table-column prop="classsone" label="退费金额" width="155">
+            <el-table-column prop="refundMoney" label="退费金额" width="155">
             </el-table-column>
             <el-table-column label="操作" width="130">
               <template #default="scope">
@@ -498,7 +498,7 @@
                   @click="routepath(scope.row)"
                   >重新报读</el-button
                 >
-                <el-button type="text" size="small" @click="opendelect"
+                <el-button type="text" size="small" @click="opendelect1(scope.row)"
                   >删除</el-button
                 >
               </template>
@@ -509,13 +509,13 @@
                  -->
           <div class="block">
             <el-pagination
-              @size-change="handleSizeChangeOne"
-              @current-change="handleCurrentChangeOne"
-              :current-page="pageInfo1.currentPageOne"
+              @size-change="handleSizeChangeOne1"
+              @current-change="handleCurrentChangeOne1"
+              :current-page="pageInfo12.currentPageOne"
               :page-sizes="[2, 4, 6, 8]"
-              :page-size="pageInfo1.sizeOne"
+              :page-size="pageInfo12.sizeOne"
               layout="total, sizes, prev, pager, next, jumper"
-              :total="pageInfo1.total"
+              :total="pageInfo12.total"
             >
             </el-pagination>
           </div>
@@ -691,7 +691,7 @@
                   type="primary"
                   style="background-color: #f60; margin-left: 2%"
                   size="small"
-                  @click="outcenterDialogVisible = true"
+                  @click="tuixue()"
                   >退学</el-button
                 >
               </div>
@@ -788,9 +788,9 @@
       =================================================================================================================
       上课记录 
       -->
-          <el-tab-pane label="上课记录" name="record">
+          <!-- <el-tab-pane label="上课记录" name="record">
             <div>
-              <!-- 时间选择器搜索 -->
+             
               <div class="block">
                 <el-date-picker
                   v-model="value1"
@@ -801,12 +801,12 @@
                   size="small"
                 >
                 </el-date-picker>
-              </div>
+              </div> -->
               <!--
     ================================================================================================================
      上课记录表格
       -->
-              <div style="margin-top: 2%">
+              <!-- <div style="margin-top: 2%">
                 <el-table
                   class="recordtable"
                   :data="recordtable"
@@ -828,12 +828,12 @@
                   <el-table-column prop="recordteacher" label="上课老师">
                   </el-table-column>
                 </el-table>
-              </div>
+              </div> -->
               <!--
    ===========================================================================================================================  
     分页 
     -->
-              <div class="block" style="margin-top: 1%">
+              <!-- <div class="block" style="margin-top: 1%">
                 <el-pagination
                   @size-change="recordhandleSizeChange"
                   @current-change="recordhandleCurrentChange"
@@ -846,7 +846,7 @@
                 </el-pagination>
               </div>
             </div>
-          </el-tab-pane>
+          </el-tab-pane> -->
           <!-- 
      ==========================================================================================================================       
             学员荣誉
@@ -1245,7 +1245,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <!-- 状态 -->
+            <!-- 班级 -->
             <el-form-item label="班级名称" prop="outclass">
               <el-input
                 v-model="outruleForm.outclass"
@@ -1286,9 +1286,15 @@
                 v-model="outruleForm.outhandler"
                 placeholder="请选择经办人"
                 size="small"
+                @click="cxjbr()"
               >
-                <el-option label="张三" value="shanghai"></el-option>
-                <el-option label="李四" value="beijing"></el-option>
+                <el-option
+                    v-for="item in jbr"
+                  :key="item.staffId"
+                  :label="item.staffName"
+                  :value="item.staffId"
+                 >
+               </el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -1313,9 +1319,9 @@
           >
           <el-button
             type="primary"
-            @click="outsubmitForm('outruleForm')"
             size="small"
             style="margin-left: 9%"
+             @click="outsubmitForm('outruleForm')"
             >确认</el-button
           >
         </el-form-item>
@@ -1674,6 +1680,10 @@ export default {
         //在读学员：     单选框查询未分班的学员
         checked: false,
       },
+      formData12: {
+        //退费学员：     搜索文本框
+        input: "",
+      },
 
       // 在读学员：   访客状态下拉框
       selectionone: [],
@@ -1717,6 +1727,13 @@ export default {
         sizeOne: 2,
         currentPageOne: 1,
       },
+      // 退费学员：  分页
+      pageInfo12: {
+        total: 0,
+        sizeOne: 2,
+        currentPageOne: 1,
+      },
+      tuixueid:'',
       //历史学员：    表格
       tableDataOne: [],
       // 在读学员： 编辑弹框
@@ -1811,6 +1828,8 @@ export default {
         ],
         shifstate: [{ required: true, message: "请填写状态", trigger: "blur" }],
       },
+      //退学学员
+      tableDataOne1:[],
       // 在读学员： 退学弹框
       outcenterDialogVisible: ref(false),
       // 在读学员： 退学弹框表单
@@ -1821,6 +1840,9 @@ export default {
         outmoney: "", //退还金额
         outhandler: "", //经办人
         outtime: "", //退学时间
+        outstuid:'',//学生编号
+        outclassid:'',//班级编号
+        outcourseid:''//课程id
       },
       outrules: {
         outname: [
@@ -1853,6 +1875,7 @@ export default {
         honorcurrentPage: 1,
         honorcurrentsize: 2,
       },
+      jbr:[],
       // 在读学员： 添加荣誉弹框
       addcenterDialogVisible: ref(false),
       //在读学员：添加处罚弹窗
@@ -1999,6 +2022,12 @@ export default {
       this.$refs[formData].resetFields();
       //  this.centerDialogVisible = false
     },
+     //退费学生重置按钮
+    resetForm12(formData) {
+      this.txxscrea();
+      this.$refs[formData].resetFields();
+      //  this.centerDialogVisible = false
+    },
     //在读学员模糊查询
     mohuchaxun() {
       console.log(this.formData.value);
@@ -2023,6 +2052,23 @@ export default {
         .catch(function (err) {
           console.log(err);
         });
+    },
+    //退学学生模糊查询
+     mohuchaxun1() {
+       console.log("查询名称",this.formData12.input)
+       this.axios.get("http://localhost:8088/TSM/selectpage",{
+        params:{
+          page:this.pageInfo12. currentPageOne,
+          size:this.pageInfo12.sizeOne,
+          name:this.formData12.input
+        }
+      }).then(response=>{
+          console.log(response.data)
+          this.tableDataOne1=response.data.records;
+          this.pageInfo12.total=response.data.total;
+      }).catch(err=>{
+        console.log(err)
+      })
     },
     //添加荣誉弹窗
     tjry() {
@@ -2104,7 +2150,7 @@ export default {
       this.shiftDialogVisible = true;
     },
     // 在读学员: 删除弹出框
-    openschool() {
+    openschool(row) {
       this.$confirm(
         "此操作将永久删除学员的个人信息及其关联的所有信息, 是否继续?",
         "提示",
@@ -2114,15 +2160,28 @@ export default {
           type: "warning",
         }
       ).then(() => {
-        this.$message({
-          type: "success",
-          message: "删除成功!",
-        });
+         this.axios.post("http://localhost:8088/TSM/student/xgstudentzt",{
+              studentId:row.studentId
+          }).then(response=>{
+            console.log(response)
+            this.crea()
+            this.$message({
+            type: "success",
+            message: "删除成功!",
+          });
+          }).catch(err=>{
+            console.log(err)
+          })
         //this.nextaa();
-      });
+      }).catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
     },
     // 历史学员:  删除弹出框
-    opendelect() {
+    opendelect(row) {
       this.$confirm(
         "此操作将永久删除学员的个人信息及其关联的相关信息, 是否继续?",
         "提示",
@@ -2133,10 +2192,52 @@ export default {
         }
       )
         .then(() => {
-          this.$message({
+          this.axios.post("http://localhost:8088/TSM/graduation/updatezt",{
+              graduationId:row.graduationId
+          }).then(response=>{
+            console.log(response)
+            this.lsxscrea()
+            this.$message({
             type: "success",
             message: "删除成功!",
           });
+          }).catch(err=>{
+            console.log(err)
+          })
+          
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
+    },
+     // 退学学员:  删除弹出框
+    opendelect1(row) {
+      this.$confirm(
+        "此操作将永久删除学员的个人信息及其关联的相关信息, 是否继续?",
+        "提示",
+        {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        }
+      )
+        .then(() => {
+          this.axios.post("http://localhost:8088/TSM/refund/updatezt",{
+              refundId:row.refundId
+          }).then(response=>{
+            console.log(response)
+            this.txxscrea()
+            this.$message({
+            type: "success",
+            message: "删除成功!",
+          });
+          }).catch(err=>{
+            console.log(err)
+          })
+          
         })
         .catch(() => {
           this.$message({
@@ -2216,6 +2317,16 @@ export default {
           console.log(err);
         });
     },
+    //退学按钮
+    tuixue(){
+      this.outcenterDialogVisible = true
+
+      this.outruleForm.outname=this.studentxiangq.studentName;
+      this.outruleForm.outclass=this.studentxiangq.classesName;
+      this.outruleForm.outstuid=this.studentxiangq.studentId;
+      this.outruleForm.outclassid=this.studentxiangq.classesId;
+      this.outruleForm.outcourseid=this.studentxiangq.courseid;
+    },
     //在读学员：转班审核人下拉框
     shr() {
       this.axios
@@ -2232,7 +2343,11 @@ export default {
     dowone() {
       document.getElementById("dowone").style.color = "#409eff";
       this.axios
-        .post("http://localhost:8088/TSM/classes/cxclasscount", {})
+        .get("http://localhost:8088/TSM/classes/cxclasscountid", {
+          params:{
+            courid:this.studentxiangq.courseid
+          }
+        })
         .then((response) => {
           console.log(response.data);
           this.selectionone = response.data;
@@ -2340,10 +2455,42 @@ export default {
           });
       }
     },
-    // handleCurrentChangeOne(val) {
-    //   this.currentPageOne = val;
-    //   console.log(`当前页: ${val}`);
-    // },
+    // 退学学员：  分页
+    handleSizeChangeOne1(size) {
+      var _this = this;
+      this.pageInfo12.sizeOne = size;
+      var ps = qs.stringify(this.pageInfo12);
+      console.log(ps);
+      this.axios.get("http://localhost:8088/TSM/selectpage",{
+        params:{
+          page:this.pageInfo12. currentPageOne,
+          size:this.pageInfo12.sizeOne,
+          name:this.formData12.input
+        }
+      }).then(response=>{
+          console.log(response.data)
+          this.tableDataOne1=response.data.records;
+          this.pageInfo12.total=response.data.total;
+      }).catch(err=>{
+        console.log(err)
+      })
+    },
+     handleCurrentChangeOne1(currentPageOne) {
+      var _this = this;
+      this.pageInfo12.currentPageOne = currentPageOne;
+      this.axios.get("http://localhost:8088/TSM/selectpage",{
+        params:{
+          page:this.pageInfo12. currentPageOne,
+          size:this.pageInfo12.sizeOne,
+          name:this.formData12.input
+        }
+      }).then(response=>{
+          console.log(response.data)
+          this.tableDataOne1=response.data.records;
+      }).catch(err=>{
+        console.log(err)
+      })
+    },
     //历史学生重置按钮
     resetForm2(formData1) {
       this.lsxscrea();
@@ -2474,6 +2621,17 @@ export default {
         }
       });
     },
+    //查询经办人
+    cxjbr(){
+      this.axios.get("http://localhost:8088/TSM/staff/selectstaffqudao",{
+
+      }).then(response=>{
+        console.log(response.data)
+        this.jbr=response.data
+      }).catch(err=>{
+        console.log(err)
+      })
+    },
     //修改班级
     xgbj() {
       this.axios
@@ -2501,13 +2659,90 @@ export default {
     outsubmitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.outruleForm = {};
-          this.outcenterDialogVisible = false;
+          this.axios.post("http://localhost:8088/TSM/leaveschool/addleave",{
+          studentId:this.outruleForm.outstuid,
+          leaveschoolDate:this.outruleForm.outtime,
+          leaveschoolReason:this.outruleForm.outreasons
+          }).then(response=>{
+              console.log(response)
+              this.cxtxid()
+          }).catch(err=>{
+            console.log(err)
+          })
+        
         } else {
           console.log("error submit!!");
           return false;
         }
       });
+    },
+    //查询退学申请表最大编号
+    cxtxid(){
+      this.axios.get("http://localhost:8088/TSM/leaveschool/selectid",{
+        
+      }).then(response=>{
+        console.log("退学申请表最大编号:",response.data)
+        this.tuixueid=response.data
+        this.addtuifei(response.data)
+      }).catch(err=>{
+        console.log(err)
+      })
+    },
+    //添加退费表
+    addtuifei(id){
+      this.axios.post("http://localhost:8088/TSM/refund/addrefund",{
+               //  outruleForm: {
+      //   outname: "", //姓名
+      //   outclass: "", //班级名称
+      //   outreasons: "", //退学理由
+      //   outmoney: "", //退还金额
+      //   outhandler: "", //经办人
+      //   outtime: "", //退学时间
+      // outstuid:'',//学生编号
+      //  outclassid:'',//班级编号
+      // },
+        refundDate:this.outruleForm.outtime,
+        refundMoney:this.outruleForm.outmoney,
+        leaveschoolId:id,
+        courseId:this.outruleForm.outcourseid,
+        staffId:this.outruleForm.outhandler
+      }).then(response=>{
+        console.log(response)
+        this.addzc()
+        this.scsx()
+        this.crea()
+          this.outruleForm = {};
+          this.outcenterDialogVisible = false;
+           this.$message({
+              type: "success",
+              message: "添加成功!",
+            });
+      }).catch(err=>{
+        console.log(err)
+      })
+    },
+    //删除在读学生
+    scsx(){
+       this.axios.post("http://localhost:8088/TSM/student/xgstudentzt",{
+              studentId:this.outruleForm.outstuid
+          }).then(response=>{
+            console.log(response)
+            this.crea()
+          }).catch(err=>{
+            console.log(err)
+          })
+    },
+    //添加退学支出表
+    addzc(){
+      this.axios.post("http://localhost:8088/TSM/expenditure/addexpend",{
+         expenditureMoney:this.outruleForm.outmoney,
+         expenditureDate:this.outruleForm.outtime,
+        refundId:this.tuixueid,
+      }).then(response=>{
+        console.log(response)
+      }).catch(err=>{
+        console.log(err)
+      })
     },
     outresetForm(formName) {
       this.outruleForm = {};
@@ -2926,7 +3161,24 @@ export default {
           console.log(err);
         });
     },
+    //退学学生查询
+  txxscrea(){
+     this.axios.get("http://localhost:8088/TSM/selectpage",{
+        params:{
+          page:this.pageInfo12. currentPageOne,
+          size:this.pageInfo12.sizeOne,
+          name:this.formData12.input
+        }
+      }).then(response=>{
+          console.log(response.data)
+          this.tableDataOne1=response.data.records;
+          this.pageInfo12.total=response.data.total;
+      }).catch(err=>{
+        console.log(err)
+      })
   },
+  },
+  
   created() {
     // 报名
     if (JSON.parse(sessionStorage.getItem("routepath")) != null) {
@@ -2969,6 +3221,21 @@ export default {
       .catch(function (err) {
         console.log(err);
       });
+
+      //学员退费查询
+      this.axios.get("http://localhost:8088/TSM/selectpage",{
+        params:{
+          page:this.pageInfo12. currentPageOne,
+          size:this.pageInfo12.sizeOne,
+          name:this.formData12.input
+        }
+      }).then(response=>{
+          console.log(response.data)
+          this.tableDataOne1=response.data.records;
+          this.pageInfo12.total=response.data.total;
+      }).catch(err=>{
+        console.log(err)
+      })
   },
 };
 </script>

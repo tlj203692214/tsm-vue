@@ -24,15 +24,25 @@
         :cell-style="{ padding: '0px' }"
       >
         <el-table-column type="selection" width="50" />
-        <el-table-column label="用户id" prop="staffId" v-if="show">
+        <el-table-column label="用户id" prop="staffId">
           <template #default="sc">{{ sc.row.staffId }}</template>
         </el-table-column>
-        <el-table-column prop="staffPosition_id" label="编号" width="80">
+        <el-table-column
+          prop="staffPosition_id"
+          label="编号"
+          width="80"
+          v-if="show"
+        >
           <template #default="scope">{{ scope.row.personalId }} </template>
         </el-table-column>
-        <el-table-column prop="personalName" label="用户名字" />
+        <el-table-column prop="staffName" label="用户名字" />
         <el-table-column prop="deptName" label="部门名字" />
-        <el-table-column prop="positionName" label="角色名字" />
+        <el-table-column prop="positionName" label="角色名字">
+          <template #default="scope">
+            <span v-if="scope.row.spDel == '1'"></span>
+            <span v-else>{{ scope.row.positionName }}</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="entryTime" label="入职时间" />
         <el-table-column prop="staffState" label="用户状态">
           <template #default="scope">
@@ -55,24 +65,6 @@
       </el-table>
     </div>
   </div>
-
-  <!-- 给用户分配角色 -->
-  <el-dialog title="给用户分配角色" v-model="toUserDialogVisible">
-    <div>
-      <el-checkbox-group v-model="checkedRole">
-        <el-checkbox
-          v-for="role in roleList"
-          :key="role.positionId"
-          :label="role.positionId"
-          >{{ role.positionName }}</el-checkbox
-        ></el-checkbox-group
-      >
-    </div>
-    <div slot="footer">
-      <el-button @click="toUserDialogVisible = false">取 消</el-button>
-      <el-button type="primary" @click="toGranforposition()">确 定</el-button>
-    </div>
-  </el-dialog>
 
   <!-- 详情弹窗 -->
   <el-dialog v-model="centerDialogVisible" title="用户信息" center>
@@ -116,7 +108,7 @@
         <el-row :gutter="24">
           <el-col :span="12">
             <el-form-item label="用户身份证：">
-              <el-input v-model="personal.personalIdcard" disabled></el-input>
+              <el-input v-model="personal.personalIdcard"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -138,9 +130,9 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="用户状态：">
-              <el-radio-group v-model="personal.personalState">
-                <el-radio :label="0" value="0">不可用</el-radio>
-                <el-radio :label="1" value="1">可用</el-radio>
+              <el-radio-group v-model="personal.staffState">
+                <el-radio :label="0" value="0">可用</el-radio>
+                <el-radio :label="1" value="1">不可用</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
@@ -155,6 +147,27 @@
         >
       </span>
     </template>
+  </el-dialog>
+
+  <!-- 给用户分配角色 -->
+  <el-dialog title="给用户分配角色" v-model="toUserforPosDialogVisible">
+    <div>
+      <el-tree
+        :data="roleList"
+        :props="defaultProps"
+        show-checkbox
+        :default-checked-keys="this.checkedRole"
+        node-key="positionId"
+        ref="tree"
+        width="35%"
+        @check="currentChecked"
+      >
+      </el-tree>
+    </div>
+    <div slot="footer">
+      <el-button @click="toUserforPosDialogVisible = false">取 消</el-button>
+      <el-button type="primary" @click="toGranforUser()">确 定</el-button>
+    </div>
   </el-dialog>
 
   <div class="block">
@@ -176,16 +189,21 @@ const value2 = ref(true);
 <script>
 import qs from "qs";
 import { ref } from "vue";
-import { ElMessage } from 'element-plus';
+import { ElMessage } from "element-plus";
 export default {
   data() {
     return {
+      // 用户分配角色信息
+      toUserforPosDialogVisible: false,
+      // 默认的树形控件数据格式
+      defaultProps: {
+        label: "positionName",
+        children: "childern",
+      },
+
       // 表格隐藏
       show: false,
-    
-      editcontent: false,
       centerDialogVisible: false,
-      toUserDialogVisible: false,
       // 选中的角色
       checkedRole: [],
       checkedInfo: [],
@@ -214,14 +232,24 @@ export default {
         portraitId: "",
         staffId: "",
       },
+      deptId: "",
     };
   },
   methods: {
+    // 选中的节点
+    currentChecked(nodeObj, SelectedObj) {
+      console.log(SelectedObj.checkedKeys, "键"); // 这是选中节点的key数组
+
+      this.checkedInfo = SelectedObj.checkedKeys;
+    },
     //修改用户的状态
     updateStaffState() {
       this.axios
-        .post("http://localhost:8088/TSM/staff/upstaffstate/" +this.personal.staffId
-        ).then(() => {
+        .post(
+          "http://localhost:8088/TSM/staff/upstaffstate/" +
+            this.personal.staffId
+        )
+        .then(() => {
           console.log("修改成功");
           this.centerDialogVisible = false;
           this.flesh();
@@ -245,10 +273,10 @@ export default {
       this.personal.personalAge = age;
       console.log("年龄", age);
     },
-  
+
     // 给用户分配权限弹窗(该用户下的角色，选中)
     toUserPopup(row) {
-      this.toUserDialogVisible = true;
+      this.toUserforPosDialogVisible = true;
       this.userId = row.staffId;
       this.axios
         .post("http://localhost:8088/TSM/staff-position/selectPosById", {
@@ -256,64 +284,6 @@ export default {
         })
         .then((res) => {
           this.checkedRole = res.data;
-          this.checkedInfo = res.data;
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    },
-    //弹出详情方法
-    detailsUp(row) {
-      this.centerDialogVisible = true;
-      this.personal = row;
-      this.personal.staffId = row.staffId;
-    },
-    // 给角色授权
-    toGranforposition() {
-      console.log(this.checkedRole !== this.checkedInfo);
-      if (this.checkedRole !== "" && this.checkedRole !== this.checkedInfo) {
-        for (let i = 0; i < this.checkedRole.length; i++) {
-          this.axios
-            .post(
-              "http://localhost:8088/TSM/staff-position/insertStaffPosition",
-              {
-                positionId: this.checkedRole[i],
-                staffId: this.userId,
-              }
-            )
-            .then(() => {
-              console.log("添加成功");
-              this.toUserDialogVisible = false;
-              this.flesh();
-            })
-            .catch(function (error) {
-              console.log(error);
-            });
-        }
-      } else {
-        this.toUserDialogVisible = false;
-      }
-    },
-    // 修改用户信息
-    updateDetails() {
-      console.log(this.personal.personalId);
-      this.axios
-        .post("http://localhost:8088/TSM/personal/updatePersonal", {
-          personalId: this.personal.personalId,
-          personalSex: this.personal.personalSex,
-          personalAge: this.personal.personalAge,
-          personalBirthday: this.personal.personalBirthday,
-          personalPhone: this.personal.personalPhone,
-          entryTime: this.personal.entryTime,
-          personalState: this.personal.personalState,
-          staffId: this.personal.staffId,
-          portraitId: this.personal.portraitId,
-        })
-        .then((res) => {
-          console.log(res);
-          console.log("修改成功");
-          this.centerDialogVisible = false;
-          this.flesh();
         })
         .catch(function (error) {
           console.log(error);
@@ -331,6 +301,64 @@ export default {
           console.log(error);
         });
     },
+    //弹出详情方法
+    detailsUp(row) {
+      console.log(row);
+      this.centerDialogVisible = true;
+      this.personal = row;
+      console.log(row, "详情信息");
+      this.personal.staffId = row.staffId;
+      this.personal.personalId = row.personalId;
+      this.personal.portraitId = row.portraitId;
+      this.deptId = row.deptId;
+    },
+    // 给用户授权
+    toGranforUser() {
+      console.log(this.userId, "选择的编号");
+      this.axios
+        .post(
+          "http://localhost:8088/TSM/staff-position/insertStaffPosition/" +
+            this.userId,
+          this.checkedInfo
+        )
+        .then(() => {
+          console.log("添加成功");
+          ElMessage({ message: "授权成功", type: "success" });
+          this.flesh();
+          this.toUserforPosDialogVisible = false;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    // 修改用户信息
+    updateDetails() {
+      console.log(this.personal.personalId);
+      console.log(this.personal.portraitId);
+      this.axios
+        .post("http://localhost:8088/TSM/personal/updatePersonal", {
+          personalId: this.personal.personalId,
+          personalSex: this.personal.personalSex,
+          personalAge: this.personal.personalAge,
+          personalBirthday: this.personal.personalBirthday,
+          personalIdcard: this.personal.personalIdcard,
+          personalPhone: this.personal.personalPhone,
+          entryTime: this.personal.entryTime,
+          personalState: this.personal.personalState,
+          staffId: this.personal.staffId,
+          portraitId: this.personal.portraitId,
+        })
+        .then((res) => {
+          console.log(res);
+          console.log("修改成功");
+          this.centerDialogVisible = false;
+          this.flesh();
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+
     //根据员工名字模糊查询
     selectByName() {
       var _this = this;
@@ -357,7 +385,7 @@ export default {
           params: this.pageInfo,
         })
         .then(function (response) {
-          console.log(response.data.data);
+          console.log(response);
           _this.usertable = response.data.records;
         })
         .catch(function (error) {
@@ -407,7 +435,7 @@ export default {
         params: this.pageInfo,
       })
       .then(function (response) {
-        console.log(response.data);
+        console.log(response);
         _this.roleList = response.data.records;
         _this.usertable = response.data.records;
         _this.pageInfo.total = response.data.total;

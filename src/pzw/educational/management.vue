@@ -1609,6 +1609,7 @@ if(!numRe.test( this.editpopForm.headmaster) && !numRe.test(  this.editpopForm.c
         console.log(err)
       })
     },
+    //学员分班
     sffb(value,direction,movedKeys){
       console.log(value,direction)
         if(direction=='right' && this.rulemationForm.value.length>this.sessclassid.classesNumber){
@@ -1743,11 +1744,19 @@ if(!numRe.test( this.editpopForm.headmaster) && !numRe.test(  this.editpopForm.c
     csk(){
          for(let item of this.bjxs) {
                 console.log(item) 
-                 console.log(item.studentName)    
+                 console.log(item.studentName)  
+                 //rulemationForm.value
+                 if(item.courseid>0){
                   this.data.push({
             key: item.studentId,
             label: `${item.studentName}`,
           }) 
+         }else{
+           this.rulemationForm.value.push({
+            key: item.studentId,
+            label: `${item.studentName}`,
+          }) 
+         }
                  //this.data=item.studentName
              }
     },

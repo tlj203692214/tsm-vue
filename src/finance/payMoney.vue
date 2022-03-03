@@ -36,16 +36,21 @@
       </el-option>
     </el-select>
     <el-button @click="selectName()" style="height: 36px; margin-top: 10px">
-      <search style="width: 1em; height: 1em; margin-right: 8px" />查询</el-button>
+      <search
+        style="width: 1em; height: 1em; margin-right: 8px"
+      />查询</el-button
+    >
     <el-button @click="updateState()" style="height: 36px; margin-top: 10px">
-     <finished style="width: 1em; height: 1em; margin-right: 8px" /> 审核通过</el-button>
+      <finished style="width: 1em; height: 1em; margin-right: 8px" />
+      审核通过</el-button
+    >
   </div>
 
   <el-table
     :data="payMoney"
     style="width: 100%"
     @selection-change="handleSelectionChange"
-     border
+    border
     :row-style="{ height: '23px' }"
     :cell-style="{ padding: '0px' }"
   >
@@ -126,17 +131,21 @@ export default {
           label: "全部支付",
         },
         {
-          value: "微信支付",
+          value: "微信",
           label: "微信支付",
         },
         {
-          value: "支付宝支付",
+          value: "支付宝",
           label: "支付宝支付",
         },
         {
-          value: "现金支付",
+          value: "现金",
           label: "现金支付",
         },
+        {
+          value:"刷卡",
+          label:"刷卡支付",
+        }
       ]),
       Arrival: ref([
         {
@@ -266,12 +275,19 @@ export default {
         });
       } else {
         for (var i = 0; i < a.length; i++) {
-          this.editState(a[i]);
+          if (a[i].paymoneyState == 0) {
+            ElMessage({
+              message: "改数据已被审核，请重新选择！",
+              type: "error",
+            });
+          } else {
+            this.editState(a[i]);
+            ElMessage({
+              message: "修改成功",
+              type: "success",
+            });
+          }
         }
-        ElMessage({
-          message: "修改成功",
-          type: "success",
-        });
       }
     },
 
@@ -367,9 +383,9 @@ export default {
   border: 1px solid white;
   text-align: center;
 }
-.payheader .el-button:hover {
+/* .payheader .el-button:hover {
   background: #ff5500;
-}
+} */
 
 .statistics span {
   margin-right: 30px;

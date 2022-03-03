@@ -9,7 +9,9 @@
           <div class="el-view">
             <div class="dashboard-wrapper">
               <p class="title">
-                <el-icon><i-orange style="color: orangered" /></el-icon>今日统计
+                <el-icon>
+                  <i-orange style="color: orangered" /> </el-icon
+                >今日统计
               </p>
               <div class="today-data rows">
                 <div
@@ -22,26 +24,12 @@
                       <p
                         style="height: 36px; line-height: 36px; padding: 0 16px"
                       >
-                        实到<span class="color-success">0</span>人
+                        实到<span class="color-success">{{ cqyg }}</span>
                         <span class="divider">/</span>
-                        应到<span class="color-primary">0</span>人
+                        应到<span class="color-primary">{{ ydyg }}</span>
                       </p>
-                      <div
-                        role="progressbar"
-                        aria-valuenow="0"
-                        aria-valuemin="0"
-                        aria-valuemax="100"
-                        class="el-progress"
-                      >
-                        <div class="el-progress-bar" style="height: 8px">
-                          <div class="el-progress-bar__outer"></div>
-                          <div
-                            class="el-progress__text"
-                            style="font-size: 15.2px"
-                          >
-                            0%
-                          </div>
-                        </div>
+                      <div style="width: 100px; margin: -36px 120px 0">
+                        <div id="contain" style="height: 100%"></div>
                       </div>
                     </div>
                   </div>
@@ -72,14 +60,12 @@
                 <div class="el-col el-col-12" style="padding-left: 7.5px">
                   <div data-v-d8a87178 class="today-item">
                     <p class="today-title">公告通知</p>
-                    <div class="notification-record">
-                      <ul>
-                        <li v-for="a in NoticeData">
-                          {{ a.noticeContent}}
-                          <span style="color: gray; font-size: 15px; margin-left:12px;" >{{ a.noticeDate }}</span>
-                        </li>
-                      </ul>
-                    </div>
+					<ul>
+                    <li v-for="(a,index) in NoticeData">
+                       <div style="width:70%;word-break: break-all;word-wrap: break-word;float:left"><span style="font-size:10px;">{{index+1}}、{{ a.noticeContent}}{{a.value}}</span></div>
+                        <div style="float:right"><span style="color: gray; font-size: 10px; fixed:right;" >{{ a.noticeDate }}</span></div>
+                    </li>
+					</ul>
                   </div>
                 </div>
               </div>
@@ -93,7 +79,8 @@
                     style="padding-left: 7.5px; padding-right: 7.5px"
                   >
                     <p class="title">
-                      <el-icon><i-orange style="color: orangered" /></el-icon
+                      <el-icon>
+                        <i-orange style="color: orangered" /> </el-icon
                       >快捷入口
                     </p>
                     <div
@@ -178,7 +165,8 @@
                     style="padding-left: 7.5px; padding-right: 7.5px"
                   >
                     <p class="title">
-                      <el-icon><i-orange style="color: orangered" /></el-icon
+                      <el-icon>
+                        <i-orange style="color: orangered" /> </el-icon
                       >机构统计
                     </p>
                     <div class="stat-wrapper">
@@ -194,9 +182,9 @@
                         <div class="grid-item">
                           <div class="grid-content child1">
                             <div class="total-icon">
-                              <el-icon style="font-size: 30px"
-                                ><user
-                              /></el-icon>
+                              <el-icon style="font-size: 30px">
+                                <user />
+                              </el-icon>
                             </div>
                             <p class="total-numbers">{{ zdxy }}</p>
                             <p class="total-name">在读学员</p>
@@ -205,9 +193,9 @@
                         <div class="grid-item">
                           <div class="grid-content child2">
                             <div class="total-icon">
-                              <el-icon style="font-size: 30px"
-                                ><scale-to-original
-                              /></el-icon>
+                              <el-icon style="font-size: 30px">
+                                <scale-to-original />
+                              </el-icon>
                             </div>
                             <p class="total-numbers">{{ ksbj }}</p>
                             <p class="total-name">开设班级</p>
@@ -218,9 +206,9 @@
                         <div class="grid-item">
                           <div class="grid-content child3">
                             <div class="total-icon">
-                              <el-icon style="font-size: 30px"
-                                ><coin
-                              /></el-icon>
+                              <el-icon style="font-size: 30px">
+                                <coin />
+                              </el-icon>
                             </div>
                             <p class="total-numbers">{{ zdds }}</p>
                             <p class="total-name">总订单数</p>
@@ -229,9 +217,9 @@
                         <div class="grid-item">
                           <div class="grid-content child4">
                             <div class="total-icon">
-                              <el-icon style="font-size: 30px"
-                                ><money
-                              /></el-icon>
+                              <el-icon style="font-size: 30px">
+                                <money />
+                              </el-icon>
                             </div>
                             <p class="total-numbers">{{ zmoney }}</p>
                             <p class="total-name">订单总金额</p>
@@ -286,17 +274,54 @@ export default {
   },
   data() {
     return {
+      cqyg: "",
+      ydyg: "",
       zdxy: "",
       ksbj: "",
       zdds: "",
       zmoney: "",
-      option: null,
       staffId: sessionStorage.getItem("staffId"),
       deptId: "",
       NoticeData: [],
     };
   },
   mounted() {
+    this.Chart = echarts.init(document.getElementById("contain"));
+    this.op = {
+      tooltip: {
+        trigger: "item",
+      },
+      series: [
+        {
+          name: "员工出勤",
+          type: "pie",
+          radius: ["0%", "70%"],
+          label: {
+            show: false,
+            position: "center",
+          },
+          data: [
+            {
+              value: 0,
+              name: "应到",
+            },
+            {
+              value: 0,
+              name: "实到",
+            },
+          ],
+        },
+      ],
+    };
+    this.Chart.showLoading();
+    setTimeout(() => {
+      if (this.op && typeof this.op === "object") {
+        this.op.series[0].data[0].value = this.ydyg;
+        this.op.series[0].data[1].value = this.cqyg;
+        this.Chart.setOption(this.op);
+        this.Chart.hideLoading();
+      }
+    }, 500);
     this.myChart = echarts.init(document.getElementById("container"));
     this.option = {
       tooltip: {
@@ -312,18 +337,56 @@ export default {
             position: "center",
           },
           data: [
-            { value: this.zdxy, name: "应到" },
-            { value: 1, name: "请假" },
-            { value: 3, name: "实到" },
+            {
+              value: 0,
+              name: "应到",
+            },
+            {
+              value: 0,
+              name: "请假",
+            },
+            {
+              value: 0,
+              name: "实到",
+            },
           ],
         },
       ],
     };
-    if (this.option && typeof this.option === "object") {
-      this.myChart.setOption(this.option);
-    }
+    this.myChart.showLoading();
+    setTimeout(() => {
+      if (this.option && typeof this.option === "object") {
+        this.option.series[0].data[0].value = this.zdxy;
+        this.myChart.setOption(this.option);
+        this.myChart.hideLoading();
+      }
+    }, 500);
   },
   methods: {
+    staffCount() {
+      var _this = this;
+      this.axios
+        .get("http://localhost:8088/TSM/staff/staffCount")
+        .then(function (response) {
+          console.log("应到员工", response.data);
+          _this.ydyg = response.data;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    staffsigns() {
+      var _this = this;
+      this.axios
+        .get("http://localhost:8088/TSM/staffsignCount")
+        .then(function (response) {
+          console.log("出勤员工", response.data);
+          _this.cqyg = response.data;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
     zdstudent() {
       var _this = this;
       this.axios
@@ -390,12 +453,15 @@ export default {
       this.axios
         .get("http://localhost:8088/TSM/notice/selectNotice/" + this.deptId)
         .then(function (response) {
+			console.log(response.data,"公告数据");
           _this.NoticeData = response.data.records;
         });
     },
   },
   created() {
     this.selectDept();
+    this.staffCount();
+    this.staffsigns();
     this.zdstudent();
     this.ksclass();
     this.zorders();
@@ -413,9 +479,11 @@ body {
     Microsoft YaHei, "\5FAE\8F6F\96C5\9ED1", Arial, sans-serif;
   margin: 0;
 }
+
 .el-scrollbar {
   position: relative;
 }
+
 .mains {
   box-sizing: border-box;
   display: block;
@@ -425,27 +493,33 @@ body {
   overflow: auto;
   padding: 20px;
 }
+
 .main-container {
   padding: 0;
   overflow: hidden;
 }
+
 .el-scrollbar .wrapper {
   overflow-x: hidden;
 }
+
 .main-container .main-wrapper {
   padding: 12px;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
+
 .el-wrap {
   overflow: scroll;
   height: 100%;
 }
+
 .dashboard-wrapper {
   margin-left: 10px !important;
   margin-right: 10px !important;
   padding: 0 !important;
 }
+
 .title {
   position: relative;
   height: 36px;
@@ -456,19 +530,24 @@ body {
   margin-bottom: 12px;
   font-weight: 700;
 }
+
 .today-data {
   margin-bottom: 5px;
 }
+
 .rows {
   box-sizing: border-box;
 }
+
 .rows:after,
 .rows:before {
   display: table;
 }
+
 .el-col-6 {
   width: 25%;
 }
+
 .today-item[data-v-d8a87178] {
   background: #fff;
   height: 140px;
@@ -476,19 +555,23 @@ body {
   cursor: pointer;
   position: relative;
 }
+
 .today-title {
   height: 36px;
   line-height: 36px;
   padding: 0 16px;
   border-bottom: 1px solid #ebeef5;
 }
+
 .today-item:hover .today-title {
   color: #ff7e00;
 }
+
 .el-progress {
   position: relative;
   line-height: 1;
 }
+
 .el-progress-bar__outer {
   border-radius: 100px;
   background-color: #ebeef5;
@@ -496,6 +579,7 @@ body {
   position: relative;
   vertical-align: middle;
 }
+
 .el-progress__text {
   color: #606266;
   display: inline-block;
@@ -503,9 +587,11 @@ body {
   margin-left: 10px;
   line-height: 1;
 }
+
 .today-data .today-item > div {
   padding: 12px 16px;
 }
+
 .student-sign {
   display: flex;
   -webkit-box-pack: justify;
@@ -513,58 +599,74 @@ body {
   -webkit-box-align: center;
   align-items: center;
 }
+
 .student-sign p span {
   font-size: 18px;
   margin-left: 3px;
 }
+
 .color-success {
   color: #67c23a;
 }
+
 .divider {
   margin: 0 16px;
 }
+
 .color-primary {
   color: #f60;
 }
+
 .color-danger {
   color: red;
 }
+
 .color-warning {
   color: #ff7e00;
 }
+
 ul li {
   list-style: none;
 }
+
 .class-service {
   display: flex;
   flex-wrap: wrap;
   margin-left: 10px;
 }
+
 .class-service li {
   width: 50%;
   margin-top: 12px;
   color: #303133;
 }
+
 .class-service span {
   font-size: 18px;
   margin-right: 4px;
 }
+
 .notification-record {
   display: flex;
 }
+
 .notification-record span {
   font-size: 18px;
   margin-right: 4px;
 }
+
 .notification-record li + li[data-v-d8a87178] {
   margin-top: 12px;
 }
+
 .el-col-12 {
   width: 50%;
 }
+
 .el-col-8 {
   width: 33.33333%;
 }
+
 .shortcut-item {
   height: 120px;
   margin-bottom: 10px;
@@ -578,27 +680,34 @@ ul li {
   border-radius: 3px;
   box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
 }
+
 .el-col:nth-child(2) .shortcut-item {
   border-color: #3dd23f;
 }
+
 .el-col:nth-child(3) .shortcut-item {
   border-color: #ff7e00;
 }
+
 .el-col:nth-child(4) .shortcut-item {
   border-color: #1082ff;
 }
+
 .el-col:nth-child(5) .shortcut-item {
   border-color: #ff7e00;
 }
+
 .shortcut-item img {
   display: inline-block;
   width: 50px;
   height: 50px;
   margin-right: 6px;
 }
+
 .shortcut-container {
   margin-bottom: 10px;
 }
+
 .shortcut-container .wrapper {
   height: 300px;
   margin-top: 5px;
@@ -607,10 +716,12 @@ ul li {
   background-color: #fff;
   border-radius: 3px;
 }
+
 .stat-wrapper {
   height: 300px;
   margin-top: 5px;
 }
+
 .grid-wrapper {
   display: flex;
   -webkit-box-align: center;
@@ -618,9 +729,11 @@ ul li {
   -webkit-box-pack: justify;
   justify-content: space-between;
 }
+
 .grid-item {
   width: 50%;
 }
+
 .grid-content {
   padding: 16px;
   height: 145px;
@@ -630,36 +743,45 @@ ul li {
   z-index: 3;
   cursor: pointer;
 }
+
 .child1 {
   margin-bottom: 10px;
   margin-right: 7px;
 }
+
 .child2 {
   margin-bottom: 10px;
   margin-left: 7px;
 }
+
 .child3 {
   margin-right: 7px;
 }
+
 .child4 {
   margin-left: 7px;
 }
+
 .child1 .total-icon {
   background: rgba(103, 194, 58, 0.2);
   color: #67c23a;
 }
+
 .child2 .total-icon {
   background: rgba(64, 158, 255, 0.2);
   color: #409eff;
 }
+
 .child3 .total-icon {
   background: rgba(245, 108, 108, 0.2);
   color: #f56c6c;
 }
+
 .child4 .total-icon {
   background: rgba(255, 102, 0, 0.2);
   color: #f60;
 }
+
 .total-icon {
   width: 50px;
   height: 50px;
@@ -669,6 +791,7 @@ ul li {
   font-size: 30px;
   border-radius: 50%;
 }
+
 .total-numbers {
   font-size: 21px;
   font-weight: 700;
@@ -676,32 +799,38 @@ ul li {
   text-align: center;
   margin-top: 12px;
 }
+
 .total-name {
   font-size: 14px;
   color: #909399;
   text-align: center;
 }
+
 .chart-block {
   display: flex;
   -webkit-box-align: start;
   align-items: flex-start;
 }
+
 .line-chart {
   flex-shrink: 1;
   width: 100%;
   background: #fff;
   padding: 0 16px;
 }
+
 .title-no-border {
   position: relative;
   font-size: 14px;
   font-weight: 700;
 }
+
 .trend-title {
   margin: 0;
   height: 44px;
   line-height: 44px;
 }
+
 .inline-select {
   display: inline-block;
   padding-right: 26px;
@@ -710,6 +839,7 @@ ul li {
   position: relative;
   margin-right: 20px;
 }
+
 .el-radio-group {
   float: right;
 }
