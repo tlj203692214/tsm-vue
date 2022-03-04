@@ -4,7 +4,7 @@
       <el-col :span="20" class="headerlogo">
         <div class="bg-purple" style="position: relative">
           <img src="../assets/培训机构管理.png" alt="无法显示图片" />
-          <span id="bg-size">教育机构</span>
+          <span id="bg-size">智高科技</span>
         </div>
       </el-col>
       <el-col :span="4" class="rightsection">
@@ -118,14 +118,18 @@
     </template>
   </el-dialog>
   <!--修改密码界面-->
-  <el-dialog v-model="changePass" title="用户信息" center  @close="rest('ruleForm')">
+  <el-dialog
+    v-model="changePass"
+    title="用户信息"
+    center
+    @close="rest('ruleForm')"
+  >
     <el-form
       ref="ruleForm"
       label-width="200px"
       class="demo-ruleForm"
       :model="ruleForm"
       :rules="rules"
-     
     >
       <el-form-item label="原登陆密码:" prop="passWord">
         <el-input v-model="ruleForm.passWord" type="password"></el-input>
@@ -138,14 +142,14 @@
       <el-form-item label="确认新密码:" prop="qrnewPass">
         <el-input v-model="ruleForm.qrnewPass" type="password"></el-input>
       </el-form-item>
-   </el-form>
+    </el-form>
 
     <template #footer>
       <span class="dialog-footer">
         <el-button type="primary" @click="rest('ruleForm')">取消</el-button>
         <el-button @click="qrbc('ruleForm')">确认保存</el-button>
       </span>
-    </template> 
+    </template>
   </el-dialog>
 </template>
 
@@ -262,6 +266,7 @@ export default {
 
     personalinformation() {
       this.centerDialogVisible = true; //打开个人资料弹窗
+      this.imageUrl = this.imgUrl.portraitUrl;
       this.axios
         .get(
           "http://localhost:8088/TSM/personalVo/selectPersonal/" + this.staffId

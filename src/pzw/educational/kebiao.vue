@@ -1,6 +1,7 @@
 <template>
   <!-- <div class="wrapper"> -->
-  <div class="tou">
+  <div class="tou" style="position: relative;
+    top: 0px;">
     <el-tabs v-model="activeName" @tab-click="handleClick">
       <!-- 
 =================================================================================================================================            

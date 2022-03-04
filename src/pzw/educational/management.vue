@@ -1199,7 +1199,6 @@ if(!numRe.test( this.editpopForm.headmaster) && !numRe.test(  this.editpopForm.c
     },
     // 添加班级弹框： 清空弹框内容，关闭弹框
     resetForm(rulemationForm) {
-      alert("sss")
       // this.rulemationForm = {};
       this.rulemationForm.num = 0;
         this.$refs[rulemationForm].resetFields();

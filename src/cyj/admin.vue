@@ -430,7 +430,6 @@
 			},
 			Addadministration(sid){
 				console.log("jjjjj ",sid)
-				alert(this.form.deptid)
 				var tid = this.form.deptid[this.form.deptid.length-1]
 				console.log("sssssss",tid)
 				var _this=this

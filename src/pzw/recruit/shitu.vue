@@ -1,91 +1,100 @@
 <template>
   <div style="background: #f5f7fa">
-    <div class="tou">
+    <div
+      class="tou"
+      style="
+        .tou {
+          background: white;
+          height: 100%;
+          width: 98%;
+          margin-left: 1%;
+          position: relative;
+          top: 7px;
+        }
+      "
+    >
       <!-- 学生姓名 -->
       <!-- <el-row :gutter="15"> -->
-        <el-form
-          ref="formData"
-          :model="formData"
-          :rules="rules"
-          size="medium"
-          label-width="100px"
+      <el-form
+        ref="formData"
+        :model="formData"
+        :rules="rules"
+        size="medium"
+        label-width="100px"
+      >
+        <!-- <el-col :span="4"> -->
+        <!-- <el-form-item label-width="0" prop="field102"> -->
+        <el-select
+          class="xxmc"
+          v-model="formData.field102"
+          placeholder="学员姓名"
         >
-          <!-- <el-col :span="4"> -->
-            <!-- <el-form-item label-width="0" prop="field102"> -->
-            <el-select
-              class="xxmc"
-              v-model="formData.field102"
-          
-                 placeholder="学员姓名"
+          <el-option
+            v-for="(item, index) in field102Options"
+            :key="index"
+            :label="item.label"
+            :value="item.value"
+            :disabled="item.disabled"
+          ></el-option>
+        </el-select>
+
+        <!-- </el-form-item> -->
+        <!-- </el-col> -->
+
+        <!-- 搜索文本框 -->
+        <!-- <el-col :span="4"> -->
+        <el-form-item
+          style="margin-left: 119px; margin-top: -46px"
+          label-width="0"
+          prop="field101"
+        >
+          <span v-if="formData.field102 == '学生姓名'">
+            <el-input
+              class="xxss"
+              v-model="formData.field101"
+              placeholder="请输入学员姓名"
+              clearable
             >
-              <el-option
-                v-for="(item, index) in field102Options"
-                :key="index"
-                :label="item.label"
-                :value="item.value"
-                :disabled="item.disabled"
-              ></el-option>
-            </el-select>
-
-            <!-- </el-form-item> -->
-          <!-- </el-col> -->
-
-          <!-- 搜索文本框 -->
-          <!-- <el-col :span="4"> -->
-            <el-form-item
-              style="margin-left: 119px;
-    margin-top: -46px;"
-              label-width="0"
-              prop="field101"
+            </el-input>
+          </span>
+          <span v-else-if="formData.field102 == '家长电话'">
+            <el-input
+              class="xxss"
+              v-model="formData.field101"
+              placeholder="请输入家长电话"
+              clearable
             >
-            <span v-if="formData.field102=='学生姓名'">
-              <el-input
-                 class="xxss"
-                v-model="formData.field101"
-                placeholder="请输入学员姓名"
-                clearable
-              
-              >
-              </el-input>
-              </span>
-              <span v-else-if="formData.field102=='家长电话'">
-                  <el-input
-                 class="xxss"
-                v-model="formData.field101"
-                placeholder="请输入家长电话"
-                clearable
-              
-              >
-              </el-input>
-              </span>
-              <span v-else>
-                 <el-input
-                class="xxss"
-                v-model="formData.field101"
-                placeholder="请输入学生姓名"
-                clearable
-              
-              >
-              </el-input>
-              </span>
-
-            </el-form-item>
-          <!-- </el-col> -->
-          <!-- 搜索按钮 -->
-          <div class="sstp">
-            <el-button type="primary" @click="selectmohhu()" style="position: relative;
-    left: 269px;">
-              <i-icon style="width: 10px; height: 10px">
-                <search />
-              </i-icon>
-              <span style="width: 10px; height: 10px"> </span>
-            </el-button>
-          </div>
-          <!-- 开始结束日期 -->
-          <el-config-provider :locale="locale">
-            <app />
-          </el-config-provider>
-          <!-- <el-col :span="10">
+            </el-input>
+          </span>
+          <span v-else>
+            <el-input
+              class="xxss"
+              v-model="formData.field101"
+              placeholder="请输入学生姓名"
+              clearable
+            >
+            </el-input>
+          </span>
+        </el-form-item>
+        <!-- </el-col> -->
+        <!-- 搜索按钮 -->
+        <div class="sstp">
+          <el-button
+            type="primary"
+            @click="selectmohhu()"
+            style="position: relative; left: 269px"
+          >
+            <i-icon style="width: 10px; height: 10px">
+              <search />
+            </i-icon>
+            <span style="width: 10px; height: 10px"> </span>
+          </el-button>
+        </div>
+        <!-- 开始结束日期 -->
+        <el-config-provider :locale="locale">
+          <app />
+        </el-config-provider>
+        <!-- <el-col :span="10">
             <el-form-item class="sjfw" label-width="0" prop="field105">
               <el-date-picker
                 type="daterange"
@@ -100,108 +109,120 @@
             </el-form-item>
           </el-col> -->
 
-          <!-- 重置按钮 -->
-          <!-- <el-col :span="24"> -->
-            <el-form-item size="large" style="margin-top: -96px;
-    margin-left: 325px;">
-              <el-button @click="resetForm1('formData')">重置</el-button>
-            </el-form-item>
-          <!-- </el-col> -->
+        <!-- 重置按钮 -->
+        <!-- <el-col :span="24"> -->
+        <el-form-item
+          size="large"
+          style="margin-top: -96px; margin-left: 325px"
+        >
+          <el-button @click="resetForm1('formData')">重置</el-button>
+        </el-form-item>
+        <!-- </el-col> -->
 
-          <!-- 新增潜客按钮 -->
-          <el-col :span="10">
-            <el-form-item label-width="0" prop="field106" class="xzqk">
-              <el-button
-                type="primary"
-                size="medium"
-                @click="
-                  selectqudao(), selectkecheng(), (centerDialogVisible = true)
-                "
-              >
-                <el-icon><plus /></el-icon>
-                新增潜客
-              </el-button>
-            </el-form-item>
-          </el-col>
-
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-
-          <!-- 潜客状态 -->
-
-          <el-col :span="10">
-            <el-form-item label-width="0" prop="field114" style="margin-top: -68px;">
-              <el-select
-                class="qk"
-                v-model="formData.field114"
-                clearable
-                placeholder="潜客状态"
-                :style="{ width: '100%' }"
-                  @change="selectmohhu()"
-              >
-                <el-option
-                  v-for="(item, index) in field114Options"
-                  :key="index"
-                  :label="item.label"
-                  :value="item.value"
-                  :disabled="item.disabled"
-                ></el-option>
-              </el-select>
+        <!-- 新增潜客按钮 -->
+        <el-col :span="10">
+          <el-form-item label-width="0" prop="field106" class="xzqk">
+            <el-button
+              type="primary"
+              size="medium"
+              @click="
+                selectqudao(), selectkecheng(), (centerDialogVisible = true)
+              "
+            >
+              <el-icon><plus /></el-icon>
+              新增潜客
+            </el-button>
           </el-form-item>
-          </el-col>
+        </el-col>
 
-          <!-- 来源渠道 -->
-          <el-col :span="10">
-            <el-form-item label-width="0" prop="field115" style="margin-top: -68px;
-    margin-left: 120px;">
-              <el-select
-                class="qd"
-                v-model="formData.field115"
-                clearable
-                placeholder="来源渠道"
-                :style="{ width: '100%' }"
-                @click="selectqudao1()"
-                  @change="selectmohhu()"
-              >
-                <el-option
-                  v-for="(item, index) in field115Options"
-                  :key="item.channelId"
-                  :label="item.channelLoc"
-                  :value="item.channelId"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
 
-          <!-- 意向课程 -->
-          <el-col :span="10">
-            <el-form-item label-width="0" prop="field117" style="margin-top: -68px;
-    margin-left: 240px;">
-              <el-select
-                class="yx"
-                v-model="formData.field117"
-                clearable
-                placeholder="意向课程"
-                :style="{ width: '100%' }"
-                @click="selectkecheng1()"
-                  @change="selectmohhu()"
-              >
-                <el-option
-                  v-for="(item, index) in field117Options"
-                  :key="item.courseId"
-                  :label="item.courseName"
-                  :value="item.courseId"
-                  :disabled="item.disabled"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
+        <!-- 潜客状态 -->
 
-          <!-- 跟进人 -->
-          <!-- <el-col :span="10">
+        <el-col :span="10">
+          <el-form-item
+            label-width="0"
+            prop="field114"
+            style="margin-top: -68px"
+          >
+            <el-select
+              class="qk"
+              v-model="formData.field114"
+              clearable
+              placeholder="潜客状态"
+              :style="{ width: '100%' }"
+              @change="selectmohhu()"
+            >
+              <el-option
+                v-for="(item, index) in field114Options"
+                :key="index"
+                :label="item.label"
+                :value="item.value"
+                :disabled="item.disabled"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+
+        <!-- 来源渠道 -->
+        <el-col :span="10">
+          <el-form-item
+            label-width="0"
+            prop="field115"
+            style="margin-top: -68px; margin-left: 120px"
+          >
+            <el-select
+              class="qd"
+              v-model="formData.field115"
+              clearable
+              placeholder="来源渠道"
+              :style="{ width: '100%' }"
+              @click="selectqudao1()"
+              @change="selectmohhu()"
+            >
+              <el-option
+                v-for="(item, index) in field115Options"
+                :key="item.channelId"
+                :label="item.channelLoc"
+                :value="item.channelId"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+
+        <!-- 意向课程 -->
+        <el-col :span="10">
+          <el-form-item
+            label-width="0"
+            prop="field117"
+            style="margin-top: -68px; margin-left: 240px"
+          >
+            <el-select
+              class="yx"
+              v-model="formData.field117"
+              clearable
+              placeholder="意向课程"
+              :style="{ width: '100%' }"
+              @click="selectkecheng1()"
+              @change="selectmohhu()"
+            >
+              <el-option
+                v-for="(item, index) in field117Options"
+                :key="item.courseId"
+                :label="item.courseName"
+                :value="item.courseId"
+                :disabled="item.disabled"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+
+        <!-- 跟进人 -->
+        <!-- <el-col :span="10">
             <el-form-item label-width="0" prop="field118">
               <el-select
                 class="gj"
@@ -212,8 +233,8 @@
                 @click=" selectgenjinren()"
                 @change="selectmohhu()"
               > -->
-              <!-- selectgenjinren(), -->
-                <!-- <el-option
+        <!-- selectgenjinren(), -->
+        <!-- <el-option
                   v-for="(item, index) in field118Options"
                   :key="index"
                   :label="item.staffName"
@@ -224,8 +245,8 @@
             </el-form-item>
           </el-col> -->
 
-          <!-- 是否报名 -->
-          <!-- <el-col :span="10">
+        <!-- 是否报名 -->
+        <!-- <el-col :span="10">
             <el-form-item class="sfbm" label-width="0" prop="field120">
               <el-checkbox-group v-model="formData.field120" size="medium">
                 <el-checkbox
@@ -238,14 +259,24 @@
               </el-checkbox-group>
             </el-form-item>
           </el-col> -->
-        </el-form>
+      </el-form>
       <!-- </el-row> -->
     </div>
     <!-- 
  ==================================================================================================================================     
       表格 
       -->
-    <div class="bgfy">
+    <div
+      class="bgfy"
+      style="
+        background: white;
+        height: 100%;
+        width: 98%;
+        margin-left: 1%;
+        position: relative;
+        top: 28px;
+      "
+    >
       <el-table :data="tableData" style="width: 100%" max-height="300">
         <el-table-column type="selection" width="55" />
         <el-checkbox v-model="checked1" label="Option 1"></el-checkbox>
@@ -255,10 +286,13 @@
           <template #default="scope">
             <span
               style="color: #f60"
-              @click="handleEdit(scope.$index, scope.row), showtabs1(),selectgjjl(scope.row)"
+              @click="
+                handleEdit(scope.$index, scope.row),
+                  showtabs1(),
+                  selectgjjl(scope.row)
+              "
               >{{ scope.row.studentfilesName }}</span
             >
-           
           </template>
         </el-table-column>
         <el-table-column prop="studentfilesAge" label="年龄" width="150" />
@@ -282,51 +316,68 @@
         </el-table-column>
         <el-table-column fixed="right" label="操作" width="200">
           <template #default="scope">
-              <div v-if="scope.row.studentfilesState == 2">
-                <el-button type="text" size="small" @click="jhopenschool(scope.row)">
-              激活学员
-            </el-button>
-              </div>
-              <div v-else>
-            <!-- <el-button
+            <div v-if="scope.row.studentfilesState == 2">
+              <el-button
+                type="text"
+                size="small"
+                @click="jhopenschool(scope.row)"
+              >
+                激活学员
+              </el-button>
+            </div>
+            <div v-else>
+              <!-- <el-button
               type="text"
               size="small"
               @click.prevent="deleteRow(scope.$index, tableData)"
             >
               报名
             </el-button> -->
-            <el-button type="text" size="small" @click="tjgj(scope.$index, scope.row)">
-              添加跟进
-            </el-button>
-
-            <el-dropdown>
-              <span
-                style="
-                  color: #409eff;
-                  position: relative;
-                  top: 1px;
-                  left: 8px;
-                  font-size: 13px;
-                "
-                class="el-dropdown-link"
+              <el-button
+                type="text"
+                size="small"
+                @click="tjgj(scope.$index, scope.row)"
               >
-                更多
-              </span>
-              <template #dropdown>
-                <el-dropdown-menu>
-                  <el-dropdown-item
-                    @click="genjinjilu = true,showtabs(),selectgjjl(scope.row)"
-                    v-model="anniugjjl"
-                    >跟进记录</el-dropdown-item
-                  >
-                  <!-- <el-dropdown-item>跟进分配</el-dropdown-item> -->
-                  <el-dropdown-item @click="openschool(scope.row)">流失</el-dropdown-item>
-                  <el-dropdown-item @click="handleEdit1(scope.$index, scope.row)">编辑</el-dropdown-item>
-                  <el-dropdown-item @click="scopenschool(scope.row)">删除</el-dropdown-item>
-                </el-dropdown-menu>
-              </template>
-            </el-dropdown>
-             </div>
+                添加跟进
+              </el-button>
+
+              <el-dropdown>
+                <span
+                  style="
+                    color: #409eff;
+                    position: relative;
+                    top: 1px;
+                    left: 8px;
+                    font-size: 13px;
+                  "
+                  class="el-dropdown-link"
+                >
+                  更多
+                </span>
+                <template #dropdown>
+                  <el-dropdown-menu>
+                    <el-dropdown-item
+                      @click="
+                        (genjinjilu = true), showtabs(), selectgjjl(scope.row)
+                      "
+                      v-model="anniugjjl"
+                      >跟进记录</el-dropdown-item
+                    >
+                    <!-- <el-dropdown-item>跟进分配</el-dropdown-item> -->
+                    <el-dropdown-item @click="openschool(scope.row)"
+                      >流失</el-dropdown-item
+                    >
+                    <el-dropdown-item
+                      @click="handleEdit1(scope.$index, scope.row)"
+                      >编辑</el-dropdown-item
+                    >
+                    <el-dropdown-item @click="scopenschool(scope.row)"
+                      >删除</el-dropdown-item
+                    >
+                  </el-dropdown-menu>
+                </template>
+              </el-dropdown>
+            </div>
           </template>
         </el-table-column>
       </el-table>
@@ -498,7 +549,10 @@
         <template #footer>
           <span class="dialog-footer">
             <el-button @click="resetForm('ruleForm')">取消</el-button>
-            <el-button :plain="true" type="primary" @click="submitForm('ruleForm')"
+            <el-button
+              :plain="true"
+              type="primary"
+              @click="submitForm('ruleForm')"
               >确定</el-button
             >
           </span>
@@ -506,11 +560,11 @@
       </el-dialog>
     </el-form>
 
-  <!-- 
+    <!-- 
   ================================================================================================================================  
     编辑意向学员信息
    -->
-   <el-form
+    <el-form
       ref="xgruleForm1"
       :model="xgruleForm1"
       :rules="rules1"
@@ -553,7 +607,7 @@
         <div style="position: relative; top: -70px; left: 235px">
           <el-form-item label="年龄" prop="studentfilesAge">
             <el-input
-              v-model="xgruleForm1. studentfilesAge"
+              v-model="xgruleForm1.studentfilesAge"
               style="width: 14%; margin-right: 10px"
               placeholder="年龄"
               :disabled="true"
@@ -572,7 +626,11 @@
         <!-- 来源渠道 -->
         <div style="position: relative; top: -40px; left: -23px">
           <el-form-item label="来源渠道" prop="channelLoc">
-            <el-select v-model="xgruleForm1.channelLoc" placeholder="来源渠道" @click="selectqudao2()">
+            <el-select
+              v-model="xgruleForm1.channelLoc"
+              placeholder="来源渠道"
+              @click="selectqudao2()"
+            >
               <el-option
                 v-for="item in xgruleForm1.lyqd"
                 :key="item.channelId"
@@ -609,16 +667,15 @@
         <el-divider style="margin-top: -75px"></el-divider>
         <!-- 意向课程 -->
         <span style="margin-left: 3%; margin-right: 2%">意向课程</span>
-        <el-select  v-model="xgruleForm1.courseName"  placeholder="请选择意向课程" @click="selectkecheng()">
+        <el-select
+          v-model="xgruleForm1.courseName"
+          placeholder="请选择意向课程"
+          @click="selectkecheng()"
+        >
           <template v-for="item in this.options" :key="item.courseId">
-        <el-option 
-            
-            :label="item.courseName"
-            :value="item.courseId"
-          >
-          </el-option>
+            <el-option :label="item.courseName" :value="item.courseId">
+            </el-option>
           </template>
-          
         </el-select>
 
         <!-- 学生毕业学校 -->
@@ -656,7 +713,10 @@
         <template #footer>
           <span class="dialog-footer">
             <el-button @click="resetForm2('xgruleForm1')">取消</el-button>
-            <el-button :plain="true" type="primary" @click="bjsubmitForm('xgruleForm1')"
+            <el-button
+              :plain="true"
+              type="primary"
+              @click="bjsubmitForm('xgruleForm1')"
               >确定</el-button
             >
           </span>
@@ -669,56 +729,50 @@
       添加跟进窗口 
       -->
     <el-dialog v-model="tianjiagj" title="添加跟进" width="39%" center>
-      <el-form
-       ref="gjruleForm"
-    :model="gjruleForm"
-    :rules="rules"
-      >
-      <!-- 跟进人 -->
-      <el-form-item label="跟进人"  prop="gjr">
-              <el-select
-               
-                v-model="gjruleForm.gjr"
-                clearable
-                placeholder="跟进人"
-                :style="{ width: '47%' }"
-                @click=" selectgenjinren()"
-                
-              >
-              <!-- selectgenjinren(), -->
-                <el-option
-                  v-for="(item, index) in field118Options"
-                  :key="index"
-                  :label="item.staffName"
-                  :value="item.staffId"
-                  :disabled="item.disabled"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-      <!-- 跟进时间 -->
-      <!-- <span style="margin-left: 5%; margin-right: 2%">跟进时间</span> -->
-       <el-form-item label="跟进时间" prop="genjinsj">
-      <el-date-picker
-        v-model="gjruleForm.genjinsj"
-        type="date "
-        placeholder="跟进时间"
-      >
-      </el-date-picker>
-</el-form-item>
-      <!--  备注  -->
-    <el-form-item label="内容" prop="textarea">
-      <!-- <div class="sjneiron"> -->
-        <!-- <span style="margin-left: 5%; margin-top: 3%">内容</span> -->
-        <el-input
-          v-model="gjruleForm.textarea"
-          maxlength="120"
-          placeholder="备注信息（最多120字）"
-          show-word-limit
-          type="textarea"
-        />
-      <!-- </div> -->
-      </el-form-item>
-</el-form>
+      <el-form ref="gjruleForm" :model="gjruleForm" :rules="rules">
+        <!-- 跟进人 -->
+        <el-form-item label="跟进人" prop="gjr">
+          <el-select
+            v-model="gjruleForm.gjr"
+            clearable
+            placeholder="跟进人"
+            :style="{ width: '47%' }"
+            @click="selectgenjinren()"
+          >
+            <!-- selectgenjinren(), -->
+            <el-option
+              v-for="(item, index) in field118Options"
+              :key="index"
+              :label="item.staffName"
+              :value="item.staffId"
+              :disabled="item.disabled"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <!-- 跟进时间 -->
+        <!-- <span style="margin-left: 5%; margin-right: 2%">跟进时间</span> -->
+        <el-form-item label="跟进时间" prop="genjinsj">
+          <el-date-picker
+            v-model="gjruleForm.genjinsj"
+            type="date "
+            placeholder="跟进时间"
+          >
+          </el-date-picker>
+        </el-form-item>
+        <!--  备注  -->
+        <el-form-item label="内容" prop="textarea">
+          <!-- <div class="sjneiron"> -->
+          <!-- <span style="margin-left: 5%; margin-top: 3%">内容</span> -->
+          <el-input
+            v-model="gjruleForm.textarea"
+            maxlength="120"
+            placeholder="备注信息（最多120字）"
+            show-word-limit
+            type="textarea"
+          />
+          <!-- </div> -->
+        </el-form-item>
+      </el-form>
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="gjresetForm('gjruleForm')">取消</el-button>
@@ -727,7 +781,6 @@
           >
         </span>
       </template>
-    
     </el-dialog>
 
     <!-- 
@@ -738,81 +791,102 @@
       <el-scrollbar height="400px">
         <el-tabs v-model="anniugjjl" @tab-click="handleClick" class="gjbt">
           <el-tab-pane label="基本信息" name="基本信息">
-             <el-form
-        ref="xgruleForm"
-        :rules="rulequdao1"
-        :model="xgruleForm"
-        label-width="120px"
-      >
-            <div class="jibenxx">
-              <!-- <el-form-item label="名字" prop="studentfilesName">
+            <el-form
+              ref="xgruleForm"
+              :rules="rulequdao1"
+              :model="xgruleForm"
+              label-width="120px"
+            >
+              <div class="jibenxx">
+                <!-- <el-form-item label="名字" prop="studentfilesName">
           <el-input v-model="xgruleForm.studentfilesName"></el-input>
         </el-form-item> -->
-             
-              <span >名称：{{xgruleForm.studentfilesName}}</span>
-              <br /><br /><br />
-              <el-button class="bianjijbxx" @click="bjcenterDialogVisible=true">
-                <el-icon>
-                  <edit />
-                </el-icon>
-                编辑
-              </el-button>
-         
-              <el-button>
-                <el-icon>
-                  <delete />
-                </el-icon>
-                删除
-              </el-button>
-              <br />
-              <br>
-              <span style="color:#f60;font-size: 18px;" v-if="xgruleForm.studentfilesState == 0">待跟进</span>
-            <span style="color:#f60;font-size: 18px;" v-else-if="xgruleForm.studentfilesState == 1">跟进中</span>
-            <span style="color:#f60;font-size: 18px;" v-else-if="xgruleForm.studentfilesState == 2">已流失</span>
-            <span style="color:#f60;font-size: 18px;" v-else>已报名</span>
-            </div>
 
-            <!-- 学员基本信息 -->
-            <ul class="more-info">
-              <li>
-                <label>年龄：</label>
-                <span
-                  >{{xgruleForm.studentfilesAge}}岁 <span style="margin-left: 12px">{{xgruleForm.studentfilesBirthday}}</span></span
+                <span>名称：{{ xgruleForm.studentfilesName }}</span>
+                <br /><br /><br />
+                <el-button
+                  class="bianjijbxx"
+                  @click="bjcenterDialogVisible = true"
                 >
-              </li>
-              <li>
-                <label>家长联系电话：</label>
-                <span>{{xgruleForm.parentPhone}}</span>
-              </li>
-              <li>
-                <label>学生联系电话：</label>
-                <span>{{xgruleForm.studentfilesPhone}}</span>
-              </li>
-              <li>
-                <label>毕业学校：</label>
-                <span>{{xgruleForm.studentfilesSchool}}</span>
-              </li>
-              <li>
-                <label>学生住址：</label>
-                <span>{{xgruleForm.studentfilesLoc}}</span>
-              </li>
-              <li>
-                <label>备注：</label>
-                <span>{{xgruleForm.studentfilesRemarks}}</span>
-              </li>
-              <li>
-                <label>渠道来源：{{xgruleForm.channelLoc}}</label>
-              </li>
-              <li>
-                <label>意向课程：</label>
+                  <el-icon>
+                    <edit />
+                  </el-icon>
+                  编辑
+                </el-button>
+
+                <el-button>
+                  <el-icon>
+                    <delete />
+                  </el-icon>
+                  删除
+                </el-button>
+                <br />
+                <br />
                 <span
-                  ><span class="el-tag el-tag--small el-tag--light">{{xgruleForm.courseName}}</span>
-                </span>
-              </li>
-              <li>
-                <label>最近跟进时间：</label><span>{{xgruleForm.followDate}}</span>
-              </li>
-            </ul>
+                  style="color: #f60; font-size: 18px"
+                  v-if="xgruleForm.studentfilesState == 0"
+                  >待跟进</span
+                >
+                <span
+                  style="color: #f60; font-size: 18px"
+                  v-else-if="xgruleForm.studentfilesState == 1"
+                  >跟进中</span
+                >
+                <span
+                  style="color: #f60; font-size: 18px"
+                  v-else-if="xgruleForm.studentfilesState == 2"
+                  >已流失</span
+                >
+                <span style="color: #f60; font-size: 18px" v-else>已报名</span>
+              </div>
+
+              <!-- 学员基本信息 -->
+              <ul class="more-info">
+                <li>
+                  <label>年龄：</label>
+                  <span
+                    >{{ xgruleForm.studentfilesAge }}岁
+                    <span style="margin-left: 12px">{{
+                      xgruleForm.studentfilesBirthday
+                    }}</span></span
+                  >
+                </li>
+                <li>
+                  <label>家长联系电话：</label>
+                  <span>{{ xgruleForm.parentPhone }}</span>
+                </li>
+                <li>
+                  <label>学生联系电话：</label>
+                  <span>{{ xgruleForm.studentfilesPhone }}</span>
+                </li>
+                <li>
+                  <label>毕业学校：</label>
+                  <span>{{ xgruleForm.studentfilesSchool }}</span>
+                </li>
+                <li>
+                  <label>学生住址：</label>
+                  <span>{{ xgruleForm.studentfilesLoc }}</span>
+                </li>
+                <li>
+                  <label>备注：</label>
+                  <span>{{ xgruleForm.studentfilesRemarks }}</span>
+                </li>
+                <li>
+                  <label>渠道来源：{{ xgruleForm.channelLoc }}</label>
+                </li>
+                <li>
+                  <label>意向课程：</label>
+                  <span
+                    ><span class="el-tag el-tag--small el-tag--light">{{
+                      xgruleForm.courseName
+                    }}</span>
+                  </span>
+                </li>
+                <li>
+                  <label>最近跟进时间：</label
+                  ><span>{{ xgruleForm.followDate }}</span>
+                </li>
+              </ul>
             </el-form>
           </el-tab-pane>
 
@@ -821,10 +895,11 @@
           跟进记录模块
           
       -->
-          <el-tab-pane label="跟进记录" name="跟进记录" >
-          
-            <el-button style="margin-left=20%;" @click="tianjiagj = true">添加跟进</el-button>
-          
+          <el-tab-pane label="跟进记录" name="跟进记录">
+            <el-button style="margin-left=20%;" @click="tianjiagj = true"
+              >添加跟进</el-button
+            >
+
             <el-timeline>
               <el-timeline-item
                 v-for="(activity, index) in activities"
@@ -841,7 +916,7 @@
   </div>
 </template>
 <script>
-import { ElMessage } from 'element-plus'
+import { ElMessage } from "element-plus";
 import {
   ArrowLeft,
   Edit,
@@ -882,46 +957,46 @@ export default {
         textarea: ref(""), //备注信息
       },
       //意向学员详情
-       xgruleForm: {
-        studentfilesName: "",//名称
-        studentfilesSex: ref(""),//性别
-        studentfilesAge: 0,  //年龄
-        courseName: "",//意向课程
-    followDate: ref([]),//跟进时间
-    studentfilesSchool:'',//毕业学校
-    studentfilesLoc:'',//家庭住址
+      xgruleForm: {
+        studentfilesName: "", //名称
+        studentfilesSex: ref(""), //性别
+        studentfilesAge: 0, //年龄
+        courseName: "", //意向课程
+        followDate: ref([]), //跟进时间
+        studentfilesSchool: "", //毕业学校
+        studentfilesLoc: "", //家庭住址
         studentfilesPhone: "", //联系电话
-       // studentfilesAge: ref(0),//年龄
-        channelLoc: "",//来源渠道
-        studentfilesBirthday:'',//出生日期
+        // studentfilesAge: ref(0),//年龄
+        channelLoc: "", //来源渠道
+        studentfilesBirthday: "", //出生日期
         studentfilesRemarks: ref(""), //备注信息
-        studentfilesState:''//意向学生状态
+        studentfilesState: "", //意向学生状态
       },
-       //修改
+      //修改
       xgruleForm1: {
-        studentfilesId:'',//意向学生编号
-       studentfilesName: "",//名称
-        studentfilesSex: ref(""),//性别
-        studentfilesAge: 0,  //年龄
-    followDate: ref([]),//跟进时间
-    studentfilesSchool:'',//毕业学校
-    studentfilesLoc:'',//家庭住址
-        studentfilesPhone:0, //联系电话
-        parentPhone:0,//家长联系电话
-       // studentfilesAge: ref(0),//年龄
-        channelLoc: "",//来源渠道
-        studentfilesBirthday:'',//出生日期
+        studentfilesId: "", //意向学生编号
+        studentfilesName: "", //名称
+        studentfilesSex: ref(""), //性别
+        studentfilesAge: 0, //年龄
+        followDate: ref([]), //跟进时间
+        studentfilesSchool: "", //毕业学校
+        studentfilesLoc: "", //家庭住址
+        studentfilesPhone: 0, //联系电话
+        parentPhone: 0, //家长联系电话
+        // studentfilesAge: ref(0),//年龄
+        channelLoc: "", //来源渠道
+        studentfilesBirthday: "", //出生日期
         studentfilesRemarks: ref(""), //备注信息
-        studentfilesState:'',//意向学生状态
-          lyqd: ref([]),//获取渠道信息
-            channelid: '',//来源渠道编号
-          courseId: "",//意向课程编号
+        studentfilesState: "", //意向学生状态
+        lyqd: ref([]), //获取渠道信息
+        channelid: "", //来源渠道编号
+        courseId: "", //意向课程编号
       },
-       //跟进添加
-      gjruleForm:{
-        gjr:'',
-          genjinsj: "",
-          textarea: ref(""), //备注信息
+      //跟进添加
+      gjruleForm: {
+        gjr: "",
+        genjinsj: "",
+        textarea: ref(""), //备注信息
       },
       rules: {
         name: [
@@ -991,21 +1066,21 @@ export default {
             trigger: "blur",
           },
         ],
-          studentfilesAge: [
+        studentfilesAge: [
           {
             required: true,
             message: "年龄不能为空不能为空",
             trigger: "blur",
           },
         ],
-         studentfilesBirthday: [
+        studentfilesBirthday: [
           {
             required: true,
             message: "出生日期不能为空不能为空",
             trigger: "blur",
           },
         ],
-         channelLoc: [
+        channelLoc: [
           {
             required: true,
             message: "来源渠道不能为空不能为空",
@@ -1020,7 +1095,7 @@ export default {
             trigger: "blur",
           },
         ],
-        studentfilesPhone:[
+        studentfilesPhone: [
           { type: "number", message: "请输入正确号码" },
           {
             required: true,
@@ -1033,35 +1108,35 @@ export default {
         size: 2,
         currentPage: 1,
       },
-     
+
       locale: zhCn,
       centerDialogVisible: ref(false), //打开关闭新增潜客界面
       bjcenterDialogVisible: ref(false), //打开关闭编辑潜客界面
       tianjiagj: ref(false), //打开关闭添加跟进界面
       genjinjilu: ref(false),
-      
+
       anniugjjl: "跟进记录",
       anniugjjl1: "基本信息",
       activities: [
-      //  {
-      //     timestamp: "2018-04-12 20:46",
-      //     content: "Custom icon",
-      //     size: "large",
-      //     color: "#f60",
-      //  }
+        //  {
+        //     timestamp: "2018-04-12 20:46",
+        //     content: "Custom icon",
+        //     size: "large",
+        //     color: "#f60",
+        //  }
       ],
       tableData: [],
       options: [],
 
       formData: {
-        field102: '学生姓名',
-        field101: '',
+        field102: "学生姓名",
+        field101: "",
         field105: null,
-        field106: '',
-        field114: '',
-        field115: '',
-        field117: '',
-        field118: '',
+        field106: "",
+        field114: "",
+        field115: "",
+        field117: "",
+        field118: "",
         field120: [],
       },
 
@@ -1123,22 +1198,21 @@ export default {
       console.log(ps);
       this.axios
         .get("http://localhost:8088/TSM/ssss", {
-           params: {
+          params: {
             size: _this.pageInfo.size,
             currentPage: _this.pageInfo.currentPage,
             nameabc: _this.formData.field101, //名字
             // sj1:sj1,//时间
             // sj2:sj2,
-            qkzt:_this.formData.field114,//潜客状态
-            lyqd:_this.formData.field115,//来源渠道
-            yxkc:_this.formData.field117,//意向课程
-          //  gjr:_this.formData.field118,//跟进人
+            qkzt: _this.formData.field114, //潜客状态
+            lyqd: _this.formData.field115, //来源渠道
+            yxkc: _this.formData.field117, //意向课程
+            //  gjr:_this.formData.field118,//跟进人
           },
         })
         .then((response) => {
           console.log(response.data);
-            this.tableData = response.data.records;
-         
+          this.tableData = response.data.records;
         })
         .catch(function (error) {
           console.log(error);
@@ -1151,21 +1225,21 @@ export default {
       console.log(ps);
       this.axios
         .get("http://localhost:8088/TSM/ssss", {
-           params: {
+          params: {
             size: _this.pageInfo.size,
             currentPage: _this.pageInfo.currentPage,
             nameabc: _this.formData.field101, //名字
             // sj1:sj1,//时间
             // sj2:sj2,
-            qkzt:_this.formData.field114,//潜客状态
-            lyqd:_this.formData.field115,//来源渠道
-            yxkc:_this.formData.field117,//意向课程
-          //  gjr:_this.formData.field118,//跟进人
+            qkzt: _this.formData.field114, //潜客状态
+            lyqd: _this.formData.field115, //来源渠道
+            yxkc: _this.formData.field117, //意向课程
+            //  gjr:_this.formData.field118,//跟进人
           },
         })
         .then((response) => {
           console.log(response.data);
-            this.tableData = response.data.records;
+          this.tableData = response.data.records;
           this.pageInfo.total = response.data.total;
         })
         .catch(function (error) {
@@ -1210,143 +1284,154 @@ export default {
         }
       });
     },
-//编辑
- bjsubmitForm(formName) {
+    //编辑
+    bjsubmitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          
-var numReg = /^[0-9]*$/
- 
-var numRe = new RegExp(numReg)
- 
-if(!numRe.test(this.xgruleForm1.courseName) && !numRe.test(this.xgruleForm1.channelLoc)){
-  console.log('3')
-         this.axios
-            .post("http://localhost:8088/TSM/studentfiles/updatestudentfiles", {
-              studentfilesId:this.xgruleForm1.studentfilesId,
-              studentfilesName: this.xgruleForm1.studentfilesName,
-              studentfilesSex: this.xgruleForm1.studentfilesSex,
-              studentfilesAge: this.xgruleForm1.studentfilesAge,
-              studentfilesBirthday: this.xgruleForm1.studentfilesBirthday,
-              studentfilesPhone: this.xgruleForm1.studentfilesPhone,
-              parentPhone: this.xgruleForm1.parentPhone,
-              studentfilesSchool: this.xgruleForm1.studentfilesSchool,
-              studentfilesLoc: this.xgruleForm1.studentfilesLoc,
-              studentfilesRemarks: this.xgruleForm1.studentfilesRemarks,
-              courseId: this.xgruleForm1.courseId,
-           channelid: this.xgruleForm1.channelid,
-            })
-            .then((response) => {
-              console.log(response.data);
-              this.crea();
-              this.$refs[formName].resetFields();
-              this.bjcenterDialogVisible = false;
-            
-               ElMessage({
-        message: '修改成功',
-         type: 'success',
-               })
-            })
-            .catch(function (error) {
-              console.log(error);
-            });
-}else if (!numRe.test(this.xgruleForm1.channelLoc)) {
-    console.log('1')
-     this.axios
-            .post("http://localhost:8088/TSM/studentfiles/updatestudentfiles", {
-              studentfilesId:this.xgruleForm1.studentfilesId,
-              studentfilesName: this.xgruleForm1.studentfilesName,
-              studentfilesSex: this.xgruleForm1.studentfilesSex,
-              studentfilesAge: this.xgruleForm1.studentfilesAge,
-              studentfilesBirthday: this.xgruleForm1.studentfilesBirthday,
-              studentfilesPhone: this.xgruleForm1.studentfilesPhone,
-              parentPhone: this.xgruleForm1.parentPhone,
-              studentfilesSchool: this.xgruleForm1.studentfilesSchool,
-              studentfilesLoc: this.xgruleForm1.studentfilesLoc,
-              studentfilesRemarks: this.xgruleForm1.studentfilesRemarks,
-            courseId: this.xgruleForm1.courseName,
-               channelid: this.xgruleForm1.channelid,
-             
-            })
-            .then((response) => {
-              console.log(response.data);
-              this.crea();
-              this.$refs[formName].resetFields();
-              this.bjcenterDialogVisible = false;
-            
-               ElMessage({
-        message: '修改成功',
-         type: 'success',
-               })
-            })
-            .catch(function (error) {
-              console.log(error);
-            });
-}else if(!numRe.test(this.xgruleForm1.courseName)){
-    console.log('2')
+          var numReg = /^[0-9]*$/;
+
+          var numRe = new RegExp(numReg);
+
+          if (
+            !numRe.test(this.xgruleForm1.courseName) &&
+            !numRe.test(this.xgruleForm1.channelLoc)
+          ) {
+            console.log("3");
             this.axios
-            .post("http://localhost:8088/TSM/studentfiles/updatestudentfiles", {
-              studentfilesId:this.xgruleForm1.studentfilesId,
-              studentfilesName: this.xgruleForm1.studentfilesName,
-              studentfilesSex: this.xgruleForm1.studentfilesSex,
-              studentfilesAge: this.xgruleForm1.studentfilesAge,
-              studentfilesBirthday: this.xgruleForm1.studentfilesBirthday,
-              studentfilesPhone: this.xgruleForm1.studentfilesPhone,
-              parentPhone: this.xgruleForm1.parentPhone,
-              studentfilesSchool: this.xgruleForm1.studentfilesSchool,
-              studentfilesLoc: this.xgruleForm1.studentfilesLoc,
-              studentfilesRemarks: this.xgruleForm1.studentfilesRemarks,
-              courseId: this.xgruleForm1.courseId,
-             channelid: this.xgruleForm1.channelLoc,
-             
-            })
-            .then((response) => {
-              console.log(response.data);
-              this.crea();
-              this.$refs[formName].resetFields();
-              this.bjcenterDialogVisible = false;
-            
-               ElMessage({
-        message: '修改成功',
-         type: 'success',
-               })
-            })
-            .catch(function (error) {
-              console.log(error);
-            });
-}else{
-  console.log('4')
-  this.axios
-            .post("http://localhost:8088/TSM/studentfiles/updatestudentfiles", {
-              studentfilesId:this.xgruleForm1.studentfilesId,
-              studentfilesName: this.xgruleForm1.studentfilesName,
-              studentfilesSex: this.xgruleForm1.studentfilesSex,
-              studentfilesAge: this.xgruleForm1.studentfilesAge,
-              studentfilesBirthday: this.xgruleForm1.studentfilesBirthday,
-              studentfilesPhone: this.xgruleForm1.studentfilesPhone,
-              parentPhone: this.xgruleForm1.parentPhone,
-              studentfilesSchool: this.xgruleForm1.studentfilesSchool,
-              studentfilesLoc: this.xgruleForm1.studentfilesLoc,
-              studentfilesRemarks: this.xgruleForm1.studentfilesRemarks,
-              courseId: this.xgruleForm1.courseName,
-               channelid: this.xgruleForm1.channelLoc,
-            })
-            .then((response) => {
-              console.log(response.data);
-              this.crea();
-              this.$refs[formName].resetFields();
-              this.bjcenterDialogVisible = false;
-            
-               ElMessage({
-        message: '修改成功',
-         type: 'success',
-               })
-            })
-            .catch(function (error) {
-              console.log(error);
-            });
-}
-          
+              .post(
+                "http://localhost:8088/TSM/studentfiles/updatestudentfiles",
+                {
+                  studentfilesId: this.xgruleForm1.studentfilesId,
+                  studentfilesName: this.xgruleForm1.studentfilesName,
+                  studentfilesSex: this.xgruleForm1.studentfilesSex,
+                  studentfilesAge: this.xgruleForm1.studentfilesAge,
+                  studentfilesBirthday: this.xgruleForm1.studentfilesBirthday,
+                  studentfilesPhone: this.xgruleForm1.studentfilesPhone,
+                  parentPhone: this.xgruleForm1.parentPhone,
+                  studentfilesSchool: this.xgruleForm1.studentfilesSchool,
+                  studentfilesLoc: this.xgruleForm1.studentfilesLoc,
+                  studentfilesRemarks: this.xgruleForm1.studentfilesRemarks,
+                  courseId: this.xgruleForm1.courseId,
+                  channelid: this.xgruleForm1.channelid,
+                }
+              )
+              .then((response) => {
+                console.log(response.data);
+                this.crea();
+                this.$refs[formName].resetFields();
+                this.bjcenterDialogVisible = false;
+
+                ElMessage({
+                  message: "修改成功",
+                  type: "success",
+                });
+              })
+              .catch(function (error) {
+                console.log(error);
+              });
+          } else if (!numRe.test(this.xgruleForm1.channelLoc)) {
+            console.log("1");
+            this.axios
+              .post(
+                "http://localhost:8088/TSM/studentfiles/updatestudentfiles",
+                {
+                  studentfilesId: this.xgruleForm1.studentfilesId,
+                  studentfilesName: this.xgruleForm1.studentfilesName,
+                  studentfilesSex: this.xgruleForm1.studentfilesSex,
+                  studentfilesAge: this.xgruleForm1.studentfilesAge,
+                  studentfilesBirthday: this.xgruleForm1.studentfilesBirthday,
+                  studentfilesPhone: this.xgruleForm1.studentfilesPhone,
+                  parentPhone: this.xgruleForm1.parentPhone,
+                  studentfilesSchool: this.xgruleForm1.studentfilesSchool,
+                  studentfilesLoc: this.xgruleForm1.studentfilesLoc,
+                  studentfilesRemarks: this.xgruleForm1.studentfilesRemarks,
+                  courseId: this.xgruleForm1.courseName,
+                  channelid: this.xgruleForm1.channelid,
+                }
+              )
+              .then((response) => {
+                console.log(response.data);
+                this.crea();
+                this.$refs[formName].resetFields();
+                this.bjcenterDialogVisible = false;
+
+                ElMessage({
+                  message: "修改成功",
+                  type: "success",
+                });
+              })
+              .catch(function (error) {
+                console.log(error);
+              });
+          } else if (!numRe.test(this.xgruleForm1.courseName)) {
+            console.log("2");
+            this.axios
+              .post(
+                "http://localhost:8088/TSM/studentfiles/updatestudentfiles",
+                {
+                  studentfilesId: this.xgruleForm1.studentfilesId,
+                  studentfilesName: this.xgruleForm1.studentfilesName,
+                  studentfilesSex: this.xgruleForm1.studentfilesSex,
+                  studentfilesAge: this.xgruleForm1.studentfilesAge,
+                  studentfilesBirthday: this.xgruleForm1.studentfilesBirthday,
+                  studentfilesPhone: this.xgruleForm1.studentfilesPhone,
+                  parentPhone: this.xgruleForm1.parentPhone,
+                  studentfilesSchool: this.xgruleForm1.studentfilesSchool,
+                  studentfilesLoc: this.xgruleForm1.studentfilesLoc,
+                  studentfilesRemarks: this.xgruleForm1.studentfilesRemarks,
+                  courseId: this.xgruleForm1.courseId,
+                  channelid: this.xgruleForm1.channelLoc,
+                }
+              )
+              .then((response) => {
+                console.log(response.data);
+                this.crea();
+                this.$refs[formName].resetFields();
+                this.bjcenterDialogVisible = false;
+
+                ElMessage({
+                  message: "修改成功",
+                  type: "success",
+                });
+              })
+              .catch(function (error) {
+                console.log(error);
+              });
+          } else {
+            console.log("4");
+            this.axios
+              .post(
+                "http://localhost:8088/TSM/studentfiles/updatestudentfiles",
+                {
+                  studentfilesId: this.xgruleForm1.studentfilesId,
+                  studentfilesName: this.xgruleForm1.studentfilesName,
+                  studentfilesSex: this.xgruleForm1.studentfilesSex,
+                  studentfilesAge: this.xgruleForm1.studentfilesAge,
+                  studentfilesBirthday: this.xgruleForm1.studentfilesBirthday,
+                  studentfilesPhone: this.xgruleForm1.studentfilesPhone,
+                  parentPhone: this.xgruleForm1.parentPhone,
+                  studentfilesSchool: this.xgruleForm1.studentfilesSchool,
+                  studentfilesLoc: this.xgruleForm1.studentfilesLoc,
+                  studentfilesRemarks: this.xgruleForm1.studentfilesRemarks,
+                  courseId: this.xgruleForm1.courseName,
+                  channelid: this.xgruleForm1.channelLoc,
+                }
+              )
+              .then((response) => {
+                console.log(response.data);
+                this.crea();
+                this.$refs[formName].resetFields();
+                this.bjcenterDialogVisible = false;
+
+                ElMessage({
+                  message: "修改成功",
+                  type: "success",
+                });
+              })
+              .catch(function (error) {
+                console.log(error);
+              });
+          }
         } else {
           console.log("error submit!!");
           return false;
@@ -1355,31 +1440,28 @@ if(!numRe.test(this.xgruleForm1.courseName) && !numRe.test(this.xgruleForm1.chan
     },
 
     //添加跟进窗口提交信息
- gjsubmitForm(gjruleForm) {
-   
-    
+    gjsubmitForm(gjruleForm) {
       this.$refs[gjruleForm].validate((valid) => {
         if (valid) {
           this.axios
             .post("http://localhost:8088/TSM/follow/addfollow", {
-              followContent:this.gjruleForm.textarea,
-              followDate:this.gjruleForm.genjinsj,
-              staffId:this.gjruleForm.gjr,
-              studentfilesId:this.gjruleForm.studentfilesId,
+              followContent: this.gjruleForm.textarea,
+              followDate: this.gjruleForm.genjinsj,
+              staffId: this.gjruleForm.gjr,
+              studentfilesId: this.gjruleForm.studentfilesId,
             })
             .then((response) => {
               console.log(response.data);
-             // this.crea();
-             
+              // this.crea();
+
               this.$refs[gjruleForm].resetFields();
               this.tianjiagj = false;
-            var row= this.gjruleForm
-    this.selectgjjl(row)
-               ElMessage({
-        message: '添加成功',
-         type: 'success',
-               })
-               
+              var row = this.gjruleForm;
+              this.selectgjjl(row);
+              ElMessage({
+                message: "添加成功",
+                type: "success",
+              });
             })
             .catch(function (error) {
               console.log(error);
@@ -1390,7 +1472,6 @@ if(!numRe.test(this.xgruleForm1.courseName) && !numRe.test(this.xgruleForm1.chan
         }
       });
     },
-
 
     resetForm(formName) {
       this.$refs[formName].resetFields();
@@ -1404,20 +1485,19 @@ if(!numRe.test(this.xgruleForm1.courseName) && !numRe.test(this.xgruleForm1.chan
     //编辑意向学员档案
     resetForm2(formData) {
       this.$refs[formData].resetFields();
-       this.bjcenterDialogVisible = false
+      this.bjcenterDialogVisible = false;
     },
     //添加跟进取消按钮
-    gjresetForm(gjruleForm){
-       this.$refs[gjruleForm].resetFields();
-      this.tianjiagj = false
+    gjresetForm(gjruleForm) {
+      this.$refs[gjruleForm].resetFields();
+      this.tianjiagj = false;
     },
     //添加跟进
-    tjgj(index,row){
-     
-      this.tianjiagj = true
-       this.gjruleForm = Object.assign({}, row)
+    tjgj(index, row) {
+      this.tianjiagj = true;
+      this.gjruleForm = Object.assign({}, row);
     },
-     
+
     showtabs() {
       if (this.anniugjjl != null) {
         let current1 = this.anniugjjl;
@@ -1452,7 +1532,7 @@ if(!numRe.test(this.xgruleForm1.courseName) && !numRe.test(this.xgruleForm1.chan
           //console.log("删除失败")
         });
     },
-     //编辑时查询渠道
+    //编辑时查询渠道
     selectqudao2() {
       this.axios
         .get("http://localhost:8088/TSM/selectchannelname", {})
@@ -1504,9 +1584,7 @@ if(!numRe.test(this.xgruleForm1.courseName) && !numRe.test(this.xgruleForm1.chan
     //模糊查询时查询跟进人
     selectgenjinren() {
       this.axios
-        .get("http://localhost:8088/TSM/staff/selectstaffqudao", {
-
-        })
+        .get("http://localhost:8088/TSM/staff/selectstaffqudao", {})
         .then((response) => {
           console.log(response.data);
           this.field118Options = response.data;
@@ -1518,247 +1596,266 @@ if(!numRe.test(this.xgruleForm1.courseName) && !numRe.test(this.xgruleForm1.chan
     },
     //多个条件模糊查询
     selectmohhu() {
-      if(this.formData.field105!=null&&this.formData.field102=='学生姓名'){
-      var sj1=this.formData.field105[0]
-       var sj2=this.formData.field105[1]
-      var _this=this
-      console.log("时间1："+sj1)
-       console.log("时间2："+sj2)
-       if(sj1!=null&&sj2!=undefined){
-        this.axios.get("http://localhost:8088/TSM/ssss", {
-          params: {
-            size: _this.pageInfo.size,
-            currentPage: _this.pageInfo.currentPage,
-            nameabc: _this.formData.field101, //名字
-            // sj1:sj1,//时间
-            // sj2:sj2,
-            qkzt:_this.formData.field114,//潜客状态
-            lyqd:_this.formData.field115,//来源渠道
-            yxkc:_this.formData.field117,//意向课程
-          //  gjr:_this.formData.field118,//跟进人
-          },
-        })
-        .then((response) => {
-          console.log(response.data);
-            this.tableData = response.data.records;
-          this.pageInfo.total = response.data.total;
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-       }else{
-          var _this=this
-       this.axios.get("http://localhost:8088/TSM/sssss", {
-          params: {
-            size: _this.pageInfo.size,
-            currentPage: _this.pageInfo.currentPage,
-            nameabc: _this.formData.field101, //学生姓名
-            qkzt:_this.formData.field114,//潜客状态
-            lyqd:_this.formData.field115,//来源渠道
-            yxkc:_this.formData.field117,//意向课程
-           // gjr:_this.formData.field118,//跟进人
-          },
-        })
-        .then((response) => {
-          console.log(response.data);
-            this.tableData = response.data.records;
-          this.pageInfo.total = response.data.total;
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-       }
-      }else if(this.formData.field105!=null&&this.formData.field102=='家长电话'){
-       // alert("sb")
-       var sj1=this.formData.field105[0]
-       var sj2=this.formData.field105[1]
-       var _this=this
-        if(sj1!=null&&sj2!=undefined){
-       this.axios.get("http://localhost:8088/TSM/aaaa", {
-          params: {
-            size: _this.pageInfo.size,
-            currentPage: _this.pageInfo.currentPage,
-            nameabc: _this.formData.field101, //家长电话
-            // sj1:sj1,//时间
-           // sj2:sj2,
-            qkzt:_this.formData.field114,//潜客状态
-            lyqd:_this.formData.field115,//来源渠道
-            yxkc:_this.formData.field117,//意向课程
-           // gjr:_this.formData.field118,//跟进人
-          },
-        })
-        .then((response) => {
-          console.log(response.data);
-            this.tableData = response.data.records;
-          this.pageInfo.total = response.data.total;
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-        }else{
-            var _this=this
-       this.axios.get("http://localhost:8088/TSM/bbbb", {
-          params: {
-            size: _this.pageInfo.size,
-            currentPage: _this.pageInfo.currentPage,
-            nameabc: _this.formData.field101, //家长电话
-            qkzt:_this.formData.field114,//潜客状态
-            lyqd:_this.formData.field115,//来源渠道
-            yxkc:_this.formData.field117,//意向课程
-           // gjr:_this.formData.field118,//跟进人
-          },
-        })
-        .then((response) => {
-          console.log(response.data);
-            this.tableData = response.data.records;
-          this.pageInfo.total = response.data.total;
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+      if (
+        this.formData.field105 != null &&
+        this.formData.field102 == "学生姓名"
+      ) {
+        var sj1 = this.formData.field105[0];
+        var sj2 = this.formData.field105[1];
+        var _this = this;
+        console.log("时间1：" + sj1);
+        console.log("时间2：" + sj2);
+        if (sj1 != null && sj2 != undefined) {
+          this.axios
+            .get("http://localhost:8088/TSM/ssss", {
+              params: {
+                size: _this.pageInfo.size,
+                currentPage: _this.pageInfo.currentPage,
+                nameabc: _this.formData.field101, //名字
+                // sj1:sj1,//时间
+                // sj2:sj2,
+                qkzt: _this.formData.field114, //潜客状态
+                lyqd: _this.formData.field115, //来源渠道
+                yxkc: _this.formData.field117, //意向课程
+                //  gjr:_this.formData.field118,//跟进人
+              },
+            })
+            .then((response) => {
+              console.log(response.data);
+              this.tableData = response.data.records;
+              this.pageInfo.total = response.data.total;
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        } else {
+          var _this = this;
+          this.axios
+            .get("http://localhost:8088/TSM/sssss", {
+              params: {
+                size: _this.pageInfo.size,
+                currentPage: _this.pageInfo.currentPage,
+                nameabc: _this.formData.field101, //学生姓名
+                qkzt: _this.formData.field114, //潜客状态
+                lyqd: _this.formData.field115, //来源渠道
+                yxkc: _this.formData.field117, //意向课程
+                // gjr:_this.formData.field118,//跟进人
+              },
+            })
+            .then((response) => {
+              console.log(response.data);
+              this.tableData = response.data.records;
+              this.pageInfo.total = response.data.total;
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
         }
-      }else if(this.formData.field105==null&&this.formData.field102=='家长电话'){
-         var _this=this
-       this.axios.get("http://localhost:8088/TSM/bbbb", {
-          params: {
-            size: _this.pageInfo.size,
-            currentPage: _this.pageInfo.currentPage,
-            nameabc: _this.formData.field101, //家长电话
-            qkzt:_this.formData.field114,//潜客状态
-            lyqd:_this.formData.field115,//来源渠道
-            yxkc:_this.formData.field117,//意向课程
-         //   gjr:_this.formData.field118,//跟进人
-          },
-        })
-        .then((response) => {
-          console.log(response.data);
+      } else if (
+        this.formData.field105 != null &&
+        this.formData.field102 == "家长电话"
+      ) {
+        var sj1 = this.formData.field105[0];
+        var sj2 = this.formData.field105[1];
+        var _this = this;
+        if (sj1 != null && sj2 != undefined) {
+          this.axios
+            .get("http://localhost:8088/TSM/aaaa", {
+              params: {
+                size: _this.pageInfo.size,
+                currentPage: _this.pageInfo.currentPage,
+                nameabc: _this.formData.field101, //家长电话
+                // sj1:sj1,//时间
+                // sj2:sj2,
+                qkzt: _this.formData.field114, //潜客状态
+                lyqd: _this.formData.field115, //来源渠道
+                yxkc: _this.formData.field117, //意向课程
+                // gjr:_this.formData.field118,//跟进人
+              },
+            })
+            .then((response) => {
+              console.log(response.data);
+              this.tableData = response.data.records;
+              this.pageInfo.total = response.data.total;
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        } else {
+          var _this = this;
+          this.axios
+            .get("http://localhost:8088/TSM/bbbb", {
+              params: {
+                size: _this.pageInfo.size,
+                currentPage: _this.pageInfo.currentPage,
+                nameabc: _this.formData.field101, //家长电话
+                qkzt: _this.formData.field114, //潜客状态
+                lyqd: _this.formData.field115, //来源渠道
+                yxkc: _this.formData.field117, //意向课程
+                // gjr:_this.formData.field118,//跟进人
+              },
+            })
+            .then((response) => {
+              console.log(response.data);
+              this.tableData = response.data.records;
+              this.pageInfo.total = response.data.total;
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        }
+      } else if (
+        this.formData.field105 == null &&
+        this.formData.field102 == "家长电话"
+      ) {
+        var _this = this;
+        this.axios
+          .get("http://localhost:8088/TSM/bbbb", {
+            params: {
+              size: _this.pageInfo.size,
+              currentPage: _this.pageInfo.currentPage,
+              nameabc: _this.formData.field101, //家长电话
+              qkzt: _this.formData.field114, //潜客状态
+              lyqd: _this.formData.field115, //来源渠道
+              yxkc: _this.formData.field117, //意向课程
+              //   gjr:_this.formData.field118,//跟进人
+            },
+          })
+          .then((response) => {
+            console.log(response.data);
             this.tableData = response.data.records;
-          this.pageInfo.total = response.data.total;
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-      }else if(this.formData.field105==null&&this.formData.field102=='学生姓名'){
-            var _this=this
-       this.axios.get("http://localhost:8088/TSM/sssss", {
-          params: {
-            size: _this.pageInfo.size,
-            currentPage: _this.pageInfo.currentPage,
-            nameabc: _this.formData.field101, //学生姓名
-            qkzt:_this.formData.field114,//潜客状态
-            lyqd:_this.formData.field115,//来源渠道
-            yxkc:_this.formData.field117,//意向课程
-           // gjr:_this.formData.field118,//跟进人
-          },
-        })
-        .then((response) => {
-          console.log(response.data);
+            this.pageInfo.total = response.data.total;
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      } else if (
+        this.formData.field105 == null &&
+        this.formData.field102 == "学生姓名"
+      ) {
+        var _this = this;
+        this.axios
+          .get("http://localhost:8088/TSM/sssss", {
+            params: {
+              size: _this.pageInfo.size,
+              currentPage: _this.pageInfo.currentPage,
+              nameabc: _this.formData.field101, //学生姓名
+              qkzt: _this.formData.field114, //潜客状态
+              lyqd: _this.formData.field115, //来源渠道
+              yxkc: _this.formData.field117, //意向课程
+              // gjr:_this.formData.field118,//跟进人
+            },
+          })
+          .then((response) => {
+            console.log(response.data);
             this.tableData = response.data.records;
-          this.pageInfo.total = response.data.total;
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+            this.pageInfo.total = response.data.total;
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
       }
-
-     
     },
     //查询跟进记录
-    selectgjjl(row){
-      
-      this.axios.get("http://localhost:8088/TSM/follow/selectfollow/"+row.studentfilesId,{
-        // studentfilesId:this.activities.studentfilesId,
-      }).then(res=>{
-            console.log(res.data)
-            this.activities=res.data
-      }).catch(function(error){
-        console.log(error)
-      })
+    selectgjjl(row) {
+      this.axios
+        .get(
+          "http://localhost:8088/TSM/follow/selectfollow/" + row.studentfilesId,
+          {
+            // studentfilesId:this.activities.studentfilesId,
+          }
+        )
+        .then((res) => {
+          console.log(res.data);
+          this.activities = res.data;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     },
     //潜客详情
-    handleEdit(index, row){
-        this.genjinjilu = true
-        //console.log(row+"数据")
-        this.xgruleForm = Object.assign({}, row) // 这句是关键！！！
-         this.xgruleForm1 = Object.assign({}, row)
-          this.gjruleForm = Object.assign({}, row)
-        //  this.xgruleForm1 =row
-        //  this.xgruleForm=row
-         console.log( this.xgruleForm1+"数据")
-
+    handleEdit(index, row) {
+      this.genjinjilu = true;
+      //console.log(row+"数据")
+      this.xgruleForm = Object.assign({}, row); // 这句是关键！！！
+      this.xgruleForm1 = Object.assign({}, row);
+      this.gjruleForm = Object.assign({}, row);
+      //  this.xgruleForm1 =row
+      //  this.xgruleForm=row
+      console.log(this.xgruleForm1 + "数据");
     },
-     handleEdit1(index, row){
-        this.bjcenterDialogVisible=true,
+    handleEdit1(index, row) {
+      (this.bjcenterDialogVisible = true),
         //console.log(row+"数据")
-        this.xgruleForm = Object.assign({}, row) // 这句是关键！！！
-         this.xgruleForm1 = Object.assign({}, row)
-        //  this.xgruleForm1 =row
-        //  this.xgruleForm=row
-         console.log( this.xgruleForm1+"数据")
-
+        (this.xgruleForm = Object.assign({}, row)); // 这句是关键！！！
+      this.xgruleForm1 = Object.assign({}, row);
+      //  this.xgruleForm1 =row
+      //  this.xgruleForm=row
+      console.log(this.xgruleForm1 + "数据");
     },
-      // 流失意向学员弹出框
-     openschool(row) {
-      
-        this.$confirm('确定该学员已流失?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        })
-        
-        .then(() => {
-          this.axios.post("http://localhost:8088/TSM/studentfiles/xgselectfollow",{
-             studentfilesId:row.studentfilesId,
-        }).then(respon=>{
-          this.crea();
-           this.$message({
-            type: 'success',
-            message: '学员已流失!'
+    // 流失意向学员弹出框
+    openschool(row) {
+      this.$confirm("确定该学员已流失?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+      .then(() => {
+        this.axios
+          .post("http://localhost:8088/TSM/studentfiles/xgselectfollow", {
+            studentfilesId: row.studentfilesId,
+          })
+          .then((respon) => {
+            this.crea();
+            this.$message({
+              type: "success",
+              message: "学员已流失!",
+            });
           });
-        })
-        })
-      },
-      //激活学员
-      jhopenschool(row){
-           this.$confirm('确定激活改学员吗?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        })
-        
-        .then(() => {
-          this.axios.post("http://localhost:8088/TSM/studentfiles/jhselectfollow",{
-             studentfilesId:row.studentfilesId,
-        }).then(respon=>{
-          this.crea();
-           this.$message({
-            type: 'success',
-            message: '激活成功!'
+      });
+    },
+    //激活学员
+    jhopenschool(row) {
+      this.$confirm("确定激活改学员吗?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+      .then(() => {
+        this.axios
+          .post("http://localhost:8088/TSM/studentfiles/jhselectfollow", {
+            studentfilesId: row.studentfilesId,
+          })
+          .then((respon) => {
+            this.crea();
+            this.$message({
+              type: "success",
+              message: "激活成功!",
+            });
           });
-        })
-        })
-      },
-       //删除意向学员
-      scopenschool(row){
-           this.$confirm('确定删除改学员吗?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        })
-        
-        .then(() => {
-          this.axios.post("http://localhost:8088/TSM/studentfiles/scselectfollow",{
-             studentfilesId:row.studentfilesId,
-           
-        }).then(respon=>{
-         this.crea();
-           this.$message({
-            type: 'success',
-            message: '删除成功!'
+      });
+    },
+    //删除意向学员
+    scopenschool(row) {
+      this.$confirm("确定删除改学员吗?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+      .then(() => {
+        this.axios
+          .post("http://localhost:8088/TSM/studentfiles/scselectfollow", {
+            studentfilesId: row.studentfilesId,
+          })
+          .then((respon) => {
+            this.crea();
+            this.$message({
+              type: "success",
+              message: "删除成功!",
+            });
           });
-        })
-        })
-      },
+      });
+    },
     //日期转换成年龄
     suan() {
       const birthStr = this.ruleForm.value1;
@@ -1775,9 +1872,9 @@ if(!numRe.test(this.xgruleForm1.courseName) && !numRe.test(this.xgruleForm1.chan
       this.ruleForm.age = age;
       console.log("年龄", age);
     },
-    suan1(){
-       const birthStr1 = this.xgruleForm1.studentfilesBirthday;
-        let a = new Date();
+    suan1() {
+      const birthStr1 = this.xgruleForm1.studentfilesBirthday;
+      let a = new Date();
       let age1 =
         a.getFullYear() -
         birthStr1.getFullYear() -
@@ -1805,7 +1902,7 @@ if(!numRe.test(this.xgruleForm1.courseName) && !numRe.test(this.xgruleForm1.chan
         });
     },
   },
-  
+
   created() {
     let _this = this;
     this.axios
@@ -1832,11 +1929,10 @@ if(!numRe.test(this.xgruleForm1.courseName) && !numRe.test(this.xgruleForm1.chan
 .xxss {
   position: relative;
   top: 0px;
-  width:150px;
+  width: 150px;
   border-top-left-radius: 0px;
 }
 </style>
-
 
 <style>
 * {
@@ -1854,7 +1950,7 @@ if(!numRe.test(this.xgruleForm1.courseName) && !numRe.test(this.xgruleForm1.chan
   width: 98%;
   margin-left: 1%;
   position: relative;
-  top: 6px;
+  top: 0px;
 }
 .bgfy {
   background: white;
@@ -1926,14 +2022,13 @@ if(!numRe.test(this.xgruleForm1.courseName) && !numRe.test(this.xgruleForm1.chan
 }
 
 .sstp .el-button {
- 
   border-top-left-radius: 0px;
   border-bottom-left-radius: 0px;
   width: 60px;
   height: 30px;
   position: relative;
- left: 269px;
-    top: -58px;
+  left: 269px;
+  top: -58px;
 }
 .cz .el-button {
   background: rgb(255, 255, 255);
@@ -2066,8 +2161,4 @@ span > .el-tag--light {
   --el-tag-font-color: #ff5722;
   --el-tag-hover-color: #ff9777;
 }
-
 </style>
-
-
-

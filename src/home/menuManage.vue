@@ -46,7 +46,7 @@
     </el-table>
   </div>
   <!-- 添加弹窗 -->
-  <el-dialog title="权限添加" center v-model="navDialogVisible">
+  <el-dialog title="权限添加" center v-model="navDialogVisible" @close="rest('naviation')">
     <el-form ref="naviation" :model="naviation" :rules="rules">
       <el-row :gutter="24">
         <el-col :span="12">

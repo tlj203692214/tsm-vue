@@ -1293,8 +1293,7 @@ export default {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
-      })
-      .then(() => {
+      }).then(() => {
         this.axios
           .post("http://localhost:8088/TSM/studentfiles/scselectfollow", {
             studentfilesId: row.studentfilesId,
@@ -1437,7 +1436,7 @@ export default {
   width: 98%;
   margin-left: 1%;
   position: relative;
-  top: 68px;
+  top: 58px;
 }
 
 .sstp .el-button {
@@ -1640,5 +1639,4 @@ span > .el-tag--light {
   --el-tag-font-color: #ff5722;
   --el-tag-hover-color: #ff9777;
 }
-
 </style>

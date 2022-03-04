@@ -114,7 +114,7 @@
                       placeholder="所在班级"
                       class="dowone"
                       id="dowone"
-                      @click="dowone()"
+                      @click="dowone1()"
                       @change="mohuchaxun()"
                     >
                       <el-option
@@ -2334,6 +2334,20 @@ export default {
         .then((respon) => {
           console.log(respon.data);
           this.selectshr = respon.data;
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
+    },
+     dowone1() {
+      document.getElementById("dowone").style.color = "#409eff";
+      this.axios
+        .post("http://localhost:8088/TSM/classes/cxclasscount", {
+        
+        })
+        .then((response) => {
+          console.log(response.data);
+          this.selectionone = response.data;
         })
         .catch(function (err) {
           console.log(err);

@@ -57,7 +57,7 @@
     </el-table>
   </div>
   <!-- 添加弹窗 -->
-  <el-dialog title="添加角色" center v-model="roleDialogVisible">
+  <el-dialog title="添加角色" center v-model="roleDialogVisible" @close="rest('roleInfo')">
     <el-form
       :model="roleInfo"
       ref="roleInfo"
@@ -112,27 +112,26 @@
   <!-- 修改的弹窗 -->
   <el-dialog title="权限修改" center v-model="updateroleDialogVisible">
     <el-form
-      :model="roleInfo"
-      ref="roleInfo"
+      :model="uplateRoleInfo"
+      ref="uplateRoleInfo"
       :label-position="right"
-      :rules="rules"
     >
       <el-row gutter="24">
         <el-col :span="12">
           <el-form-item label="角色名称：" prop="positionName">
-            <el-input v-model="roleInfo.positionName"></el-input>
+            <el-input v-model="uplateRoleInfo.positionName"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="角色描述：" prop="positionRemark">
-            <el-input v-model="roleInfo.positionRemark"></el-input>
+            <el-input v-model="uplateRoleInfo.positionRemark"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="24">
         <el-col :span="12">
           <el-form-item label="角色状态：" prop="positionState">
-            <el-radio-group v-model="roleInfo.positionState">
+            <el-radio-group v-model="uplateRoleInfo.positionState">
               <el-radio :label="0">可用</el-radio>
               <el-radio :label="1">不可用</el-radio>
             </el-radio-group>
@@ -223,6 +222,14 @@ export default {
         positionState: "",
         deptId: "",
       },
+      // 修改角色的信息
+      uplateRoleInfo: {
+        positionId: "",
+        positionName: "",
+        positionRemark: "",
+        positionState: "",
+        deptId: "",
+      },
       rules: {
         positionName: [
           {
@@ -280,14 +287,13 @@ export default {
     },
     // 添加角色弹窗
     insertPopup() {
-      this.roleInfo = "";
       this.roleDialogVisible = true;
       this.selectDept();
     },
     // 修改的弹窗
     updatePopup(row) {
       this.updateroleDialogVisible = true;
-      this.roleInfo = row;
+      this.uplateRoleInfo = row;
       this.menuId = row.positionId;
     },
     // 角色授权（选中的权限菜单）
@@ -390,11 +396,11 @@ export default {
     updateRoleInfo() {
       this.axios
         .post("http://localhost:8088/TSM/position/updatePosition", {
-          positionId: this.roleInfo.positionId,
-          positionName: this.roleInfo.positionName,
-          positionRemark: this.roleInfo.positionRemark,
-          positionState: this.roleInfo.positionState,
-          deptId: this.roleInfo.deptId,
+          positionId: this.uplateRoleInfo.positionId,
+          positionName: this.uplateRoleInfo.positionName,
+          positionRemark: this.uplateRoleInfo.positionRemark,
+          positionState: this.uplateRoleInfo.positionState,
+          deptId: this.uplateRoleInfo.deptId,
         })
         .then(() => {
           console.log("修改成功");

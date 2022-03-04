@@ -24,11 +24,11 @@
                       <p
                         style="height: 36px; line-height: 36px; padding: 0 16px"
                       >
-                        实到<span class="color-success">{{ cqyg }}</span>
+                        实到<span class="color-success">{{ cqyg }}</span>人
                         <span class="divider">/</span>
-                        应到<span class="color-primary">{{ ydyg }}</span>
+                        应到<span class="color-primary">{{ ydyg }}</span>人
                       </p>
-                      <div style="width: 100px; margin: -36px 120px 0">
+                      <div style="width: 100px; margin: -36px 160px 0">
                         <div id="contain" style="height: 100%"></div>
                       </div>
                     </div>
@@ -92,7 +92,7 @@
                         style="padding-left: 8px; padding-right: 8px"
                       >
                         <div class="shortcut-item">
-                          <img src="../assets/img/works/a.png" />
+                          <router-link to="xsbm"><img src="../assets/img/works/a.png" /></router-link>
                           <p>新生报名</p>
                         </div>
                       </div>
@@ -101,8 +101,8 @@
                         style="padding-left: 8px; padding-right: 8px"
                       >
                         <div class="shortcut-item">
-                          <img src="../assets/img/works/b.png" />
-                          <p>快速排课</p>
+                          <router-link to="staffsign"><img src="../assets/img/works/b.png" /></router-link>
+                          <p>员工打卡</p>
                         </div>
                       </div>
                       <div
@@ -110,7 +110,7 @@
                         style="padding-left: 8px; padding-right: 8px"
                       >
                         <div class="shortcut-item">
-                          <img src="../assets/img/works/c.png" />
+                        <router-link to="shitu"><img src="../assets/img/works/c.png" /></router-link>
                           <p>学员登记</p>
                         </div>
                       </div>

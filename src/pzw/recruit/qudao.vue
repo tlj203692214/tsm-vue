@@ -1,7 +1,10 @@
 <template>
   <div>
     <!-- 搜索框 -->
-    <div style="margin-top: 10px">
+    <div style="margin-top: 10px;background: white;
+    height: 100%;
+    position: relative;
+   ">
       <el-input
         style="width: 15%"
         v-model="shoushuokuan"
@@ -46,41 +49,52 @@
   =============================================================================================================================
         表格
      -->
-    <el-table 
-    :data="qudaotable"  style="width: 100%">
-     <!-- <el-table-column prop="channelId" label="编号" width="380" /> -->
+    <el-table :data="qudaotable" style="width: 100%">
+      <!-- <el-table-column prop="channelId" label="编号" width="380" /> -->
       <el-table-column prop="channelLoc" label="地址" width="380" />
       <el-table-column prop="channelName" label="学校" width="380" />
       <el-table-column label="操作">
         <template #default="scope">
-          <el-button type="text" size="mini" @click="handleEdit(scope.$index, scope.row)"
+          <el-button
+            type="text"
+            size="mini"
+            @click="handleEdit(scope.$index, scope.row)"
             >编辑</el-button
           >
-          <el-button type="text" size="mini" @click="deletequdao(scope.row)">删除</el-button>
+          <el-button type="text" size="mini" @click="deletequdao(scope.row)"
+            >删除</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
-<!--
+    <!--
 =============================================================================================================================
        分页
      -->
-        <div>
-          <el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="pageInfo.currentPage"
-            :page-sizes="[2,4,6,8]"
-            :page-size="pageInfo.size"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="pageInfo.total"
-          >
-          </el-pagination>
-        </div>
+    <div>
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="pageInfo.currentPage"
+        :page-sizes="[2, 4, 6, 8]"
+        :page-size="pageInfo.size"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="pageInfo.total"
+      >
+      </el-pagination>
+    </div>
     <!-- 
  ===================================================================================================================
     新增渠道窗口       
      -->
-    <el-dialog v-model="xinzhenqudao" title="渠道新增" width="35%" center :show-close="false" :close-on-click-modal="close_modal">
+    <el-dialog
+      v-model="xinzhenqudao"
+      title="渠道新增"
+      width="35%"
+      center
+      :show-close="false"
+      :close-on-click-modal="close_modal"
+    >
       <el-form
         ref="xzqudao"
         :rules="rulequdao"
@@ -96,9 +110,7 @@
       </el-form>
       <template #footer>
         <span class="dialog-footer">
-          <el-button type="primary" @click="dmonoff('xzqudao')"
-            >确定</el-button
-          >
+          <el-button type="primary" @click="dmonoff('xzqudao')">确定</el-button>
           <el-button @click="dmquxiao('xzqudao')">取消</el-button>
         </span>
       </template>
@@ -109,14 +121,20 @@
         编辑渠道窗口
      -->
 
-     <el-dialog v-model="xiugaiqudao" title="渠道新增" width="35%" center :show-close="false" :close-on-click-modal="close_modal">
+    <el-dialog
+      v-model="xiugaiqudao"
+      title="渠道新增"
+      width="35%"
+      center
+      :show-close="false"
+      :close-on-click-modal="close_modal"
+    >
       <el-form
         ref="xgqudao"
         :rules="rulequdao1"
         :model="xgqudao"
         label-width="120px"
       >
-      
         <el-form-item label="地址" prop="channelLoc">
           <el-input v-model="xgqudao.channelLoc"></el-input>
         </el-form-item>
@@ -149,8 +167,8 @@ import {
   ArrowDown,
   Plus,
 } from "@element-plus/icons";
-import { ElMessage } from 'element-plus'
-import qs from 'qs';
+import { ElMessage } from "element-plus";
+import qs from "qs";
 export default {
   components: {
     search: Search,
@@ -160,17 +178,17 @@ export default {
   data() {
     return {
       //点击弹框外不取消弹框
-       close_modal:false,
+      close_modal: false,
       //排课分页
-      pageInfo:{
-          total:0,
-          size: 2,
-          currentPage: 1
+      pageInfo: {
+        total: 0,
+        size: 2,
+        currentPage: 1,
       },
       //搜索框
-          shoushuokuan:'',
-        //修改渠道
-        xiugaiqudao:false,
+      shoushuokuan: "",
+      //修改渠道
+      xiugaiqudao: false,
       //新增渠道
       xinzhenqudao: false,
       qudaotable: [],
@@ -182,12 +200,12 @@ export default {
         },
       ],
       //渠道修改
-      xgqudao:[
+      xgqudao: [
         {
-          channelId:'',
-          channelLoc:'',
-          channelName:'',
-        }
+          channelId: "",
+          channelLoc: "",
+          channelName: "",
+        },
       ],
       //渠道新增规则
       rulequdao: {
@@ -198,7 +216,7 @@ export default {
             trigger: "blur",
           },
         ],
-         xx: [
+        xx: [
           {
             required: true,
             message: "学校不能为空",
@@ -206,7 +224,7 @@ export default {
           },
         ],
       },
-       rulequdao1: {
+      rulequdao1: {
         channelLoc: [
           {
             required: true,
@@ -214,7 +232,7 @@ export default {
             trigger: "blur",
           },
         ],
-         channelName: [
+        channelName: [
           {
             required: true,
             message: "学校不能为空",
@@ -229,173 +247,192 @@ export default {
   methods: {
     //修改赋值
     handleEdit(index, row) {
-				this.xiugaiqudao = true
-				this.xgqudao = Object.assign({}, row) // 这句是关键！！！
-			},
+      this.xiugaiqudao = true;
+      this.xgqudao = Object.assign({}, row); // 这句是关键！！！
+    },
     // 分页
     handleCurrentChange(page) {
-				var _this = this
-				this.pageInfo.currentPage = page
-				var ps = qs.stringify(this.pageInfo)
-				console.log(ps)
-				this.axios.get("http://localhost:8088/TSM/selectchannel", {
-					 params: _this.pageInfo
-					})
-					.then(function(response) {
-						console.log("1-------------------------------------------")
-						console.log(response.data)
-						_this.qudaotable = response.data.records
-					}).catch(function(error) {
-						console.log(error)
-					})
-			},
-			handleSizeChange(size) {
-				var _this = this
-				this.pageInfo.size = size
-				var ps = qs.stringify(this.pageInfo)
-				console.log(ps)
-				this.axios.get("http://localhost:8088/TSM/selectchannel", {
-						 params: _this.pageInfo
-					})
-					.then(function(response) {
-						console.log("2-------------------------------------------")
-						console.log(response.data)
-						_this.qudaotable = response.data.records
-						_this.pageInfo.total = response.data.total
-					}).catch(function(error) {
-						console.log(error)
-					})
-			},
-      //按钮查询
-      
-      buttonselect(){
-        var _this=this
-        this.axios.get("http://localhost:8088/TSM/anselectchannel",{
-           params:{size:_this.pageInfo.size,
-                    currentPage:_this.pageInfo.currentPage,
-                  shoushuokuan:_this.shoushuokuan,
-          }
+      var _this = this;
+      this.pageInfo.currentPage = page;
+      var ps = qs.stringify(this.pageInfo);
+      console.log(ps);
+      var _this = this;
+      this.axios
+        .get("http://localhost:8088/TSM/anselectchannel", {
+          params: {
+            size: _this.pageInfo.size,
+            currentPage: _this.pageInfo.currentPage,
+            shoushuokuan: _this.shoushuokuan,
+          },
         })
-        .then(function(response){
-          console.log(response.data)
-            _this.qudaotable=response.data.records;
-      _this.pageInfo.total=response.data.total
-        }).catch(function(error){
-          console.log(error)
+        .then(function (response) {
+          console.log(response.data);
+          _this.qudaotable = response.data.records;
         })
-      },
-      //新增渠道开关
-     dmonoff(formName) {
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    handleSizeChange(size) {
+      var _this = this;
+      this.pageInfo.size = size;
+      var ps = qs.stringify(this.pageInfo);
+      console.log(ps);
+      this.axios
+        .get("http://localhost:8088/TSM/anselectchannel", {
+          params: {
+            size: _this.pageInfo.size,
+            currentPage: _this.pageInfo.currentPage,
+            shoushuokuan: _this.shoushuokuan,
+          },
+        })
+        .then(function (response) {
+          console.log(response.data);
+          _this.qudaotable = response.data.records;
+          _this.pageInfo.total = response.data.total;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    //按钮查询
+
+    buttonselect() {
+      var _this = this;
+      this.axios
+        .get("http://localhost:8088/TSM/anselectchannel", {
+          params: {
+            size: _this.pageInfo.size,
+            currentPage: _this.pageInfo.currentPage,
+            shoushuokuan: _this.shoushuokuan,
+          },
+        })
+        .then(function (response) {
+          console.log(response.data);
+          _this.qudaotable = response.data.records;
+          _this.pageInfo.total = response.data.total;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    //新增渠道开关
+    dmonoff(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.axios.post("http://localhost:8088/TSM/addchannel",{
-           channelLoc:this.xzqudao.dz,
-           channelName:this.xzqudao.xx,
-          })
-          .then(response=>{
-            console.log(response.data);
-            this.crea();
-             this.$refs[formName].resetFields();
+          this.axios
+            .post("http://localhost:8088/TSM/addchannel", {
+              channelLoc: this.xzqudao.dz,
+              channelName: this.xzqudao.xx,
+            })
+            .then((response) => {
+              console.log(response.data);
+              this.crea();
+              this.$refs[formName].resetFields();
               this.xinzhenqudao = false;
               ElMessage({
-        showClose: true,
-        message: '添加成功',
-         type: 'success',
-      })
-          })
-          .catch(function(error){
-          console.log(error)
-        })
-    } else {
+                showClose: true,
+                message: "添加成功",
+                type: "success",
+              });
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        } else {
           console.log("error submit!!");
           return false;
         }
-     });
+      });
     },
     dmquxiao(formName) {
-     this.$refs[formName].resetFields();
+      this.$refs[formName].resetFields();
       this.xinzhenqudao = false;
     },
     //修改渠道开关
     xgqdonoff(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.axios.post("http://localhost:8088/TSM/updatechannel",{
-            channelId:this.xgqudao.channelId,
-            channelLoc:this.xgqudao.channelLoc,
-           channelName:this.xgqudao.channelName,
-          })
-          .then(response=>{
-            console.log(response.data);
-             this.crea();
-             this.$refs[formName].resetFields();
+          this.axios
+            .post("http://localhost:8088/TSM/updatechannel", {
+              channelId: this.xgqudao.channelId,
+              channelLoc: this.xgqudao.channelLoc,
+              channelName: this.xgqudao.channelName,
+            })
+            .then((response) => {
+              console.log(response.data);
+              this.crea();
+              this.$refs[formName].resetFields();
               this.xiugaiqudao = false;
-               ElMessage({
-        showClose: true,
-        message: '修改成功',
-         type: 'success',
-               })
-          }).catch(function(){
-            console.log(error);
-          })
-         
-    } else {
+              ElMessage({
+                showClose: true,
+                message: "修改成功",
+                type: "success",
+              });
+            })
+            .catch(function () {
+              console.log(error);
+            });
+        } else {
           console.log("error submit!!");
           return false;
         }
-     });
+      });
     },
     xgqdquxiao(formName) {
-     this.$refs[formName].resetFields();
+      this.$refs[formName].resetFields();
       this.xiugaiqudao = false;
     },
-  //渠道删除
-  deletequdao(row){
-    this.axios.post("http://localhost:8088/TSM/delectchannel",{
-        channelId:row.channelId
-    }).then((response) => {
-					let _this = this;
-					console.log(response.data)
-					console.log("删除成功")
-					_this.crea()
-				}).catch(function(error) {
-					console.log(error)
-					console.log("删除失败")
-				})
+    //渠道删除
+    deletequdao(row) {
+      this.axios
+        .post("http://localhost:8088/TSM/delectchannel", {
+          channelId: row.channelId,
+        })
+        .then((response) => {
+          let _this = this;
+          console.log(response.data);
+          console.log("删除成功");
+          _this.crea();
+        })
+        .catch(function (error) {
+          console.log(error);
+          console.log("删除失败");
+        });
+    },
+    crea() {
+      let _this = this;
+      this.axios
+        .get("http://localhost:8088/TSM/selectchannel", {
+          params: _this.pageInfo,
+        })
+        .then((response) => {
+          console.log(response);
+          this.qudaotable = response.data.records;
+          this.pageInfo.total = response.data.total;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
   },
-     crea() {
-    let _this=this;
-    this.axios.get("http://localhost:8088/TSM/selectchannel",{
-      params: _this.pageInfo
-    })
-    .then(response =>{
-      console.log(response);
-      this.qudaotable=response.data.records;
-      this.pageInfo.total=response.data.total
-    })
-    .catch(function(error){
-       console.log(error);
-    })
-  },
-  },
-    //直接查询
+  //直接查询
   created() {
-    let _this=this;
-    this.axios.get("http://localhost:8088/TSM/selectchannel",{
-      params: _this.pageInfo
-    })
-    .then(response =>{
-      console.log(response);
-      this.qudaotable=response.data.records;
-      this.pageInfo.total=response.data.total
-    })
-    .catch(function(error){
-       console.log(error);
-    })
+    let _this = this;
+    this.axios
+      .get("http://localhost:8088/TSM/selectchannel", {
+        params: _this.pageInfo,
+      })
+      .then((response) => {
+        console.log(response);
+        this.qudaotable = response.data.records;
+        this.pageInfo.total = response.data.total;
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   },
   mounted() {},
 };
 </script>
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

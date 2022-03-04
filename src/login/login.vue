@@ -1,5 +1,5 @@
 <template>
-  <div class="box" style="height: 728px">
+  <div class="box" style="height: 710px">
     <div class="login">
       <el-form
         ref="staff"

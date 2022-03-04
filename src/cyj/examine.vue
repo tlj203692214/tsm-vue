@@ -360,7 +360,7 @@
 						trigger: "blur",
 					}, ],
 					value: [{
-						type: "date",
+						type: "array",
 						required: true,
 						message: "请假时间不可为空",
 						trigger: "change",
@@ -373,7 +373,7 @@
 						trigger: "blur",
 					}, ],
 					value: [{
-						type: "date",
+						type: "array",
 						required: true,
 						message: "出差时间不可为空",
 						trigger: "change",
@@ -477,13 +477,13 @@
 						this.axios
 							.post("http://localhost:8088/TSM/staffbusiness/upstaffbusiness", {
 								staffbusinessId: this.ruleupForm.id,
+								beginTime: this.ruleupForm.kaidate,
 								staffId1: this.ruleupForm.sqid,
 								staffId2: this.StaffId,
 								staffbusinessState: this.ruleupForm.leaveState,
 							})
 							.then(function(response) {
 								console.log(response.data);
-								_this.UpstatePersonal()
 								_this.handleClick();
 							})
 							.catch(function(error) {
@@ -521,6 +521,7 @@
 						this.axios
 							.post("http://localhost:8088/TSM/staffleave/upstaffleave", {
 								leaveId: this.ruleupForm.id,
+								beginTime: this.ruleupForm.kaidate,
 								staffId1: this.ruleupForm.sqid,
 								staffId2: this.StaffId,
 								leaveState: this.ruleupForm.leaveState,
@@ -574,6 +575,7 @@
 							})
 							.then(function(response) {
 								console.log(response.data);
+								_this.handleClick();
 							})
 							.catch(function(error) {
 								console.log(error);
@@ -583,7 +585,6 @@
 							type: "success"
 						});
 						this.insertLeave = false;
-						this.handleClick();
 						console.log(this.ruleForm.value[0], "这是开始时间的值");
 						console.log(this.ruleForm.value[1], "这是结束时间的值");
 					} else {
@@ -611,6 +612,7 @@
 							})
 							.then(function(response) {
 								console.log(response.data);
+								_this.handleClick();
 							})
 							.catch(function(error) {
 								console.log(error);
@@ -620,7 +622,6 @@
 							type: "success"
 						});
 						this.addBusiness = false;
-						this.handleClick();
 						console.log(this.ruleForm.value[0], "这是开始时间的值");
 						console.log(this.ruleForm.value[1], "这是结束时间的值");
 					} else {
